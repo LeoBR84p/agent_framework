@@ -89,4 +89,4 @@ Questions, suggestions, and reports:
 
 ## License
 
-[MIT](LICENSE) © 2026 Bernardo Leandro. <http://leobr.site>
+[MIT](LICENSE) © 2026 Bernardo Leandro. <https://leobr.site>
