@@ -553,6 +553,13 @@ Resolve `agent_id` using the first available source, in order:
 
 Scripts read this automatically. Never generate a fresh UUID per call — that breaks lock ownership across hook invocations.
 
+**Multiple simultaneous Claude Code instances**: the `.session_id` file is shared across all subprocesses in the same directory. Two Claude Code instances running simultaneously will share the same fallback ID, defeating lock isolation between them. When running more than one Claude Code session in the same project, set `AGENT_ID` to distinct values in each terminal before starting:
+
+```bash
+export AGENT_ID="claude-1"   # terminal 1
+export AGENT_ID="claude-2"   # terminal 2
+```
+
 ### File lock protocol
 
 All lock operations are handled by pre-installed scripts in `.agents/scripts/`. Agents never implement lock logic inline — they call the scripts via Bash tool.
@@ -1162,6 +1169,7 @@ Exit codes:
   2 — usage error
 """
 import datetime
+import json
 import os
 import re
 import sqlite3
@@ -1179,7 +1187,11 @@ def _resolve_agent_id() -> str:
     """Return a stable agent ID for this session.
 
     Priority: AGENT_ID env var → .agents/.session_id file → new UUID written to file.
-    Never generates a fresh UUID per call — that would break lock ownership across hook invocations.
+
+    The .session_id file is shared across all subprocesses in the same working
+    directory. It is safe for a single Claude Code session. If two Claude Code
+    instances run simultaneously in the same directory, set AGENT_ID to distinct
+    values in each terminal — the file-based fallback cannot isolate them.
     """
     if env_id := os.environ.get("AGENT_ID"):
         return env_id
@@ -1192,6 +1204,42 @@ def _resolve_agent_id() -> str:
         return new_id
     except OSError:
         return str(uuid.uuid4())  # Ephemeral fallback if filesystem write fails.
+
+
+def _paths_overlap(a: str, b: str) -> bool:
+    na, nb = a.rstrip("/"), b.rstrip("/")
+    return na == nb or na.startswith(nb + "/") or nb.startswith(na + "/")
+
+
+def _expand_active_intention(
+    conn: sqlite3.Connection, agent_id: str, file_path: str
+) -> None:
+    """Add file_path to this agent's active intention if not already covered.
+
+    Called after every successful lock acquisition so the intention's target_paths
+    stays accurate as scope expands during a task. Best-effort: never blocks a write.
+    """
+    try:
+        row = conn.execute(
+            "SELECT intention_id, target_paths FROM session_intentions "
+            "WHERE agent_id = ? AND status = 'in_progress' AND completed_at IS NULL "
+            "ORDER BY started_at DESC LIMIT 1",
+            (agent_id,),
+        ).fetchone()
+        if not row:
+            return
+        intention_id, raw = row
+        paths: list[str] = json.loads(raw) if raw else []
+        if any(_paths_overlap(file_path, p) for p in paths):
+            return  # Already covered — no update needed.
+        paths.append(file_path)
+        conn.execute(
+            "UPDATE session_intentions SET target_paths = ? WHERE intention_id = ?",
+            (json.dumps(paths), intention_id),
+        )
+        conn.commit()
+    except Exception:
+        pass
 
 
 def main() -> None:
@@ -1223,6 +1271,7 @@ def main() -> None:
                         (file_path, agent_id, task_desc, datetime.datetime.utcnow().isoformat()),
                     )
                     conn.commit()
+                    _expand_active_intention(conn, agent_id, file_path)
                     sys.exit(0)  # Lock acquired.
                 except sqlite3.IntegrityError:
                     row = conn.execute(
@@ -1230,6 +1279,7 @@ def main() -> None:
                         (file_path,),
                     ).fetchone()
                     if row and row[1] == agent_id:
+                        _expand_active_intention(conn, agent_id, file_path)
                         sys.exit(0)  # This agent already holds the lock — idempotent.
                     if row and row[0] == "done":
                         # Stale lock — clean and retry.
@@ -1965,7 +2015,7 @@ When sections conflict: the more restrictive principle prevails.
 
 ## FRAMEWORK VERSION
 
-Version: 1.6.0
+Version: 1.7.0
 Source: <https://github.com/LeoBR84p/agent-framework>
 Adapted for: generic multi-project use
 License: MIT - <https://leobr.site>
