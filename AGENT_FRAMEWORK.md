@@ -601,7 +601,8 @@ If the task is interrupted or cancelled before completion, close with `cancelled
 | `PreToolUse:Bash` | `guard_bash.py` | Warns on dangerous shell patterns |
 | `PostToolUse:Write` | `log_write.py` | Appends write to session audit log |
 | `PostToolUse:Bash` | `log_bash.py` | Appends command + exit code to audit log |
-| `Stop` | `release_locks.py` | Releases all locks owned by this agent on session end |
+| `Stop` | `release_locks.py` | Releases all file locks owned by this agent on session end |
+| `Stop` | `close_intentions.py` | Cancels all open intentions owned by this agent on session end |
 
 The agent still calls `acquire_lock.py` explicitly (to declare intent before a task cluster) and `release_lock.py` explicitly (to release individual files mid-task). When the hook fires on a write, it calls `acquire_lock.py` for the same file — idempotency ensures no double-acquisition if the agent already holds the lock. This closes the check-then-write race condition: lock acquisition is now atomic with each write operation.
 
@@ -779,12 +780,13 @@ Step 20: Create .agents/scripts/log_bash.py from template below.
 Step 21: Create .agents/scripts/session_status.py from template below.
 Step 22: Create .agents/scripts/register_intention.py from template below.
 Step 23: Create .agents/scripts/close_intention.py from template below.
-Step 24: Create .agents/scripts/check_intentions.py from template below.
-Step 25: If Q9 ≠ "Claude Code only" — create .vscode/tasks.json from template below.
+Step 24: Create .agents/scripts/close_intentions.py from template below.
+Step 25: Create .agents/scripts/check_intentions.py from template below.
+Step 26: If Q9 ≠ "Claude Code only" — create .vscode/tasks.json from template below.
          Add .github/copilot-instructions.md stub if Q9 includes Copilot.
-Step 26: If Q9.1 = Yes — create .git/hooks/pre-commit from template below and make executable.
-Step 27: Report all files created.
-Step 28: Ask if user wants to review any file.
+Step 27: If Q9.1 = Yes — create .git/hooks/pre-commit from template below and make executable.
+Step 28: Report all files created.
+Step 29: Ask if user wants to review any file.
 ```
 
 > **Composition instruction**: when the step says "compose from Section X + Section Y", read those sections
@@ -1044,6 +1046,10 @@ Each task file is composed from Section 1 plus the relevant sections (see compos
           {
             "type": "command",
             "command": "python .agents/scripts/release_locks.py 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "python .agents/scripts/close_intentions.py 2>/dev/null || true"
           }
         ]
       }
@@ -1606,6 +1612,52 @@ if __name__ == "__main__":
     main()
 ```
 
+### .agents/scripts/close_intentions.py template
+
+```python
+"""Cancel all open session intentions owned by the current agent at session stop.
+
+Called by the Stop hook — runs automatically when the Claude Code session ends,
+whether by normal exit, crash, or timeout. Ensures no stale open intentions
+block other agents from proceeding after a 30-min threshold.
+"""
+import datetime
+import os
+import sqlite3
+from pathlib import Path
+
+_SESSION_ID_FILE = Path(".agents/.session_id")
+
+
+def _resolve_agent_id() -> str:
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+    except OSError:
+        pass
+    return "unknown"
+
+
+def main() -> None:
+    agent_id = _resolve_agent_id()
+    try:
+        with sqlite3.connect("SESSION.db") as conn:
+            conn.execute(
+                "UPDATE session_intentions SET status = 'cancelled', completed_at = ? "
+                "WHERE status = 'in_progress' AND agent_id = ?",
+                (datetime.datetime.utcnow().isoformat(), agent_id),
+            )
+            conn.commit()
+    except Exception:
+        pass
+
+
+if __name__ == "__main__":
+    main()
+```
+
 ### .agents/scripts/check_intentions.py template
 
 ```python
@@ -1838,7 +1890,8 @@ Claude Code is the only tool with a native hook system. Hooks run shell commands
 | `PreToolUse` | `Bash` | `guard_bash.py` | Warn (non-blocking) on dangerous shell patterns |
 | `PostToolUse` | `Write` | `log_write.py` | Append write record to session audit log |
 | `PostToolUse` | `Bash` | `log_bash.py` | Append command + exit code to session audit log |
-| `Stop` | `""` (all) | `release_locks.py` | Release all in-progress locks owned by this agent |
+| `Stop` | `""` (all) | `release_locks.py` | Release all in-progress file locks owned by this agent |
+| `Stop` | `""` (all) | `close_intentions.py` | Cancel all open session intentions owned by this agent |
 
 **Hook execution is warn-only except `PreToolUse:Write`**. `acquire_lock.py` exits 1 to block the write if another agent holds the lock; it exits 0 (and is idempotent) if this agent already holds it. All other scripts exit 0 regardless — they warn but never block.
 
@@ -1894,7 +1947,7 @@ When sections conflict: the more restrictive principle prevails.
 
 ## FRAMEWORK VERSION
 
-Version: 1.4.0
+Version: 1.5.0
 Source: <https://github.com/LeoBR84p/agent-framework>
 Adapted for: generic multi-project use
 License: MIT - <https://leobr.site>
