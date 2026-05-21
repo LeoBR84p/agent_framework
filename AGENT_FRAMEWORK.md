@@ -810,7 +810,10 @@ Step 25: Create .agents/scripts/check_intentions.py from template below.
 Step 26: If Q9 ≠ "Claude Code only" — create .vscode/tasks.json from template below.
          Add .github/copilot-instructions.md stub if Q9 includes Copilot.
 Step 27: If Q9.1 = Yes — create .git/hooks/pre-commit from template below and make executable.
-Step 28: Update `.gitignore` — append the Agent Framework block below. If `.gitignore` does not exist, create it.
+Step 28: **MANDATORY — do not skip** — Update `.gitignore`:
+         - If `.gitignore` exists: append the Agent Framework block below at the end.
+         - If `.gitignore` does not exist: create it with the block as its sole content.
+         This step is not optional. No installation is complete without it.
 Step 29: Report all files created.
 Step 30: Ask if user wants to review any file.
 ```
@@ -1951,6 +1954,7 @@ If `.gitignore` already exists, append this block at the end. If it does not exi
 
 ```gitignore
 # Agent Framework — generated files, never commit
+AGENT_FRAMEWORK.md
 AGENTS.md
 CLAUDE.md
 CONTEXT.md
@@ -2032,7 +2036,7 @@ When sections conflict: the more restrictive principle prevails.
 
 ## FRAMEWORK VERSION
 
-Version: 1.8.0
+Version: 1.8.1
 Source: <https://github.com/LeoBR84p/agent-framework>
 Adapted for: generic multi-project use
 License: MIT - <https://leobr.site>
