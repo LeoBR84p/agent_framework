@@ -810,8 +810,9 @@ Step 25: Create .agents/scripts/check_intentions.py from template below.
 Step 26: If Q9 ≠ "Claude Code only" — create .vscode/tasks.json from template below.
          Add .github/copilot-instructions.md stub if Q9 includes Copilot.
 Step 27: If Q9.1 = Yes — create .git/hooks/pre-commit from template below and make executable.
-Step 28: Report all files created.
-Step 29: Ask if user wants to review any file.
+Step 28: Update `.gitignore` — append the Agent Framework block below. If `.gitignore` does not exist, create it.
+Step 29: Report all files created.
+Step 30: Ask if user wants to review any file.
 ```
 
 > **Composition instruction**: when the step says "compose from Section X + Section Y", read those sections
@@ -1944,6 +1945,22 @@ Run `python .agents/scripts/release_lock.py "<file_path>"` for each file you edi
 To see active session locks: use VS Code task "agent: view session status".
 ```
 
+### .gitignore block *(appended by Step 28)*
+
+If `.gitignore` already exists, append this block at the end. If it does not exist, create it with this content.
+
+```gitignore
+# Agent Framework — generated files, never commit
+AGENTS.md
+CLAUDE.md
+CONTEXT.md
+SESSION.db
+.agents/
+.claude/
+.cursorrules
+.github/copilot-instructions.md
+```
+
 ---
 
 ## SECTION 13 — HOOKS AND IDE INTEGRATION
@@ -2015,7 +2032,7 @@ When sections conflict: the more restrictive principle prevails.
 
 ## FRAMEWORK VERSION
 
-Version: 1.7.0
+Version: 1.8.0
 Source: <https://github.com/LeoBR84p/agent-framework>
 Adapted for: generic multi-project use
 License: MIT - <https://leobr.site>
