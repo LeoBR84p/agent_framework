@@ -227,9 +227,10 @@ When installing, ask the user the following questions using the interactive sele
 
 ### Required actions before writing
 
-1. Read `CONTEXT.md` for existing architectural decisions and technical debt.
-2. Read `SESSION.db` to check if any relevant files are currently locked by another agent.
-3. Ask clarifying questions before generating. Never assume scope.
+1. Read `CONTEXT.md` — only `[active]` entries are relevant. Ignore `[resolved]` and `[superseded]`.
+2. If `CONTEXT.md` line count exceeds the `context_max_lines` threshold in `CLAUDE.md` (default 150): run a prune pass before any other work — see Section 9 prune protocol.
+3. Read `SESSION.db` to check if any relevant files are currently locked by another agent.
+4. Ask clarifying questions before generating. Never assume scope.
 
 ### Required format for planning documents
 
@@ -433,7 +434,10 @@ Silently verify before delivering (print only failures):
 
 ### Post-task actions
 
-1. Update `CONTEXT.md` if architectural decisions or technical debt changed.
+1. Update `CONTEXT.md` if architectural decisions or technical debt changed — follow Section 9 update rules:
+   - Before inserting any entry, scan for overlapping content. If found, update in place (change tag or text). Never duplicate.
+   - `Current project state`: replace the entire section, never append.
+   - Mark resolved debt or superseded decisions as `[resolved]` or `[superseded]` — never delete mid-session, let the prune pass clean them.
 2. Update plan document — mark completed items with [x] and timestamp.
 3. Release file locks in `SESSION.db`.
 4. Report to user: what was done, what to validate, any deviations (minimum tokens).
@@ -610,24 +614,67 @@ The agent still calls `acquire_lock.py` explicitly (to declare intent before a t
 ```markdown
 # Project Context
 
+<!-- Retention policy per section — see AGENT_FRAMEWORK.md Section 9. -->
+<!-- Entry format: - [status] Description. (YYYY-MM-DD)               -->
+<!-- Statuses: [active] | [resolved] | [superseded]                   -->
+
 ## Architecture decisions
+<!-- Permanent. Never delete. Mark superseded ones [superseded].      -->
 
 ## Technical debt
+<!-- Keep until [resolved]. Resolved entries removed on prune pass.   -->
 
 ## Current project state
+<!-- Replace entirely on every update. Never append.                  -->
 
 ## Authorized fallbacks
+<!-- Keep until explicitly revoked. Then mark [superseded].           -->
 
 ## Utility index
 | Domain | Location |
 | -- | -- |
 ```
 
+### Retention policy per section
+
+| Section | Retention | Removal trigger |
+| -- | -- | -- |
+| Architecture decisions | Permanent | Mark `[superseded]` when overridden; never delete |
+| Technical debt | Until resolved | Mark `[resolved]` when fixed; removed on next prune |
+| Current project state | Latest snapshot only | Replace entirely on every update |
+| Authorized fallbacks | Until revoked | Mark `[superseded]` when revoked; removed on prune |
+| Utility index | Permanent | Update in place |
+
+### Entry status tags
+
+Every entry in `Architecture decisions`, `Technical debt`, and `Authorized fallbacks` carries an inline status tag:
+
+```markdown
+- [active] Auth uses JWT with RS256 — chosen over sessions for stateless scaling. (2026-03-10)
+- [superseded] Auth used session cookies — replaced by JWT. (2026-01-05)
+- [resolved] N+1 query on product listing — fixed in db/queries.py. (2026-04-02)
+```
+
+- Agents read only `[active]` entries during a session.
+- Never delete `[resolved]` or `[superseded]` mid-session — the prune pass does it.
+- `Current project state` has no tags — it is always a full replacement, not a log.
+
 ### Update rules
 
-- Read `CONTEXT.md` at the start of every planning or complex coding session.
+- Read `CONTEXT.md` at the start of every planning or complex coding session. Only `[active]` entries are relevant.
 - Update only when: new architectural decision, new technical debt, significant state change, new authorized fallback.
-- Keep lean — read every session. Avoid verbosity.
+- **Before inserting**: scan for overlapping content. Update in place if found. Never duplicate.
+- **`Current project state`**: replace the entire section body on every update. Never append lines to it.
+
+### Prune protocol (triggered when line count exceeds `context_max_lines`)
+
+Triggered at the start of a planning session when `wc -l CONTEXT.md` exceeds the threshold in `CLAUDE.md` (default: 150 lines).
+
+1. Remove all `[resolved]` and `[superseded]` entries from all sections.
+2. Review remaining `[active]` entries — mark any that are implicitly superseded or resolved.
+3. Replace `Current project state` with a fresh summary of the current state.
+4. Confirm the pruned file with the user before saving.
+5. Acquire the `CONTEXT.md` lock before writing.
 
 ---
 
@@ -758,6 +805,7 @@ Step 28: Ask if user wants to review any file.
 - Languages: [Q2]
 - Test coverage minimum: [Q3]%
 - Documentation language: [Q6]
+- Context max lines: 150 (prune trigger — see Section 9)
 
 ## Model assignments
 
@@ -1846,7 +1894,7 @@ When sections conflict: the more restrictive principle prevails.
 
 ## FRAMEWORK VERSION
 
-Version: 1.3.0
+Version: 1.4.0
 Source: <https://github.com/LeoBR84p/agent-framework>
 Adapted for: generic multi-project use
 License: MIT - <https://leobr.site>
