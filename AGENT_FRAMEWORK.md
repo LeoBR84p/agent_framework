@@ -446,36 +446,54 @@ Silently verify before delivering (print only failures):
 
 ## SECTION 5 — MODEL ROUTING AND ESCALATION
 
-### Task-based model routing
+The agent never switches models autonomously. It assesses the task, makes a recommendation, and waits. The user controls the actual switch. This applies in both directions — cheaper and more capable.
 
-| Task type | Model | Authorization |
-| -- | -- | -- |
-| Planning | Q4.1 answer | — |
-| Coding | Q4.2 answer | — |
-| Simple commands, doc updates, user Q&A | Q4.3 answer | Autonomous downgrade |
-| Escalation | Q4.4 answer | **User approval required** |
+### Configured models (set during wizard)
 
-After a trivial task: return to planning/coding model automatically.
+| Task type | Configured model |
+| -- | -- |
+| Planning | Q4.1 answer |
+| Coding | Q4.2 answer |
+| Simple tasks / user Q&A | Q4.3 answer |
+| Escalation | Q4.4 answer |
 
-### What counts as a trivial task (autonomous downgrade)
+### Pre-task assessment — recommend downgrade
 
-- Updating documentation or comments
-- Checking implementation vs plan
+Before starting any task, evaluate its complexity. If the task clearly fits the cheaper model (Q4.3) — answering a question, updating a comment, reading a file, running a command and reporting the result — open with:
+
+> "This task looks simple enough for [Q4.3 model], which is faster and cheaper. Switch now and ask me to continue, or I'll proceed with the current model."
+
+Then wait. Do not proceed until the user responds. If the user ignores the suggestion, proceed with the current model.
+
+**What qualifies as a simple task:**
+
 - Answering questions without code changes
-- Executing commands and reporting results
-- Read-only queries and inspections
+- Updating documentation or comments only
+- Checking implementation against a plan
+- Running read-only commands and reporting results
+- Summarizing or explaining existing code without modifying it
 
-### Retry escalation protocol
+**What does not qualify (do not recommend downgrade):**
 
-When the agent has failed to resolve **the same problem** after reaching the configured retry threshold (default: 3, set in Q5):
+- Any file modification beyond comments or docs
+- Tasks with ambiguous scope — assess first, then classify
+- Planning sessions that may lead to implementation
+- Anything that requires cross-file reasoning
 
-1. Stop attempting with the current model.
-2. Inform the user using interactive selector: `"I have attempted this [N] times without success. I can escalate to [Q4.4 model]. Approve? - Yes | - No, keep trying - Cancel activity."`
-3. Wait for explicit approval before switching.
-4. After resolving: return to default model for subsequent tasks.
-5. Each new problem resets the attempt counter.
+### Failure escalation — recommend upgrade
 
-If escalation is disabled (Q5), inform the user of the repeated failure and ask how to proceed — do not switch models autonomously.
+When the agent has failed to resolve **the same problem** after reaching the retry threshold (default: 3, set in Q5):
+
+1. Stop attempting. Do not try a fourth time.
+2. Summarize what was attempted and why it failed.
+3. Recommend upgrade:
+
+> "I've attempted this [N] times without success. This problem may benefit from [Q4.4 model]. Switch and ask me to retry, or tell me how you'd like to proceed."
+
+4. Wait for user response. Do not resume work on the same problem until the user either switches model and asks again, or gives explicit instruction to continue with the current model.
+5. Each new distinct problem resets the attempt counter.
+
+If escalation is disabled (Q5), step 3 becomes: inform the user of the failure and ask how to proceed. Same stop-and-wait behavior.
 
 ---
 
@@ -1947,7 +1965,7 @@ When sections conflict: the more restrictive principle prevails.
 
 ## FRAMEWORK VERSION
 
-Version: 1.5.0
+Version: 1.6.0
 Source: <https://github.com/LeoBR84p/agent-framework>
 Adapted for: generic multi-project use
 License: MIT - <https://leobr.site>
