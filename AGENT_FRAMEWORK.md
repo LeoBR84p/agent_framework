@@ -227,9 +227,10 @@ When installing, ask the user the following questions using the interactive sele
 
 ### Required actions before writing
 
-1. Read `CONTEXT.md` for existing architectural decisions and technical debt.
-2. Read `SESSION.db` to check if any relevant files are currently locked by another agent.
-3. Ask clarifying questions before generating. Never assume scope.
+1. Read `CONTEXT.md` — only `[active]` entries are relevant. Ignore `[resolved]` and `[superseded]`.
+2. If `CONTEXT.md` line count exceeds the `context_max_lines` threshold in `CLAUDE.md` (default 150): run a prune pass before any other work — see Section 9 prune protocol.
+3. Read `SESSION.db` to check if any relevant files are currently locked by another agent.
+4. Ask clarifying questions before generating. Never assume scope.
 
 ### Required format for planning documents
 
@@ -433,7 +434,10 @@ Silently verify before delivering (print only failures):
 
 ### Post-task actions
 
-1. Update `CONTEXT.md` if architectural decisions or technical debt changed.
+1. Update `CONTEXT.md` if architectural decisions or technical debt changed — follow Section 9 update rules:
+   - Before inserting any entry, scan for overlapping content. If found, update in place (change tag or text). Never duplicate.
+   - `Current project state`: replace the entire section, never append.
+   - Mark resolved debt or superseded decisions as `[resolved]` or `[superseded]` — never delete mid-session, let the prune pass clean them.
 2. Update plan document — mark completed items with [x] and timestamp.
 3. Release file locks in `SESSION.db`.
 4. Report to user: what was done, what to validate, any deviations (minimum tokens).
@@ -442,36 +446,54 @@ Silently verify before delivering (print only failures):
 
 ## SECTION 5 — MODEL ROUTING AND ESCALATION
 
-### Task-based model routing
+The agent never switches models autonomously. It assesses the task, makes a recommendation, and waits. The user controls the actual switch. This applies in both directions — cheaper and more capable.
 
-| Task type | Model | Authorization |
-| -- | -- | -- |
-| Planning | Q4.1 answer | — |
-| Coding | Q4.2 answer | — |
-| Simple commands, doc updates, user Q&A | Q4.3 answer | Autonomous downgrade |
-| Escalation | Q4.4 answer | **User approval required** |
+### Configured models (set during wizard)
 
-After a trivial task: return to planning/coding model automatically.
+| Task type | Configured model |
+| -- | -- |
+| Planning | Q4.1 answer |
+| Coding | Q4.2 answer |
+| Simple tasks / user Q&A | Q4.3 answer |
+| Escalation | Q4.4 answer |
 
-### What counts as a trivial task (autonomous downgrade)
+### Pre-task assessment — recommend downgrade
 
-- Updating documentation or comments
-- Checking implementation vs plan
+Before starting any task, evaluate its complexity. If the task clearly fits the cheaper model (Q4.3) — answering a question, updating a comment, reading a file, running a command and reporting the result — open with:
+
+> "This task looks simple enough for [Q4.3 model], which is faster and cheaper. Switch now and ask me to continue, or I'll proceed with the current model."
+
+Then wait. Do not proceed until the user responds. If the user ignores the suggestion, proceed with the current model.
+
+**What qualifies as a simple task:**
+
 - Answering questions without code changes
-- Executing commands and reporting results
-- Read-only queries and inspections
+- Updating documentation or comments only
+- Checking implementation against a plan
+- Running read-only commands and reporting results
+- Summarizing or explaining existing code without modifying it
 
-### Retry escalation protocol
+**What does not qualify (do not recommend downgrade):**
 
-When the agent has failed to resolve **the same problem** after reaching the configured retry threshold (default: 3, set in Q5):
+- Any file modification beyond comments or docs
+- Tasks with ambiguous scope — assess first, then classify
+- Planning sessions that may lead to implementation
+- Anything that requires cross-file reasoning
 
-1. Stop attempting with the current model.
-2. Inform the user using interactive selector: `"I have attempted this [N] times without success. I can escalate to [Q4.4 model]. Approve? - Yes | - No, keep trying - Cancel activity."`
-3. Wait for explicit approval before switching.
-4. After resolving: return to default model for subsequent tasks.
-5. Each new problem resets the attempt counter.
+### Failure escalation — recommend upgrade
 
-If escalation is disabled (Q5), inform the user of the repeated failure and ask how to proceed — do not switch models autonomously.
+When the agent has failed to resolve **the same problem** after reaching the retry threshold (default: 3, set in Q5):
+
+1. Stop attempting. Do not try a fourth time.
+2. Summarize what was attempted and why it failed.
+3. Recommend upgrade:
+
+> "I've attempted this [N] times without success. This problem may benefit from [Q4.4 model]. Switch and ask me to retry, or tell me how you'd like to proceed."
+
+4. Wait for user response. Do not resume work on the same problem until the user either switches model and asks again, or gives explicit instruction to continue with the current model.
+5. Each new distinct problem resets the attempt counter.
+
+If escalation is disabled (Q5), step 3 becomes: inform the user of the failure and ask how to proceed. Same stop-and-wait behavior.
 
 ---
 
@@ -510,9 +532,35 @@ CREATE TABLE IF NOT EXISTS session_locks (
     locked_at     TEXT NOT NULL,
     completed_at  TEXT
 );
+
+CREATE TABLE IF NOT EXISTS session_intentions (
+    intention_id  TEXT PRIMARY KEY,
+    agent_id      TEXT NOT NULL,
+    scope_summary TEXT NOT NULL,
+    target_paths  TEXT NOT NULL,     -- JSON array of files and folders
+    status        TEXT DEFAULT 'in_progress',  -- in_progress | completed | cancelled
+    started_at    TEXT NOT NULL,
+    completed_at  TEXT               -- NULL while open
+);
 ```
 
-### Agent protocol
+### Agent identity
+
+Resolve `agent_id` using the first available source, in order:
+
+1. `AGENT_ID` environment variable (set by the user or CI).
+2. `.agents/.session_id` file in the project root (read on first use; created with a new UUID if absent).
+
+Scripts read this automatically. Never generate a fresh UUID per call — that breaks lock ownership across hook invocations.
+
+**Multiple simultaneous Claude Code instances**: the `.session_id` file is shared across all subprocesses in the same directory. Two Claude Code instances running simultaneously will share the same fallback ID, defeating lock isolation between them. When running more than one Claude Code session in the same project, set `AGENT_ID` to distinct values in each terminal before starting:
+
+```bash
+export AGENT_ID="claude-1"   # terminal 1
+export AGENT_ID="claude-2"   # terminal 2
+```
+
+### File lock protocol
 
 All lock operations are handled by pre-installed scripts in `.agents/scripts/`. Agents never implement lock logic inline — they call the scripts via Bash tool.
 
@@ -522,7 +570,7 @@ All lock operations are handled by pre-installed scripts in `.agents/scripts/`. 
 python .agents/scripts/acquire_lock.py "<file_path>" "<task_desc>"
 ```
 
-- Exit code `0` — lock acquired. Proceed.
+- Exit code `0` — lock acquired, or already held by this agent (idempotent). Proceed.
 - Exit code `1` — file is locked by another agent. Work on another file and inform user. If no other file is available for the current task, inform user and stop.
 - Exit code `2` — usage error (check arguments).
 
@@ -534,19 +582,54 @@ python .agents/scripts/release_lock.py "<file_path>"
 
 **Lock `CONTEXT.md` too**: acquire a lock on `CONTEXT.md` before writing to it — same protocol as any other file. This prevents silent write conflicts when multiple agents update context simultaneously.
 
-**Agent identity**: resolve `agent_id` via env var `AGENT_ID` if set; otherwise generate a UUID once per session with `str(uuid.uuid4())` and reuse it for all locks in that session. Scripts read `AGENT_ID` automatically.
+**Hook coverage**: the `PreToolUse:Write` hook calls `acquire_lock.py` directly, making lock acquisition atomic with every write. The agent's explicit `acquire_lock.py` call before a task cluster is idempotent — if the hook already acquired the lock, this is a no-op. See Section 13.
+
+### Session intention protocol
+
+Before starting any non-trivial task (code changes, refactors, multi-file edits):
+
+**Step 1 — Check for conflicts:**
+
+```bash
+python .agents/scripts/check_intentions.py '["src/auth/", "CONTEXT.md"]'
+```
+
+- Exit `0` — no conflicts. Proceed to Step 2.
+- Exit `1` — stale conflicts found (open intentions older than 30 min). Read the JSON output, present the conflicting agents and scopes to the user, and ask: *"Another session registered intent to modify these paths [X] min ago but has not finished. Is it safe to proceed?"*
+  - If user confirms: close each stale intention with `python .agents/scripts/close_intention.py <id> cancelled`, then proceed to Step 2.
+  - If user declines: stop and inform.
+- Exit `2` — active conflicts (open intentions ≤ 30 min old). Inform user and stop. Do not proceed.
+
+**Step 2 — Register own intention:**
+
+```bash
+python .agents/scripts/register_intention.py "Implement OAuth in auth module" '["src/auth/", "CONTEXT.md"]'
+```
+
+Capture the printed `intention_id` — you will need it to close the intention.
+
+**Step 3 — Do the work** (acquire file locks as usual per the file lock protocol).
+
+**Step 4 — Close intention when done:**
+
+```bash
+python .agents/scripts/close_intention.py <intention_id> completed
+```
+
+If the task is interrupted or cancelled before completion, close with `cancelled` status.
 
 **Hook coverage**: the `.claude/settings.json` hooks automate part of this protocol (see Section 13):
 
 | Hook event | Script | What it does |
 | -- | -- | -- |
-| `PreToolUse:Write` | `check_lock.py` | Blocks writes to locked files before they happen |
+| `PreToolUse:Write` | `acquire_lock.py` | Acquires lock atomically before each write; blocks if locked by another agent |
 | `PreToolUse:Bash` | `guard_bash.py` | Warns on dangerous shell patterns |
 | `PostToolUse:Write` | `log_write.py` | Appends write to session audit log |
 | `PostToolUse:Bash` | `log_bash.py` | Appends command + exit code to audit log |
-| `Stop` | `release_locks.py` | Releases all locks owned by this agent on session end |
+| `Stop` | `release_locks.py` | Releases all file locks owned by this agent on session end |
+| `Stop` | `close_intentions.py` | Cancels all open intentions owned by this agent on session end |
 
-The agent still calls `acquire_lock.py` explicitly (to declare intent before a task cluster) and `release_lock.py` explicitly (to release individual files mid-task). The hooks complement rather than replace explicit acquisition.
+The agent still calls `acquire_lock.py` explicitly (to declare intent before a task cluster) and `release_lock.py` explicitly (to release individual files mid-task). When the hook fires on a write, it calls `acquire_lock.py` for the same file — idempotency ensures no double-acquisition if the agent already holds the lock. This closes the check-then-write race condition: lock acquisition is now atomic with each write operation.
 
 ---
 
@@ -557,24 +640,67 @@ The agent still calls `acquire_lock.py` explicitly (to declare intent before a t
 ```markdown
 # Project Context
 
+<!-- Retention policy per section — see AGENT_FRAMEWORK.md Section 9. -->
+<!-- Entry format: - [status] Description. (YYYY-MM-DD)               -->
+<!-- Statuses: [active] | [resolved] | [superseded]                   -->
+
 ## Architecture decisions
+<!-- Permanent. Never delete. Mark superseded ones [superseded].      -->
 
 ## Technical debt
+<!-- Keep until [resolved]. Resolved entries removed on prune pass.   -->
 
 ## Current project state
+<!-- Replace entirely on every update. Never append.                  -->
 
 ## Authorized fallbacks
+<!-- Keep until explicitly revoked. Then mark [superseded].           -->
 
 ## Utility index
 | Domain | Location |
 | -- | -- |
 ```
 
+### Retention policy per section
+
+| Section | Retention | Removal trigger |
+| -- | -- | -- |
+| Architecture decisions | Permanent | Mark `[superseded]` when overridden; never delete |
+| Technical debt | Until resolved | Mark `[resolved]` when fixed; removed on next prune |
+| Current project state | Latest snapshot only | Replace entirely on every update |
+| Authorized fallbacks | Until revoked | Mark `[superseded]` when revoked; removed on prune |
+| Utility index | Permanent | Update in place |
+
+### Entry status tags
+
+Every entry in `Architecture decisions`, `Technical debt`, and `Authorized fallbacks` carries an inline status tag:
+
+```markdown
+- [active] Auth uses JWT with RS256 — chosen over sessions for stateless scaling. (2026-03-10)
+- [superseded] Auth used session cookies — replaced by JWT. (2026-01-05)
+- [resolved] N+1 query on product listing — fixed in db/queries.py. (2026-04-02)
+```
+
+- Agents read only `[active]` entries during a session.
+- Never delete `[resolved]` or `[superseded]` mid-session — the prune pass does it.
+- `Current project state` has no tags — it is always a full replacement, not a log.
+
 ### Update rules
 
-- Read `CONTEXT.md` at the start of every planning or complex coding session.
+- Read `CONTEXT.md` at the start of every planning or complex coding session. Only `[active]` entries are relevant.
 - Update only when: new architectural decision, new technical debt, significant state change, new authorized fallback.
-- Keep lean — read every session. Avoid verbosity.
+- **Before inserting**: scan for overlapping content. Update in place if found. Never duplicate.
+- **`Current project state`**: replace the entire section body on every update. Never append lines to it.
+
+### Prune protocol (triggered when line count exceeds `context_max_lines`)
+
+Triggered at the start of a planning session when `wc -l CONTEXT.md` exceeds the threshold in `CLAUDE.md` (default: 150 lines).
+
+1. Remove all `[resolved]` and `[superseded]` entries from all sections.
+2. Review remaining `[active]` entries — mark any that are implicitly superseded or resolved.
+3. Replace `Current project state` with a fresh summary of the current state.
+4. Confirm the pruned file with the user before saving.
+5. Acquire the `CONTEXT.md` lock before writing.
 
 ---
 
@@ -677,11 +803,15 @@ Step 18: Create .agents/scripts/guard_bash.py from template below.
 Step 19: Create .agents/scripts/log_write.py from template below.
 Step 20: Create .agents/scripts/log_bash.py from template below.
 Step 21: Create .agents/scripts/session_status.py from template below.
-Step 22: If Q9 ≠ "Claude Code only" — create .vscode/tasks.json from template below.
+Step 22: Create .agents/scripts/register_intention.py from template below.
+Step 23: Create .agents/scripts/close_intention.py from template below.
+Step 24: Create .agents/scripts/close_intentions.py from template below.
+Step 25: Create .agents/scripts/check_intentions.py from template below.
+Step 26: If Q9 ≠ "Claude Code only" — create .vscode/tasks.json from template below.
          Add .github/copilot-instructions.md stub if Q9 includes Copilot.
-Step 23: If Q9.1 = Yes — create .git/hooks/pre-commit from template below and make executable.
-Step 24: Report all files created.
-Step 25: Ask if user wants to review any file.
+Step 27: If Q9.1 = Yes — create .git/hooks/pre-commit from template below and make executable.
+Step 28: Report all files created.
+Step 29: Ask if user wants to review any file.
 ```
 
 > **Composition instruction**: when the step says "compose from Section X + Section Y", read those sections
@@ -702,6 +832,7 @@ Step 25: Ask if user wants to review any file.
 - Languages: [Q2]
 - Test coverage minimum: [Q3]%
 - Documentation language: [Q6]
+- Context max lines: 150 (prune trigger — see Section 9)
 
 ## Model assignments
 
@@ -899,7 +1030,7 @@ Each task file is composed from Section 1 plus the relevant sections (see compos
         "hooks": [
           {
             "type": "command",
-            "command": "python .agents/scripts/check_lock.py \"$TOOL_INPUT_PATH\" 2>/dev/null || echo 'WARNING: File may be locked by another agent'"
+            "command": "python .agents/scripts/acquire_lock.py \"$TOOL_INPUT_PATH\" \"write:hook\" 2>&1"
           }
         ]
       },
@@ -940,6 +1071,10 @@ Each task file is composed from Section 1 plus the relevant sections (see compos
           {
             "type": "command",
             "command": "python .agents/scripts/release_locks.py 2>/dev/null || true"
+          },
+          {
+            "type": "command",
+            "command": "python .agents/scripts/close_intentions.py 2>/dev/null || true"
           }
         ]
       }
@@ -987,10 +1122,24 @@ if __name__ == "__main__":
 import datetime
 import os
 import sqlite3
+from pathlib import Path
+
+_SESSION_ID_FILE = Path(".agents/.session_id")
+
+
+def _resolve_agent_id() -> str:
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+    except OSError:
+        pass
+    return "unknown"
 
 
 def main() -> None:
-    agent_id = os.environ.get("AGENT_ID", "unknown")
+    agent_id = _resolve_agent_id()
     try:
         with sqlite3.connect("SESSION.db") as conn:
             conn.execute(
@@ -1015,20 +1164,82 @@ if __name__ == "__main__":
 Usage: python acquire_lock.py <file_path> <task_desc>
 
 Exit codes:
-  0 — lock acquired successfully
+  0 — lock acquired, or already held by this agent (idempotent)
   1 — file is locked by another agent (do not proceed)
   2 — usage error
 """
 import datetime
+import json
 import os
 import re
 import sqlite3
 import sys
 import uuid
+from pathlib import Path
 
 _SAFE_PATH_RE = re.compile(r'^[\w./\-\\ :@#()+,=\[\]{}]+$')
 _DB_PATH = "SESSION.db"
+_SESSION_ID_FILE = Path(".agents/.session_id")
 _MAX_RETRIES = 2
+
+
+def _resolve_agent_id() -> str:
+    """Return a stable agent ID for this session.
+
+    Priority: AGENT_ID env var → .agents/.session_id file → new UUID written to file.
+
+    The .session_id file is shared across all subprocesses in the same working
+    directory. It is safe for a single Claude Code session. If two Claude Code
+    instances run simultaneously in the same directory, set AGENT_ID to distinct
+    values in each terminal — the file-based fallback cannot isolate them.
+    """
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        _SESSION_ID_FILE.parent.mkdir(parents=True, exist_ok=True)
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+        new_id = str(uuid.uuid4())
+        _SESSION_ID_FILE.write_text(new_id)
+        return new_id
+    except OSError:
+        return str(uuid.uuid4())  # Ephemeral fallback if filesystem write fails.
+
+
+def _paths_overlap(a: str, b: str) -> bool:
+    na, nb = a.rstrip("/"), b.rstrip("/")
+    return na == nb or na.startswith(nb + "/") or nb.startswith(na + "/")
+
+
+def _expand_active_intention(
+    conn: sqlite3.Connection, agent_id: str, file_path: str
+) -> None:
+    """Add file_path to this agent's active intention if not already covered.
+
+    Called after every successful lock acquisition so the intention's target_paths
+    stays accurate as scope expands during a task. Best-effort: never blocks a write.
+    """
+    try:
+        row = conn.execute(
+            "SELECT intention_id, target_paths FROM session_intentions "
+            "WHERE agent_id = ? AND status = 'in_progress' AND completed_at IS NULL "
+            "ORDER BY started_at DESC LIMIT 1",
+            (agent_id,),
+        ).fetchone()
+        if not row:
+            return
+        intention_id, raw = row
+        paths: list[str] = json.loads(raw) if raw else []
+        if any(_paths_overlap(file_path, p) for p in paths):
+            return  # Already covered — no update needed.
+        paths.append(file_path)
+        conn.execute(
+            "UPDATE session_intentions SET target_paths = ? WHERE intention_id = ?",
+            (json.dumps(paths), intention_id),
+        )
+        conn.commit()
+    except Exception:
+        pass
 
 
 def main() -> None:
@@ -1039,11 +1250,10 @@ def main() -> None:
     file_path, task_desc = sys.argv[1], sys.argv[2]
 
     if not _SAFE_PATH_RE.match(file_path):
-        # Unsafe path characters — warn and allow to proceed rather than block.
         print(f"WARNING: Cannot safely lock path '{file_path}' — special characters.", file=sys.stderr)
         sys.exit(0)
 
-    agent_id = os.environ.get("AGENT_ID") or str(uuid.uuid4())
+    agent_id = _resolve_agent_id()
 
     try:
         with sqlite3.connect(_DB_PATH) as conn:
@@ -1061,12 +1271,16 @@ def main() -> None:
                         (file_path, agent_id, task_desc, datetime.datetime.utcnow().isoformat()),
                     )
                     conn.commit()
+                    _expand_active_intention(conn, agent_id, file_path)
                     sys.exit(0)  # Lock acquired.
                 except sqlite3.IntegrityError:
                     row = conn.execute(
                         "SELECT status, agent_id FROM session_locks WHERE file_path = ?",
                         (file_path,),
                     ).fetchone()
+                    if row and row[1] == agent_id:
+                        _expand_active_intention(conn, agent_id, file_path)
+                        sys.exit(0)  # This agent already holds the lock — idempotent.
                     if row and row[0] == "done":
                         # Stale lock — clean and retry.
                         conn.execute("DELETE FROM session_locks WHERE file_path = ?", (file_path,))
@@ -1095,10 +1309,23 @@ Usage: python release_lock.py <file_path>
 """
 import datetime
 import os
-import sys
 import sqlite3
+import sys
+from pathlib import Path
 
 _DB_PATH = "SESSION.db"
+_SESSION_ID_FILE = Path(".agents/.session_id")
+
+
+def _resolve_agent_id() -> str:
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+    except OSError:
+        pass
+    return "unknown"
 
 
 def main() -> None:
@@ -1107,7 +1334,7 @@ def main() -> None:
         sys.exit(1)
 
     file_path = sys.argv[1]
-    agent_id = os.environ.get("AGENT_ID", "unknown")
+    agent_id = _resolve_agent_id()
 
     try:
         with sqlite3.connect(_DB_PATH) as conn:
@@ -1238,15 +1465,58 @@ if __name__ == "__main__":
 ### .agents/scripts/session_status.py template
 
 ```python
-"""Print the current SESSION.db lock table — which files are locked and by which agents.
+"""Print the current SESSION.db state — file locks and session intentions.
 
 Usage: python session_status.py
 """
+import json
 import sqlite3
 import sys
 from pathlib import Path
 
 _DB_PATH = "SESSION.db"
+
+
+def _print_locks(conn: sqlite3.Connection) -> None:
+    rows = conn.execute(
+        "SELECT file_path, agent_id, task_desc, status, locked_at "
+        "FROM session_locks ORDER BY locked_at DESC"
+    ).fetchall()
+    print("\n=== File Locks ===")
+    if not rows:
+        print("  No locks.")
+        return
+    print(f"  {'Status':<12} {'Agent':<22} {'Locked at':<20} File")
+    print("  " + "-" * 80)
+    for file_path, agent_id, task_desc, status, locked_at in rows:
+        print(f"  {status:<12} {agent_id[:22]:<22} {locked_at[:19]:<20} {file_path}")
+
+
+def _print_intentions(conn: sqlite3.Connection) -> None:
+    try:
+        rows = conn.execute(
+            "SELECT intention_id, agent_id, scope_summary, target_paths, status, started_at, completed_at "
+            "FROM session_intentions ORDER BY started_at DESC"
+        ).fetchall()
+    except sqlite3.OperationalError:
+        print("\n=== Session Intentions ===")
+        print("  Table not found.")
+        return
+    print("\n=== Session Intentions ===")
+    if not rows:
+        print("  No intentions.")
+        return
+    for intention_id, agent_id, scope_summary, target_paths_raw, status, started_at, completed_at in rows:
+        try:
+            paths = json.loads(target_paths_raw)
+            paths_display = ", ".join(paths[:3]) + (" …" if len(paths) > 3 else "")
+        except (json.JSONDecodeError, TypeError):
+            paths_display = str(target_paths_raw)
+        end = completed_at[:19] if completed_at else "—"
+        print(f"  [{status}] {agent_id[:16]} | {started_at[:19]} → {end}")
+        print(f"    Scope: {scope_summary}")
+        print(f"    Paths: {paths_display}")
+        print(f"    ID:    {intention_id}")
 
 
 def main() -> None:
@@ -1255,20 +1525,330 @@ def main() -> None:
         return
     try:
         with sqlite3.connect(_DB_PATH) as conn:
-            rows = conn.execute(
-                "SELECT file_path, agent_id, task_desc, status, locked_at "
-                "FROM session_locks ORDER BY locked_at DESC"
-            ).fetchall()
-        if not rows:
-            print("No locks in SESSION.db.")
-            return
-        print(f"{'Status':<12} {'Agent':<22} {'Locked at':<20} File")
-        print("-" * 90)
-        for file_path, agent_id, task_desc, status, locked_at in rows:
-            print(f"{status:<12} {agent_id[:22]:<22} {locked_at[:19]:<20} {file_path}")
+            _print_locks(conn)
+            _print_intentions(conn)
     except Exception as exc:
         print(f"Error reading SESSION.db: {exc}", file=sys.stderr)
         sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### .agents/scripts/register_intention.py template
+
+```python
+"""Register a new session intention before starting a task.
+
+Usage: python register_intention.py '<scope_summary>' '<paths_json>'
+  scope_summary — short description of what the agent intends to do.
+  paths_json    — JSON array of file/folder paths the agent plans to modify.
+
+Prints the intention_id to stdout on success.
+
+Exit codes:
+  0 — intention registered
+  1 — error
+  2 — usage error
+"""
+import datetime
+import json
+import os
+import sqlite3
+import sys
+import uuid
+from pathlib import Path
+
+_DB_PATH = "SESSION.db"
+_SESSION_ID_FILE = Path(".agents/.session_id")
+
+
+def _resolve_agent_id() -> str:
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        _SESSION_ID_FILE.parent.mkdir(parents=True, exist_ok=True)
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+        new_id = str(uuid.uuid4())
+        _SESSION_ID_FILE.write_text(new_id)
+        return new_id
+    except OSError:
+        return str(uuid.uuid4())
+
+
+def main() -> None:
+    if len(sys.argv) < 3:
+        print("Usage: register_intention.py '<scope_summary>' '<paths_json>'", file=sys.stderr)
+        sys.exit(2)
+
+    scope_summary = sys.argv[1]
+    try:
+        target_paths = json.loads(sys.argv[2])
+        if not isinstance(target_paths, list):
+            raise ValueError("paths_json must be a JSON array")
+    except (json.JSONDecodeError, ValueError) as exc:
+        print(f"Invalid paths_json: {exc}", file=sys.stderr)
+        sys.exit(2)
+
+    agent_id = _resolve_agent_id()
+    intention_id = str(uuid.uuid4())
+
+    try:
+        with sqlite3.connect(_DB_PATH) as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS session_intentions (
+                    intention_id  TEXT PRIMARY KEY,
+                    agent_id      TEXT NOT NULL,
+                    scope_summary TEXT NOT NULL,
+                    target_paths  TEXT NOT NULL,
+                    status        TEXT DEFAULT 'in_progress',
+                    started_at    TEXT NOT NULL,
+                    completed_at  TEXT
+                )
+            """)
+            conn.execute(
+                "INSERT INTO session_intentions VALUES (?, ?, ?, ?, 'in_progress', ?, NULL)",
+                (intention_id, agent_id, scope_summary, json.dumps(target_paths),
+                 datetime.datetime.utcnow().isoformat()),
+            )
+            conn.commit()
+        print(intention_id)
+        sys.exit(0)
+    except Exception as exc:
+        print(f"ERROR: Could not register intention: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### .agents/scripts/close_intention.py template
+
+```python
+"""Close a session intention by marking it completed or cancelled.
+
+Usage: python close_intention.py <intention_id> <status>
+  status — 'completed' or 'cancelled'
+
+Exit codes:
+  0 — intention closed
+  1 — error
+  2 — usage error
+"""
+import datetime
+import sqlite3
+import sys
+from pathlib import Path
+
+_DB_PATH = "SESSION.db"
+_VALID_STATUSES = frozenset({"completed", "cancelled"})
+
+
+def main() -> None:
+    if len(sys.argv) < 3:
+        print("Usage: close_intention.py <intention_id> <status>", file=sys.stderr)
+        sys.exit(2)
+
+    intention_id, status = sys.argv[1], sys.argv[2]
+
+    if status not in _VALID_STATUSES:
+        print(f"Invalid status '{status}'. Use: completed, cancelled", file=sys.stderr)
+        sys.exit(2)
+
+    if not Path(_DB_PATH).exists():
+        print("SESSION.db not found.", file=sys.stderr)
+        sys.exit(1)
+
+    try:
+        with sqlite3.connect(_DB_PATH) as conn:
+            conn.execute(
+                "UPDATE session_intentions SET status = ?, completed_at = ? "
+                "WHERE intention_id = ?",
+                (status, datetime.datetime.utcnow().isoformat(), intention_id),
+            )
+            conn.commit()
+        sys.exit(0)
+    except Exception as exc:
+        print(f"ERROR: Could not close intention: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### .agents/scripts/close_intentions.py template
+
+```python
+"""Cancel all open session intentions owned by the current agent at session stop.
+
+Called by the Stop hook — runs automatically when the Claude Code session ends,
+whether by normal exit, crash, or timeout. Ensures no stale open intentions
+block other agents from proceeding after a 30-min threshold.
+"""
+import datetime
+import os
+import sqlite3
+from pathlib import Path
+
+_SESSION_ID_FILE = Path(".agents/.session_id")
+
+
+def _resolve_agent_id() -> str:
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+    except OSError:
+        pass
+    return "unknown"
+
+
+def main() -> None:
+    agent_id = _resolve_agent_id()
+    try:
+        with sqlite3.connect("SESSION.db") as conn:
+            conn.execute(
+                "UPDATE session_intentions SET status = 'cancelled', completed_at = ? "
+                "WHERE status = 'in_progress' AND agent_id = ?",
+                (datetime.datetime.utcnow().isoformat(), agent_id),
+            )
+            conn.commit()
+    except Exception:
+        pass
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### .agents/scripts/check_intentions.py template
+
+```python
+"""Check for open session intentions that conflict with planned target paths.
+
+Usage: python check_intentions.py '<paths_json>'
+  paths_json — JSON array of file/folder paths the agent plans to modify.
+
+Prints a JSON report to stdout. Exit code indicates urgency.
+
+Exit codes:
+  0 — no conflicts (safe to proceed)
+  1 — stale conflicts (age > 30 min) — ask user for confirmation before proceeding
+  2 — active conflicts (age ≤ 30 min) — do not proceed without resolution
+"""
+import datetime
+import json
+import os
+import sqlite3
+import sys
+from pathlib import Path
+
+_DB_PATH = "SESSION.db"
+_SESSION_ID_FILE = Path(".agents/.session_id")
+_STALE_THRESHOLD_MINUTES = 30
+
+
+def _resolve_agent_id() -> str:
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+    except OSError:
+        pass
+    return "unknown"
+
+
+def _paths_overlap(a: str, b: str) -> bool:
+    """Return True if a and b refer to the same location or one contains the other."""
+    na, nb = a.rstrip("/"), b.rstrip("/")
+    return na == nb or na.startswith(nb + "/") or nb.startswith(na + "/")
+
+
+def _age_minutes(started_at: str) -> float:
+    try:
+        start = datetime.datetime.fromisoformat(started_at)
+        return (datetime.datetime.utcnow() - start).total_seconds() / 60
+    except ValueError:
+        return 0.0
+
+
+def main() -> None:
+    if len(sys.argv) < 2:
+        print("Usage: check_intentions.py '<paths_json>'", file=sys.stderr)
+        sys.exit(2)
+
+    try:
+        target_paths: list[str] = json.loads(sys.argv[1])
+    except json.JSONDecodeError as exc:
+        print(f"Invalid JSON for target paths: {exc}", file=sys.stderr)
+        sys.exit(2)
+
+    my_agent_id = _resolve_agent_id()
+
+    if not Path(_DB_PATH).exists():
+        print(json.dumps({"clear": True, "conflicts": []}))
+        sys.exit(0)
+
+    try:
+        with sqlite3.connect(_DB_PATH) as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS session_intentions (
+                    intention_id  TEXT PRIMARY KEY,
+                    agent_id      TEXT NOT NULL,
+                    scope_summary TEXT NOT NULL,
+                    target_paths  TEXT NOT NULL,
+                    status        TEXT DEFAULT 'in_progress',
+                    started_at    TEXT NOT NULL,
+                    completed_at  TEXT
+                )
+            """)
+            rows = conn.execute(
+                "SELECT intention_id, agent_id, scope_summary, target_paths, started_at "
+                "FROM session_intentions "
+                "WHERE completed_at IS NULL AND status = 'in_progress' AND agent_id != ?",
+                (my_agent_id,),
+            ).fetchall()
+    except Exception as exc:
+        print(f"WARNING: Could not read intentions: {exc}", file=sys.stderr)
+        print(json.dumps({"clear": True, "conflicts": []}))
+        sys.exit(0)  # Fail open — do not block work on DB error.
+
+    conflicts: list[dict] = []
+    for intention_id, agent_id, scope_summary, target_paths_raw, started_at in rows:
+        try:
+            existing_paths: list[str] = json.loads(target_paths_raw)
+        except json.JSONDecodeError:
+            existing_paths = [target_paths_raw]
+
+        if any(_paths_overlap(tp, ep) for tp in target_paths for ep in existing_paths):
+            age = _age_minutes(started_at)
+            conflicts.append({
+                "intention_id": intention_id,
+                "agent_id": agent_id,
+                "scope_summary": scope_summary,
+                "target_paths": existing_paths,
+                "started_at": started_at,
+                "age_minutes": round(age, 1),
+                "stale": age > _STALE_THRESHOLD_MINUTES,
+            })
+
+    if not conflicts:
+        print(json.dumps({"clear": True, "conflicts": []}))
+        sys.exit(0)
+
+    stale = [c for c in conflicts if c["stale"]]
+    active = [c for c in conflicts if not c["stale"]]
+    print(json.dumps({"clear": False, "conflicts": conflicts, "stale": stale, "active": active}))
+
+    if active:
+        sys.exit(2)
+    sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -1374,13 +1954,14 @@ Claude Code is the only tool with a native hook system. Hooks run shell commands
 
 | Hook event | Matcher | Script | Purpose |
 | -- | -- | -- | -- |
-| `PreToolUse` | `Write` | `check_lock.py` | Block writes to files actively locked by another agent |
+| `PreToolUse` | `Write` | `acquire_lock.py` | Atomically acquire lock before write; exit 1 blocks the write if locked by another agent |
 | `PreToolUse` | `Bash` | `guard_bash.py` | Warn (non-blocking) on dangerous shell patterns |
 | `PostToolUse` | `Write` | `log_write.py` | Append write record to session audit log |
 | `PostToolUse` | `Bash` | `log_bash.py` | Append command + exit code to session audit log |
-| `Stop` | `""` (all) | `release_locks.py` | Release all in-progress locks owned by this agent |
+| `Stop` | `""` (all) | `release_locks.py` | Release all in-progress file locks owned by this agent |
+| `Stop` | `""` (all) | `close_intentions.py` | Cancel all open session intentions owned by this agent |
 
-**Hook execution is warn-only except `PreToolUse:Write`**. A lock check failure returns exit code 1 (blocks the write). All other scripts exit 0 regardless — they warn but never block.
+**Hook execution is warn-only except `PreToolUse:Write`**. `acquire_lock.py` exits 1 to block the write if another agent holds the lock; it exits 0 (and is idempotent) if this agent already holds it. All other scripts exit 0 regardless — they warn but never block.
 
 ### Cursor integration
 
@@ -1434,7 +2015,7 @@ When sections conflict: the more restrictive principle prevails.
 
 ## FRAMEWORK VERSION
 
-Version: 1.2.0
+Version: 1.7.0
 Source: <https://github.com/LeoBR84p/agent-framework>
 Adapted for: generic multi-project use
 License: MIT - <https://leobr.site>
