@@ -510,9 +510,28 @@ CREATE TABLE IF NOT EXISTS session_locks (
     locked_at     TEXT NOT NULL,
     completed_at  TEXT
 );
+
+CREATE TABLE IF NOT EXISTS session_intentions (
+    intention_id  TEXT PRIMARY KEY,
+    agent_id      TEXT NOT NULL,
+    scope_summary TEXT NOT NULL,
+    target_paths  TEXT NOT NULL,     -- JSON array of files and folders
+    status        TEXT DEFAULT 'in_progress',  -- in_progress | completed | cancelled
+    started_at    TEXT NOT NULL,
+    completed_at  TEXT               -- NULL while open
+);
 ```
 
-### Agent protocol
+### Agent identity
+
+Resolve `agent_id` using the first available source, in order:
+
+1. `AGENT_ID` environment variable (set by the user or CI).
+2. `.agents/.session_id` file in the project root (read on first use; created with a new UUID if absent).
+
+Scripts read this automatically. Never generate a fresh UUID per call — that breaks lock ownership across hook invocations.
+
+### File lock protocol
 
 All lock operations are handled by pre-installed scripts in `.agents/scripts/`. Agents never implement lock logic inline — they call the scripts via Bash tool.
 
@@ -522,7 +541,7 @@ All lock operations are handled by pre-installed scripts in `.agents/scripts/`. 
 python .agents/scripts/acquire_lock.py "<file_path>" "<task_desc>"
 ```
 
-- Exit code `0` — lock acquired. Proceed.
+- Exit code `0` — lock acquired, or already held by this agent (idempotent). Proceed.
 - Exit code `1` — file is locked by another agent. Work on another file and inform user. If no other file is available for the current task, inform user and stop.
 - Exit code `2` — usage error (check arguments).
 
@@ -534,19 +553,53 @@ python .agents/scripts/release_lock.py "<file_path>"
 
 **Lock `CONTEXT.md` too**: acquire a lock on `CONTEXT.md` before writing to it — same protocol as any other file. This prevents silent write conflicts when multiple agents update context simultaneously.
 
-**Agent identity**: resolve `agent_id` via env var `AGENT_ID` if set; otherwise generate a UUID once per session with `str(uuid.uuid4())` and reuse it for all locks in that session. Scripts read `AGENT_ID` automatically.
+**Hook coverage**: the `PreToolUse:Write` hook calls `acquire_lock.py` directly, making lock acquisition atomic with every write. The agent's explicit `acquire_lock.py` call before a task cluster is idempotent — if the hook already acquired the lock, this is a no-op. See Section 13.
+
+### Session intention protocol
+
+Before starting any non-trivial task (code changes, refactors, multi-file edits):
+
+**Step 1 — Check for conflicts:**
+
+```bash
+python .agents/scripts/check_intentions.py '["src/auth/", "CONTEXT.md"]'
+```
+
+- Exit `0` — no conflicts. Proceed to Step 2.
+- Exit `1` — stale conflicts found (open intentions older than 30 min). Read the JSON output, present the conflicting agents and scopes to the user, and ask: *"Another session registered intent to modify these paths [X] min ago but has not finished. Is it safe to proceed?"*
+  - If user confirms: close each stale intention with `python .agents/scripts/close_intention.py <id> cancelled`, then proceed to Step 2.
+  - If user declines: stop and inform.
+- Exit `2` — active conflicts (open intentions ≤ 30 min old). Inform user and stop. Do not proceed.
+
+**Step 2 — Register own intention:**
+
+```bash
+python .agents/scripts/register_intention.py "Implement OAuth in auth module" '["src/auth/", "CONTEXT.md"]'
+```
+
+Capture the printed `intention_id` — you will need it to close the intention.
+
+**Step 3 — Do the work** (acquire file locks as usual per the file lock protocol).
+
+**Step 4 — Close intention when done:**
+
+```bash
+python .agents/scripts/close_intention.py <intention_id> completed
+```
+
+If the task is interrupted or cancelled before completion, close with `cancelled` status.
 
 **Hook coverage**: the `.claude/settings.json` hooks automate part of this protocol (see Section 13):
 
 | Hook event | Script | What it does |
 | -- | -- | -- |
-| `PreToolUse:Write` | `check_lock.py` | Blocks writes to locked files before they happen |
+| `PreToolUse:Write` | `acquire_lock.py` | Acquires lock atomically before each write; blocks if locked by another agent |
 | `PreToolUse:Bash` | `guard_bash.py` | Warns on dangerous shell patterns |
 | `PostToolUse:Write` | `log_write.py` | Appends write to session audit log |
 | `PostToolUse:Bash` | `log_bash.py` | Appends command + exit code to audit log |
 | `Stop` | `release_locks.py` | Releases all locks owned by this agent on session end |
 
-The agent still calls `acquire_lock.py` explicitly (to declare intent before a task cluster) and `release_lock.py` explicitly (to release individual files mid-task). The hooks complement rather than replace explicit acquisition.
+The agent still calls `acquire_lock.py` explicitly (to declare intent before a task cluster) and `release_lock.py` explicitly (to release individual files mid-task). When the hook fires on a write, it calls `acquire_lock.py` for the same file — idempotency ensures no double-acquisition if the agent already holds the lock. This closes the check-then-write race condition: lock acquisition is now atomic with each write operation.
 
 ---
 
@@ -677,11 +730,14 @@ Step 18: Create .agents/scripts/guard_bash.py from template below.
 Step 19: Create .agents/scripts/log_write.py from template below.
 Step 20: Create .agents/scripts/log_bash.py from template below.
 Step 21: Create .agents/scripts/session_status.py from template below.
-Step 22: If Q9 ≠ "Claude Code only" — create .vscode/tasks.json from template below.
+Step 22: Create .agents/scripts/register_intention.py from template below.
+Step 23: Create .agents/scripts/close_intention.py from template below.
+Step 24: Create .agents/scripts/check_intentions.py from template below.
+Step 25: If Q9 ≠ "Claude Code only" — create .vscode/tasks.json from template below.
          Add .github/copilot-instructions.md stub if Q9 includes Copilot.
-Step 23: If Q9.1 = Yes — create .git/hooks/pre-commit from template below and make executable.
-Step 24: Report all files created.
-Step 25: Ask if user wants to review any file.
+Step 26: If Q9.1 = Yes — create .git/hooks/pre-commit from template below and make executable.
+Step 27: Report all files created.
+Step 28: Ask if user wants to review any file.
 ```
 
 > **Composition instruction**: when the step says "compose from Section X + Section Y", read those sections
@@ -899,7 +955,7 @@ Each task file is composed from Section 1 plus the relevant sections (see compos
         "hooks": [
           {
             "type": "command",
-            "command": "python .agents/scripts/check_lock.py \"$TOOL_INPUT_PATH\" 2>/dev/null || echo 'WARNING: File may be locked by another agent'"
+            "command": "python .agents/scripts/acquire_lock.py \"$TOOL_INPUT_PATH\" \"write:hook\" 2>&1"
           }
         ]
       },
@@ -987,10 +1043,24 @@ if __name__ == "__main__":
 import datetime
 import os
 import sqlite3
+from pathlib import Path
+
+_SESSION_ID_FILE = Path(".agents/.session_id")
+
+
+def _resolve_agent_id() -> str:
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+    except OSError:
+        pass
+    return "unknown"
 
 
 def main() -> None:
-    agent_id = os.environ.get("AGENT_ID", "unknown")
+    agent_id = _resolve_agent_id()
     try:
         with sqlite3.connect("SESSION.db") as conn:
             conn.execute(
@@ -1015,7 +1085,7 @@ if __name__ == "__main__":
 Usage: python acquire_lock.py <file_path> <task_desc>
 
 Exit codes:
-  0 — lock acquired successfully
+  0 — lock acquired, or already held by this agent (idempotent)
   1 — file is locked by another agent (do not proceed)
   2 — usage error
 """
@@ -1025,10 +1095,31 @@ import re
 import sqlite3
 import sys
 import uuid
+from pathlib import Path
 
 _SAFE_PATH_RE = re.compile(r'^[\w./\-\\ :@#()+,=\[\]{}]+$')
 _DB_PATH = "SESSION.db"
+_SESSION_ID_FILE = Path(".agents/.session_id")
 _MAX_RETRIES = 2
+
+
+def _resolve_agent_id() -> str:
+    """Return a stable agent ID for this session.
+
+    Priority: AGENT_ID env var → .agents/.session_id file → new UUID written to file.
+    Never generates a fresh UUID per call — that would break lock ownership across hook invocations.
+    """
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        _SESSION_ID_FILE.parent.mkdir(parents=True, exist_ok=True)
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+        new_id = str(uuid.uuid4())
+        _SESSION_ID_FILE.write_text(new_id)
+        return new_id
+    except OSError:
+        return str(uuid.uuid4())  # Ephemeral fallback if filesystem write fails.
 
 
 def main() -> None:
@@ -1039,11 +1130,10 @@ def main() -> None:
     file_path, task_desc = sys.argv[1], sys.argv[2]
 
     if not _SAFE_PATH_RE.match(file_path):
-        # Unsafe path characters — warn and allow to proceed rather than block.
         print(f"WARNING: Cannot safely lock path '{file_path}' — special characters.", file=sys.stderr)
         sys.exit(0)
 
-    agent_id = os.environ.get("AGENT_ID") or str(uuid.uuid4())
+    agent_id = _resolve_agent_id()
 
     try:
         with sqlite3.connect(_DB_PATH) as conn:
@@ -1067,6 +1157,8 @@ def main() -> None:
                         "SELECT status, agent_id FROM session_locks WHERE file_path = ?",
                         (file_path,),
                     ).fetchone()
+                    if row and row[1] == agent_id:
+                        sys.exit(0)  # This agent already holds the lock — idempotent.
                     if row and row[0] == "done":
                         # Stale lock — clean and retry.
                         conn.execute("DELETE FROM session_locks WHERE file_path = ?", (file_path,))
@@ -1095,10 +1187,23 @@ Usage: python release_lock.py <file_path>
 """
 import datetime
 import os
-import sys
 import sqlite3
+import sys
+from pathlib import Path
 
 _DB_PATH = "SESSION.db"
+_SESSION_ID_FILE = Path(".agents/.session_id")
+
+
+def _resolve_agent_id() -> str:
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+    except OSError:
+        pass
+    return "unknown"
 
 
 def main() -> None:
@@ -1107,7 +1212,7 @@ def main() -> None:
         sys.exit(1)
 
     file_path = sys.argv[1]
-    agent_id = os.environ.get("AGENT_ID", "unknown")
+    agent_id = _resolve_agent_id()
 
     try:
         with sqlite3.connect(_DB_PATH) as conn:
@@ -1238,15 +1343,58 @@ if __name__ == "__main__":
 ### .agents/scripts/session_status.py template
 
 ```python
-"""Print the current SESSION.db lock table — which files are locked and by which agents.
+"""Print the current SESSION.db state — file locks and session intentions.
 
 Usage: python session_status.py
 """
+import json
 import sqlite3
 import sys
 from pathlib import Path
 
 _DB_PATH = "SESSION.db"
+
+
+def _print_locks(conn: sqlite3.Connection) -> None:
+    rows = conn.execute(
+        "SELECT file_path, agent_id, task_desc, status, locked_at "
+        "FROM session_locks ORDER BY locked_at DESC"
+    ).fetchall()
+    print("\n=== File Locks ===")
+    if not rows:
+        print("  No locks.")
+        return
+    print(f"  {'Status':<12} {'Agent':<22} {'Locked at':<20} File")
+    print("  " + "-" * 80)
+    for file_path, agent_id, task_desc, status, locked_at in rows:
+        print(f"  {status:<12} {agent_id[:22]:<22} {locked_at[:19]:<20} {file_path}")
+
+
+def _print_intentions(conn: sqlite3.Connection) -> None:
+    try:
+        rows = conn.execute(
+            "SELECT intention_id, agent_id, scope_summary, target_paths, status, started_at, completed_at "
+            "FROM session_intentions ORDER BY started_at DESC"
+        ).fetchall()
+    except sqlite3.OperationalError:
+        print("\n=== Session Intentions ===")
+        print("  Table not found.")
+        return
+    print("\n=== Session Intentions ===")
+    if not rows:
+        print("  No intentions.")
+        return
+    for intention_id, agent_id, scope_summary, target_paths_raw, status, started_at, completed_at in rows:
+        try:
+            paths = json.loads(target_paths_raw)
+            paths_display = ", ".join(paths[:3]) + (" …" if len(paths) > 3 else "")
+        except (json.JSONDecodeError, TypeError):
+            paths_display = str(target_paths_raw)
+        end = completed_at[:19] if completed_at else "—"
+        print(f"  [{status}] {agent_id[:16]} | {started_at[:19]} → {end}")
+        print(f"    Scope: {scope_summary}")
+        print(f"    Paths: {paths_display}")
+        print(f"    ID:    {intention_id}")
 
 
 def main() -> None:
@@ -1255,20 +1403,284 @@ def main() -> None:
         return
     try:
         with sqlite3.connect(_DB_PATH) as conn:
-            rows = conn.execute(
-                "SELECT file_path, agent_id, task_desc, status, locked_at "
-                "FROM session_locks ORDER BY locked_at DESC"
-            ).fetchall()
-        if not rows:
-            print("No locks in SESSION.db.")
-            return
-        print(f"{'Status':<12} {'Agent':<22} {'Locked at':<20} File")
-        print("-" * 90)
-        for file_path, agent_id, task_desc, status, locked_at in rows:
-            print(f"{status:<12} {agent_id[:22]:<22} {locked_at[:19]:<20} {file_path}")
+            _print_locks(conn)
+            _print_intentions(conn)
     except Exception as exc:
         print(f"Error reading SESSION.db: {exc}", file=sys.stderr)
         sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### .agents/scripts/register_intention.py template
+
+```python
+"""Register a new session intention before starting a task.
+
+Usage: python register_intention.py '<scope_summary>' '<paths_json>'
+  scope_summary — short description of what the agent intends to do.
+  paths_json    — JSON array of file/folder paths the agent plans to modify.
+
+Prints the intention_id to stdout on success.
+
+Exit codes:
+  0 — intention registered
+  1 — error
+  2 — usage error
+"""
+import datetime
+import json
+import os
+import sqlite3
+import sys
+import uuid
+from pathlib import Path
+
+_DB_PATH = "SESSION.db"
+_SESSION_ID_FILE = Path(".agents/.session_id")
+
+
+def _resolve_agent_id() -> str:
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        _SESSION_ID_FILE.parent.mkdir(parents=True, exist_ok=True)
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+        new_id = str(uuid.uuid4())
+        _SESSION_ID_FILE.write_text(new_id)
+        return new_id
+    except OSError:
+        return str(uuid.uuid4())
+
+
+def main() -> None:
+    if len(sys.argv) < 3:
+        print("Usage: register_intention.py '<scope_summary>' '<paths_json>'", file=sys.stderr)
+        sys.exit(2)
+
+    scope_summary = sys.argv[1]
+    try:
+        target_paths = json.loads(sys.argv[2])
+        if not isinstance(target_paths, list):
+            raise ValueError("paths_json must be a JSON array")
+    except (json.JSONDecodeError, ValueError) as exc:
+        print(f"Invalid paths_json: {exc}", file=sys.stderr)
+        sys.exit(2)
+
+    agent_id = _resolve_agent_id()
+    intention_id = str(uuid.uuid4())
+
+    try:
+        with sqlite3.connect(_DB_PATH) as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS session_intentions (
+                    intention_id  TEXT PRIMARY KEY,
+                    agent_id      TEXT NOT NULL,
+                    scope_summary TEXT NOT NULL,
+                    target_paths  TEXT NOT NULL,
+                    status        TEXT DEFAULT 'in_progress',
+                    started_at    TEXT NOT NULL,
+                    completed_at  TEXT
+                )
+            """)
+            conn.execute(
+                "INSERT INTO session_intentions VALUES (?, ?, ?, ?, 'in_progress', ?, NULL)",
+                (intention_id, agent_id, scope_summary, json.dumps(target_paths),
+                 datetime.datetime.utcnow().isoformat()),
+            )
+            conn.commit()
+        print(intention_id)
+        sys.exit(0)
+    except Exception as exc:
+        print(f"ERROR: Could not register intention: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### .agents/scripts/close_intention.py template
+
+```python
+"""Close a session intention by marking it completed or cancelled.
+
+Usage: python close_intention.py <intention_id> <status>
+  status — 'completed' or 'cancelled'
+
+Exit codes:
+  0 — intention closed
+  1 — error
+  2 — usage error
+"""
+import datetime
+import sqlite3
+import sys
+from pathlib import Path
+
+_DB_PATH = "SESSION.db"
+_VALID_STATUSES = frozenset({"completed", "cancelled"})
+
+
+def main() -> None:
+    if len(sys.argv) < 3:
+        print("Usage: close_intention.py <intention_id> <status>", file=sys.stderr)
+        sys.exit(2)
+
+    intention_id, status = sys.argv[1], sys.argv[2]
+
+    if status not in _VALID_STATUSES:
+        print(f"Invalid status '{status}'. Use: completed, cancelled", file=sys.stderr)
+        sys.exit(2)
+
+    if not Path(_DB_PATH).exists():
+        print("SESSION.db not found.", file=sys.stderr)
+        sys.exit(1)
+
+    try:
+        with sqlite3.connect(_DB_PATH) as conn:
+            conn.execute(
+                "UPDATE session_intentions SET status = ?, completed_at = ? "
+                "WHERE intention_id = ?",
+                (status, datetime.datetime.utcnow().isoformat(), intention_id),
+            )
+            conn.commit()
+        sys.exit(0)
+    except Exception as exc:
+        print(f"ERROR: Could not close intention: {exc}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### .agents/scripts/check_intentions.py template
+
+```python
+"""Check for open session intentions that conflict with planned target paths.
+
+Usage: python check_intentions.py '<paths_json>'
+  paths_json — JSON array of file/folder paths the agent plans to modify.
+
+Prints a JSON report to stdout. Exit code indicates urgency.
+
+Exit codes:
+  0 — no conflicts (safe to proceed)
+  1 — stale conflicts (age > 30 min) — ask user for confirmation before proceeding
+  2 — active conflicts (age ≤ 30 min) — do not proceed without resolution
+"""
+import datetime
+import json
+import os
+import sqlite3
+import sys
+from pathlib import Path
+
+_DB_PATH = "SESSION.db"
+_SESSION_ID_FILE = Path(".agents/.session_id")
+_STALE_THRESHOLD_MINUTES = 30
+
+
+def _resolve_agent_id() -> str:
+    if env_id := os.environ.get("AGENT_ID"):
+        return env_id
+    try:
+        if _SESSION_ID_FILE.exists():
+            return _SESSION_ID_FILE.read_text().strip()
+    except OSError:
+        pass
+    return "unknown"
+
+
+def _paths_overlap(a: str, b: str) -> bool:
+    """Return True if a and b refer to the same location or one contains the other."""
+    na, nb = a.rstrip("/"), b.rstrip("/")
+    return na == nb or na.startswith(nb + "/") or nb.startswith(na + "/")
+
+
+def _age_minutes(started_at: str) -> float:
+    try:
+        start = datetime.datetime.fromisoformat(started_at)
+        return (datetime.datetime.utcnow() - start).total_seconds() / 60
+    except ValueError:
+        return 0.0
+
+
+def main() -> None:
+    if len(sys.argv) < 2:
+        print("Usage: check_intentions.py '<paths_json>'", file=sys.stderr)
+        sys.exit(2)
+
+    try:
+        target_paths: list[str] = json.loads(sys.argv[1])
+    except json.JSONDecodeError as exc:
+        print(f"Invalid JSON for target paths: {exc}", file=sys.stderr)
+        sys.exit(2)
+
+    my_agent_id = _resolve_agent_id()
+
+    if not Path(_DB_PATH).exists():
+        print(json.dumps({"clear": True, "conflicts": []}))
+        sys.exit(0)
+
+    try:
+        with sqlite3.connect(_DB_PATH) as conn:
+            conn.execute("""
+                CREATE TABLE IF NOT EXISTS session_intentions (
+                    intention_id  TEXT PRIMARY KEY,
+                    agent_id      TEXT NOT NULL,
+                    scope_summary TEXT NOT NULL,
+                    target_paths  TEXT NOT NULL,
+                    status        TEXT DEFAULT 'in_progress',
+                    started_at    TEXT NOT NULL,
+                    completed_at  TEXT
+                )
+            """)
+            rows = conn.execute(
+                "SELECT intention_id, agent_id, scope_summary, target_paths, started_at "
+                "FROM session_intentions "
+                "WHERE completed_at IS NULL AND status = 'in_progress' AND agent_id != ?",
+                (my_agent_id,),
+            ).fetchall()
+    except Exception as exc:
+        print(f"WARNING: Could not read intentions: {exc}", file=sys.stderr)
+        print(json.dumps({"clear": True, "conflicts": []}))
+        sys.exit(0)  # Fail open — do not block work on DB error.
+
+    conflicts: list[dict] = []
+    for intention_id, agent_id, scope_summary, target_paths_raw, started_at in rows:
+        try:
+            existing_paths: list[str] = json.loads(target_paths_raw)
+        except json.JSONDecodeError:
+            existing_paths = [target_paths_raw]
+
+        if any(_paths_overlap(tp, ep) for tp in target_paths for ep in existing_paths):
+            age = _age_minutes(started_at)
+            conflicts.append({
+                "intention_id": intention_id,
+                "agent_id": agent_id,
+                "scope_summary": scope_summary,
+                "target_paths": existing_paths,
+                "started_at": started_at,
+                "age_minutes": round(age, 1),
+                "stale": age > _STALE_THRESHOLD_MINUTES,
+            })
+
+    if not conflicts:
+        print(json.dumps({"clear": True, "conflicts": []}))
+        sys.exit(0)
+
+    stale = [c for c in conflicts if c["stale"]]
+    active = [c for c in conflicts if not c["stale"]]
+    print(json.dumps({"clear": False, "conflicts": conflicts, "stale": stale, "active": active}))
+
+    if active:
+        sys.exit(2)
+    sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -1374,13 +1786,13 @@ Claude Code is the only tool with a native hook system. Hooks run shell commands
 
 | Hook event | Matcher | Script | Purpose |
 | -- | -- | -- | -- |
-| `PreToolUse` | `Write` | `check_lock.py` | Block writes to files actively locked by another agent |
+| `PreToolUse` | `Write` | `acquire_lock.py` | Atomically acquire lock before write; exit 1 blocks the write if locked by another agent |
 | `PreToolUse` | `Bash` | `guard_bash.py` | Warn (non-blocking) on dangerous shell patterns |
 | `PostToolUse` | `Write` | `log_write.py` | Append write record to session audit log |
 | `PostToolUse` | `Bash` | `log_bash.py` | Append command + exit code to session audit log |
 | `Stop` | `""` (all) | `release_locks.py` | Release all in-progress locks owned by this agent |
 
-**Hook execution is warn-only except `PreToolUse:Write`**. A lock check failure returns exit code 1 (blocks the write). All other scripts exit 0 regardless — they warn but never block.
+**Hook execution is warn-only except `PreToolUse:Write`**. `acquire_lock.py` exits 1 to block the write if another agent holds the lock; it exits 0 (and is idempotent) if this agent already holds it. All other scripts exit 0 regardless — they warn but never block.
 
 ### Cursor integration
 
@@ -1434,7 +1846,7 @@ When sections conflict: the more restrictive principle prevails.
 
 ## FRAMEWORK VERSION
 
-Version: 1.2.0
+Version: 1.3.0
 Source: <https://github.com/LeoBR84p/agent-framework>
 Adapted for: generic multi-project use
 License: MIT - <https://leobr.site>
