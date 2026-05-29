@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="../assets/project_theme.css">
 </head>
 <body>
-  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <button class="nav-toggle-btn" id="sidebar-toggle"><svg class="icon" aria-hidden="true"><use href="/assets/icons.svg#icon-menu"></use></svg></button>
   <div class="overlay" id="sidebar-overlay"></div>
   <nav class="sidebar"></nav>
   <main class="content">
@@ -166,7 +166,7 @@ npm run dev:backend   # http://localhost:8000
         <!-- FILL: Add one card per gotcha -->
         <div class="card" style="border-left:3px solid var(--warning);">
           <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2);">
-            <span style="font-size:var(--text-lg);">⚠️</span>
+            <svg class="icon" aria-hidden="true"><use href="/assets/icons.svg#icon-alert-triangle"></use></svg>
             <div style="font-weight:var(--weight-semibold);color:var(--text-primary);"><!-- FILL: Gotcha title --></div>
           </div>
           <div style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3);"><!-- FILL: What happens / symptoms --></div>
@@ -176,7 +176,7 @@ npm run dev:backend   # http://localhost:8000
         </div>
         <div class="card" style="border-left:3px solid var(--info);">
           <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2);">
-            <span style="font-size:var(--text-lg);">💡</span>
+            <svg class="icon" aria-hidden="true"><use href="/assets/icons.svg#icon-lightbulb"></use></svg>
             <div style="font-weight:var(--weight-semibold);color:var(--text-primary);"><!-- FILL: Tip/Non-obvious behavior title --></div>
           </div>
           <div style="font-size:var(--text-sm);color:var(--text-secondary);"><!-- FILL: Explanation --></div>

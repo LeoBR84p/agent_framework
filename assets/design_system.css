@@ -1791,3 +1791,26 @@ input[type="checkbox"] {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ==========================================================================
+   ICON SYSTEM
+   ========================================================================== */
+
+.icon {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+}
+
+.icon-md { width: 1.25em; height: 1.25em; }
+.icon-lg { width: 1.5em;  height: 1.5em;  }
+.icon-xl { width: 2em;    height: 2em;    }
+
+.nav-icon .icon      { width: 1rem;   height: 1rem;   vertical-align: -0.1em;  }
+.division-icon .icon { width: 1.5rem; height: 1.5rem; vertical-align: -0.25em; }
+.theme-toggle .icon  { width: 1rem;   height: 1rem;   vertical-align: -0.1em;  }
+.logout-btn .icon    { width: 1rem;   height: 1rem;   vertical-align: -0.1em;  }

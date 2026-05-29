@@ -24,6 +24,16 @@ async function signOutUser() {
 window.signOutUser = signOutUser;
 
 /* ============================================================
+   2. SVG ICON HELPER
+   ============================================================ */
+
+function icon(id, extraClass) {
+  var cls = extraClass ? 'icon ' + extraClass : 'icon';
+  return '<svg class="' + cls + '" aria-hidden="true"><use href="/assets/icons.svg#icon-' + id + '"></use></svg>';
+}
+window.icon = icon;
+
+/* ============================================================
    4. DARK / LIGHT MODE TOGGLE
    ============================================================ */
 
@@ -54,9 +64,9 @@ function toggleTheme() {
 function updateThemeToggleLabel(theme) {
   const toggles = document.querySelectorAll('.theme-toggle');
   toggles.forEach(el => {
-    const icon = el.querySelector('.toggle-icon');
+    const iconEl = el.querySelector('.toggle-icon');
     const text = el.querySelector('.toggle-text');
-    if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    if (iconEl) iconEl.innerHTML = theme === 'dark' ? icon('sun') : icon('moon');
     if (text) text.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
   });
 }
@@ -121,65 +131,65 @@ const NAV_STRUCTURE = [
   {
     label: 'Overview',
     links: [
-      { icon: '🏠', text: 'Dashboard',       href: '/dashboard' },
-      { icon: '🔍', text: 'Search',           href: '/search.html' },
-      { icon: '✅', text: 'Setup Checklist',  href: '/setup_checklist.html' },
+      { icon: 'home', text: 'Dashboard',       href: '/dashboard' },
+      { icon: 'search', text: 'Search',           href: '/search.html' },
+      { icon: 'check-square', text: 'Setup Checklist',  href: '/setup_checklist.html' },
     ]
   },
   {
     label: 'Business',
     division: 'business',
     links: [
-      { icon: '💡', text: 'Idea',              href: '/business/idea.html' },
-      { icon: '📋', text: 'Business Plan',     href: '/business/business_plan.html' },
-      { icon: '📊', text: 'Economics',         href: '/business/economics.html' },
-      { icon: '💰', text: 'Pricing',           href: '/business/pricing.html' },
-      { icon: '🏆', text: 'Competitor Analysis', href: '/business/competitor_analysis.html' },
-      { icon: '🚀', text: 'Launch Plan',       href: '/business/launch_plan.html' },
-      { icon: '📣', text: 'Marketing',         href: '/business/marketing.html' },
-      { icon: '⚠️', text: 'Risk',              href: '/business/risk.html' },
+      { icon: 'lightbulb', text: 'Idea',              href: '/business/idea.html' },
+      { icon: 'clipboard', text: 'Business Plan',     href: '/business/business_plan.html' },
+      { icon: 'bar-chart', text: 'Economics',         href: '/business/economics.html' },
+      { icon: 'dollar-sign', text: 'Pricing',           href: '/business/pricing.html' },
+      { icon: 'award', text: 'Competitor Analysis', href: '/business/competitor_analysis.html' },
+      { icon: 'rocket', text: 'Launch Plan',       href: '/business/launch_plan.html' },
+      { icon: 'megaphone', text: 'Marketing',         href: '/business/marketing.html' },
+      { icon: 'alert-triangle', text: 'Risk',              href: '/business/risk.html' },
     ]
   },
   {
     label: 'Technology',
     division: 'technology',
     links: [
-      { icon: '🔧', text: 'Tech Plan',         href: '/technology/tech_plan.html' },
-      { icon: '🦸', text: 'Zero to Hero',      href: '/technology/zero_hero.html' },
-      { icon: '🗄️', text: 'DB Schema',         href: '/technology/db_schema.html' },
-      { icon: '🔍', text: 'Code Review',        href: '/technology/code_review.html' },
-      { icon: '🛡️', text: 'Disaster Recovery', href: '/technology/disaster_recovery.html' },
-      { icon: '🗺️', text: 'Roadmap',           href: '/technology/roadmap.html' },
+      { icon: 'wrench', text: 'Tech Plan',         href: '/technology/tech_plan.html' },
+      { icon: 'zap', text: 'Zero to Hero',      href: '/technology/zero_hero.html' },
+      { icon: 'database', text: 'DB Schema',         href: '/technology/db_schema.html' },
+      { icon: 'search', text: 'Code Review',        href: '/technology/code_review.html' },
+      { icon: 'shield', text: 'Disaster Recovery', href: '/technology/disaster_recovery.html' },
+      { icon: 'map', text: 'Roadmap',           href: '/technology/roadmap.html' },
     ]
   },
   {
     label: 'Brand',
     division: 'brand',
     links: [
-      { icon: '🎨', text: 'Brand Guidelines',  href: '/brand/brand_guidelines.html' },
+      { icon: 'palette', text: 'Brand Guidelines',  href: '/brand/brand_guidelines.html' },
     ]
   },
   {
     label: 'Operations',
     division: 'operations',
     links: [
-      { icon: '💸', text: 'Cost Tracking',     href: '/operations/cost_tracking.html' },
-      { icon: '🧾', text: 'Operational Costs', href: '/operations/operational_costs.html' },
-      { icon: '🎯', text: 'OKR / KPI',         href: '/operations/okr_kpi.html' },
-      { icon: '🎧', text: 'Customer Support',  href: '/operations/customer_support.html' },
-      { icon: '🧠', text: 'Customer Memory',   href: '/operations/customer_memory.html' },
-      { icon: '📄', text: 'Terms of Service',  href: '/operations/terms_of_service.html' },
-      { icon: '🔒', text: 'Privacy Policy',    href: '/operations/privacy_policy.html' },
-      { icon: '🍪', text: 'Cookie Policy',     href: '/operations/cookie_policy.html' },
-      { icon: '📑', text: 'DPA & SLA',         href: '/operations/dpa_sla.html' },
+      { icon: 'trending-down', text: 'Cost Tracking',     href: '/operations/cost_tracking.html' },
+      { icon: 'receipt', text: 'Operational Costs', href: '/operations/operational_costs.html' },
+      { icon: 'target', text: 'OKR / KPI',         href: '/operations/okr_kpi.html' },
+      { icon: 'headphones', text: 'Customer Support',  href: '/operations/customer_support.html' },
+      { icon: 'cpu', text: 'Customer Memory',   href: '/operations/customer_memory.html' },
+      { icon: 'file-text', text: 'Terms of Service',  href: '/operations/terms_of_service.html' },
+      { icon: 'lock', text: 'Privacy Policy',    href: '/operations/privacy_policy.html' },
+      { icon: 'cookie', text: 'Cookie Policy',     href: '/operations/cookie_policy.html' },
+      { icon: 'layers', text: 'DPA & SLA',         href: '/operations/dpa_sla.html' },
     ]
   },
   {
     label: 'Investor Relations',
     division: 'investor-relations',
     links: [
-      { icon: '📈', text: 'Pitch Deck',        href: '/investor-relations/pitch.html' },
-      { icon: '🤝', text: 'Investor Memory',   href: '/investor-relations/investor_memory.html' },
+      { icon: 'trending-up', text: 'Pitch Deck',        href: '/investor-relations/pitch.html' },
+      { icon: 'users', text: 'Investor Memory',   href: '/investor-relations/investor_memory.html' },
     ]
   }
 ];
@@ -198,7 +208,7 @@ function renderNav() {
   NAV_STRUCTURE.forEach(section => {
     const linksHtml = section.links.map(link =>
       `<a class="nav-link" href="${link.href}">
-        <span class="nav-icon">${link.icon}</span>
+        <span class="nav-icon">${icon(link.icon)}</span>
         <span>${link.text}</span>
       </a>`
     ).join('');
@@ -216,11 +226,11 @@ function renderNav() {
         <span id="nav-user-name"></span>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()">
-        <span class="toggle-icon">☀️</span>
+        <span class="toggle-icon">${icon('sun')}</span>
         <span class="toggle-text">Light mode</span>
       </button>
       <button class="logout-btn" onclick="signOutUser()">
-        <span>🚪</span>
+        ${icon('log-out')}
         <span>Sign out</span>
       </button>
     </div>`;
@@ -267,12 +277,12 @@ async function loadProjectConfig() {
    ============================================================ */
 
 const LINK_META = {
-  github:    { icon: '🐙', label: 'GitHub'   },
-  figma:     { icon: '🎨', label: 'Figma'    },
-  notion:    { icon: '📝', label: 'Notion'   },
-  analytics: { icon: '📊', label: 'Analytics'},
-  stripe:    { icon: '💳', label: 'Stripe'   },
-  vercel:    { icon: '▲',  label: 'Vercel'   },
+  github:    { iconId: 'github',     label: 'GitHub'   },
+  figma:     { iconId: 'palette',    label: 'Figma'    },
+  notion:    { iconId: 'edit',       label: 'Notion'   },
+  analytics: { iconId: 'bar-chart',  label: 'Analytics'},
+  stripe:    { iconId: 'credit-card',label: 'Stripe'   },
+  vercel:    { iconId: 'vercel',     label: 'Vercel'   },
 };
 
 function renderExternalLinks(links) {
@@ -281,9 +291,9 @@ function renderExternalLinks(links) {
   const items = Object.entries(links)
     .filter(([, url]) => url)
     .map(([key, url]) => {
-      const meta = LINK_META[key] || { icon: '🔗', label: key };
+      const meta = LINK_META[key] || { iconId: 'link', label: key };
       return `<a class="external-link" href="${url}" target="_blank" rel="noopener">
-        <span class="external-link-icon">${meta.icon}</span>
+        <span class="external-link-icon">${icon(meta.iconId || 'link')}</span>
         <span>${meta.label}</span>
       </a>`;
     }).join('');
@@ -380,7 +390,7 @@ function initCompletenessScore() {
       fillPattern.lastIndex = 0;
       const label   = id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
       return `<li>
-        <span class="section-check ${isFilled ? 'filled' : 'empty'}">${isFilled ? '✓' : ''}</span>
+        <span class="section-check ${isFilled ? 'filled' : 'empty'}">${isFilled ? icon('check') : ''}</span>
         <a href="#${id}" style="color:var(--text-secondary);font-size:var(--text-sm);">${label}</a>
       </li>`;
     }).join('');
@@ -473,7 +483,7 @@ function performSearch(query, resultsEl) {
 
   if (!results.length) {
     resultsEl.innerHTML = `<div class="search-empty">
-      <div style="font-size:2rem;margin-bottom:1rem;">🔍</div>
+      <div style="font-size:2rem;margin-bottom:1rem;">${icon('search', 'icon-xl')}</div>
       <p>No results for "<strong>${escapeHtml(query)}</strong>"</p>
     </div>`;
     return;
