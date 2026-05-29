@@ -1,0 +1,170 @@
+<!-- LLM_CONTEXT: DPA & SLA document for AIz Intel framework. Data Processing Agreement and Service Level Agreement. DPA required for GDPR Article 28 compliance when processing EU user data. SLA response times must match customer_support.html tiers. RTO/RPO must align with technology/disaster_recovery.html. Requires legal counsel review. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="DPA & SLA — PROJECT_NAME | AIz Intel">
+  <title>DPA &amp; SLA — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge operations">Operations</span>
+        <h1 class="doc-title">DPA &amp; SLA</h1>
+        <p class="doc-subtitle">Data Processing Agreement (GDPR Art. 28 compliant) and Service Level Agreement. Requires legal review.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Data Processing Agreement -->
+    <section class="section" id="data-processing-agreement">
+      <h2>Part I — Data Processing Agreement</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Between <!-- FILL: Company Name --> (Data Processor) and the Customer (Data Controller). Required under GDPR Article 28 when processing EU personal data on behalf of customers.</p>
+      <div class="section-placeholder">
+        <!-- FILL: DPA content per GDPR Art. 28. Required elements:
+          1. Subject matter: what processing is carried out
+          2. Duration: term of processing
+          3. Nature and purpose of processing
+          4. Type of personal data processed
+          5. Categories of data subjects
+          6. Obligations and rights of the controller
+          7. Processor obligations:
+             - Process only on documented instructions
+             - Confidentiality obligations for staff
+             - Security measures (Art. 32)
+             - Sub-processor rules (list and notify of changes)
+             - Assist controller with data subject rights
+             - Assist with security/breach notification/DPIA
+             - Delete or return data at end of service
+             - Provide necessary information for audits
+          8. List of approved sub-processors (Google Firebase, Stripe, Vercel)
+          9. Standard Contractual Clauses reference (for international transfers)
+        -->
+        <p>Draft DPA per GDPR Article 28 requirements. Must include processing scope, sub-processor list, security obligations, and data subject rights assistance.</p>
+      </div>
+    </section>
+
+    <!-- Service Level Agreement -->
+    <section class="section" id="service-level-agreement">
+      <h2>Part II — Service Level Agreement</h2>
+      <div class="section-placeholder">
+        <!-- FILL: SLA scope and definitions:
+          - "Service" definition (what is covered)
+          - Scheduled maintenance exclusions
+          - Force majeure exclusions
+          - Measurement methodology (how uptime is calculated)
+          - Reporting cadence (monthly SLA report)
+        -->
+        <p>Define SLA scope, exclusions (maintenance windows, force majeure), and uptime measurement methodology.</p>
+      </div>
+    </section>
+
+    <!-- Uptime Commitments -->
+    <section class="section" id="uptime-commitments">
+      <h2>Uptime Commitments</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Component</th><th>Uptime SLA</th><th>Measurement Window</th><th>Service Credit (breach)</th></tr></thead>
+          <tbody>
+            <!-- FILL: Uptime commitments per service component -->
+            <tr>
+              <td>Web Application</td>
+              <td><!-- FILL: e.g., 99.9% --></td>
+              <td>Monthly</td>
+              <td><!-- FILL: e.g., 10% of monthly fee per % below SLA --></td>
+            </tr>
+            <tr>
+              <td>API</td>
+              <td><!-- FILL: e.g., 99.9% --></td>
+              <td>Monthly</td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td>Authentication</td>
+              <td><!-- FILL --></td>
+              <td>Monthly</td>
+              <td><!-- FILL --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:var(--space-4);" class="section-placeholder">
+        <!-- FILL: Service credit redemption process, exclusions, and maximum credit cap -->
+        <p>Define service credit calculation, redemption process, exclusions (scheduled maintenance, force majeure), and maximum credit cap per billing period.</p>
+      </div>
+    </section>
+
+    <!-- Response Time SLAs -->
+    <section class="section" id="response-time-slas">
+      <h2>Response Time SLAs</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Cross-reference with <a href="customer_support.html">customer_support.html</a> support tiers and <a href="../technology/disaster_recovery.html">disaster_recovery.html</a> escalation matrix.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Severity</th><th>Definition</th><th>Initial Response</th><th>Resolution Target</th><th>Updates Frequency</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="badge" style="background:var(--error-bg);color:var(--error);">Critical</span></td>
+              <td>Service down, data loss</td>
+              <td><!-- FILL: e.g., 30 minutes --></td>
+              <td><!-- FILL: e.g., 4 hours --></td>
+              <td><!-- FILL: Every 30 min --></td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">High</span></td>
+              <td>Major feature unavailable</td>
+              <td><!-- FILL: e.g., 2 hours --></td>
+              <td><!-- FILL: e.g., 24 hours --></td>
+              <td><!-- FILL: Every 4 hours --></td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:var(--info-bg);color:var(--info);">Medium</span></td>
+              <td>Feature degraded</td>
+              <td><!-- FILL: e.g., 8 business hours --></td>
+              <td><!-- FILL: e.g., 3 business days --></td>
+              <td><!-- FILL: Daily --></td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:var(--success-bg);color:var(--success);">Low</span></td>
+              <td>Cosmetic / informational</td>
+              <td><!-- FILL: e.g., 2 business days --></td>
+              <td><!-- FILL: e.g., Next release --></td>
+              <td><!-- FILL: On resolution --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody><tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL --></td><td>Initial draft template</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['data-processing-agreement','service-level-agreement','uptime-commitments','response-time-slas','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

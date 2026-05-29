@@ -1,0 +1,144 @@
+<!-- LLM_CONTEXT: Code Review issue register for AIz Intel framework. Tracks all code quality issues, security vulnerabilities, tech debt, and improvement opportunities found during reviews. Each entry includes severity, status, file+line reference, and owner. Update status when issues are resolved. Critical and High severity items must be resolved before launch. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Code Review — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Code review issue register with severity tracking and resolution status.">
+  <title>Code Review — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge technology">Technology</span>
+        <h1 class="doc-title">Code Review</h1>
+        <p class="doc-subtitle">Running issue register for code quality, security vulnerabilities, tech debt, and improvement opportunities.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="in-progress">In Progress</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Summary Stats -->
+    <div class="metrics-grid" style="margin-bottom:var(--space-8);">
+      <div class="metric-card">
+        <div class="metric-label">Critical</div>
+        <div class="metric-value" style="color:var(--error);" id="count-critical">—</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">High</div>
+        <div class="metric-value" style="color:var(--warning);" id="count-high">—</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Medium</div>
+        <div class="metric-value" style="color:var(--info);" id="count-medium">—</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Low / Info</div>
+        <div class="metric-value" style="color:var(--success);" id="count-low">—</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Open Issues</div>
+        <div class="metric-value" id="count-open">—</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Resolved</div>
+        <div class="metric-value" style="color:var(--success);" id="count-resolved">—</div>
+      </div>
+    </div>
+
+    <!-- Issue Register -->
+    <section class="section" id="issue-register">
+      <h2>Issue Register</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Severity</th>
+              <th>Category</th>
+              <th>File : Line</th>
+              <th>Description</th>
+              <th>Recommended Fix</th>
+              <th>Owner</th>
+              <th>Status</th>
+              <th>Found</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- FILL: Add one row per code issue found.
+              Severity: Critical / High / Medium / Low / Info
+              Category: Security / Performance / Bug / Tech Debt / Code Style / Testing
+              Status: Open / In Progress / Fixed / Accepted / Won't Fix
+            -->
+            <tr>
+              <td style="font-family:var(--font-mono);font-size:var(--text-xs);">CR-001</td>
+              <td><span class="badge" style="background:var(--error-bg);color:var(--error);">Critical</span></td>
+              <td><!-- FILL: Category --></td>
+              <td style="font-family:var(--font-mono);font-size:var(--text-xs);"><code><!-- FILL: src/path/file.ts:42 --></code></td>
+              <td><!-- FILL: What is wrong --></td>
+              <td><!-- FILL: How to fix --></td>
+              <td><!-- FILL: Assignee --></td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">Open</span></td>
+              <td style="font-size:var(--text-xs);"><!-- FILL: YYYY-MM-DD --></td>
+            </tr>
+            <tr>
+              <td style="font-family:var(--font-mono);font-size:var(--text-xs);">CR-002</td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">High</span></td>
+              <td><!-- FILL --></td>
+              <td style="font-family:var(--font-mono);font-size:var(--text-xs);"><code><!-- FILL --></code></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><span class="badge" style="background:var(--info-bg);color:var(--info);">In Progress</span></td>
+              <td style="font-size:var(--text-xs);"><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td style="font-family:var(--font-mono);font-size:var(--text-xs);">CR-003</td>
+              <td><span class="badge" style="background:var(--info-bg);color:var(--info);">Medium</span></td>
+              <td><!-- FILL --></td>
+              <td style="font-family:var(--font-mono);font-size:var(--text-xs);"><code><!-- FILL --></code></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><span class="badge" style="background:var(--success-bg);color:var(--success);">Fixed</span></td>
+              <td style="font-size:var(--text-xs);"><!-- FILL --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['issue-register','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

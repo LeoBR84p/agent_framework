@@ -1,0 +1,198 @@
+[
+  {
+    "title": "Dashboard",
+    "division": "root",
+    "path": "/index.html",
+    "description": "Main project dashboard. Live metrics, division overview, and external tool links.",
+    "keywords": ["dashboard", "home", "metrics", "overview", "mrr", "arr", "mau", "uptime", "runway"]
+  },
+  {
+    "title": "Setup Checklist",
+    "division": "root",
+    "path": "/setup_checklist.html",
+    "description": "8-step initialization checklist for new AIz Intel instances.",
+    "keywords": ["setup", "checklist", "initialization", "firebase", "vercel", "config", "onboarding"]
+  },
+  {
+    "title": "Idea & Problem",
+    "division": "Business",
+    "path": "/business/idea.html",
+    "description": "Problem statement, target audience personas, proposed solution, UVP, and key assumptions.",
+    "keywords": ["idea", "problem", "solution", "uvp", "persona", "audience", "hypothesis", "assumption", "validation"]
+  },
+  {
+    "title": "Business Plan",
+    "division": "Business",
+    "path": "/business/business_plan.html",
+    "description": "Business model canvas, TAM/SAM/SOM, revenue model, team, and risk matrix.",
+    "keywords": ["business plan", "bmc", "canvas", "tam", "sam", "som", "revenue", "team", "risk", "market size"]
+  },
+  {
+    "title": "Unit Economics",
+    "division": "Business",
+    "path": "/business/economics.html",
+    "description": "S-curve projections, break-even analysis, CAC, LTV, churn, and cash flow scenarios.",
+    "keywords": ["economics", "unit economics", "cac", "ltv", "churn", "break even", "cash flow", "s-curve", "projection"]
+  },
+  {
+    "title": "Pricing",
+    "division": "Business",
+    "path": "/business/pricing.html",
+    "description": "Pricing tiers, competitor price matrix, value perception analysis, and price adequacy.",
+    "keywords": ["pricing", "tiers", "plans", "competitor", "value", "freemium", "subscription", "price matrix"]
+  },
+  {
+    "title": "Competitor Analysis",
+    "division": "Business",
+    "path": "/business/competitor_analysis.html",
+    "description": "Competitor cards, feature comparison matrix, positioning map, and SWOT analysis.",
+    "keywords": ["competitor", "analysis", "swot", "feature matrix", "positioning", "comparison", "market map"]
+  },
+  {
+    "title": "Launch Plan",
+    "division": "Business",
+    "path": "/business/launch_plan.html",
+    "description": "Launch phases, early adopter strategy, paid vs organic channels, and partnership strategy.",
+    "keywords": ["launch", "gtm", "go to market", "early adopter", "channels", "partnership", "campaign", "social media"]
+  },
+  {
+    "title": "Marketing Strategy",
+    "division": "Business",
+    "path": "/business/marketing.html",
+    "description": "ICP definition, messaging matrix, channel strategy, budget, and campaign calendar.",
+    "keywords": ["marketing", "icp", "ideal customer", "messaging", "channel", "budget", "campaign", "calendar", "ads"]
+  },
+  {
+    "title": "Risk Register",
+    "division": "Business",
+    "path": "/business/risk.html",
+    "description": "Risk register, heat map, category taxonomy, and mitigation status tracker.",
+    "keywords": ["risk", "register", "heat map", "mitigation", "probability", "impact", "severity", "contingency"]
+  },
+  {
+    "title": "Tech Plan",
+    "division": "Technology",
+    "path": "/technology/tech_plan.html",
+    "description": "Architecture diagram, stack decision log, sprint checklists, and API surface summary.",
+    "keywords": ["tech plan", "architecture", "stack", "sprint", "api", "decision log", "adr", "technology"]
+  },
+  {
+    "title": "Zero to Hero",
+    "division": "Technology",
+    "path": "/technology/zero_hero.html",
+    "description": "Environment setup, bootstrap command sequence, architecture decisions, and gotchas.",
+    "keywords": ["zero to hero", "setup", "environment", "bootstrap", "commands", "gotchas", "adr", "workarounds", "install"]
+  },
+  {
+    "title": "DB Schema",
+    "division": "Technology",
+    "path": "/technology/db_schema.html",
+    "description": "Table definitions, relationships, indexes, and migration history.",
+    "keywords": ["database", "schema", "tables", "columns", "indexes", "migration", "foreign key", "relationships", "firestore"]
+  },
+  {
+    "title": "Code Review",
+    "division": "Technology",
+    "path": "/technology/code_review.html",
+    "description": "Code quality issue register with severity, file location, recommended fix, and status.",
+    "keywords": ["code review", "issues", "bugs", "security", "performance", "quality", "critical", "refactor"]
+  },
+  {
+    "title": "Disaster Recovery",
+    "division": "Technology",
+    "path": "/technology/disaster_recovery.html",
+    "description": "Recovery runbooks, RTO/RPO targets, escalation matrix, and post-mortem template.",
+    "keywords": ["disaster recovery", "runbook", "rto", "rpo", "escalation", "post-mortem", "incident", "outage"]
+  },
+  {
+    "title": "Roadmap",
+    "division": "Technology",
+    "path": "/technology/roadmap.html",
+    "description": "Timeline swimlanes, milestone definitions, and quarterly planning across all divisions.",
+    "keywords": ["roadmap", "milestones", "timeline", "q1", "q2", "q3", "q4", "planning", "swimlane", "quarters"]
+  },
+  {
+    "title": "Brand Guidelines",
+    "division": "Brand",
+    "path": "/brand/brand_guidelines.html",
+    "description": "Logo usage, color palette, typography system, and copy tone of voice.",
+    "keywords": ["brand", "guidelines", "logo", "colors", "typography", "fonts", "tone of voice", "voice", "palette", "design"]
+  },
+  {
+    "title": "Cost Tracking",
+    "division": "Operations",
+    "path": "/operations/cost_tracking.html",
+    "description": "Expense log, budget vs actuals, burn rate, and one-time vs recurring split.",
+    "keywords": ["cost", "expenses", "budget", "burn rate", "actuals", "tracking", "spend", "recurring", "one-time"]
+  },
+  {
+    "title": "Operational Costs",
+    "division": "Operations",
+    "path": "/operations/operational_costs.html",
+    "description": "Monthly SaaS/infra costs, one-time setup costs, contractor costs, and unit economics.",
+    "keywords": ["operational costs", "saas", "infra", "infrastructure", "contractors", "freelancers", "tools", "subscriptions"]
+  },
+  {
+    "title": "OKRs & KPIs",
+    "division": "Operations",
+    "path": "/operations/okr_kpi.html",
+    "description": "Quarterly OKRs with key results and KPI dashboard with live metric cards.",
+    "keywords": ["okr", "kpi", "objectives", "key results", "metrics", "goals", "quarterly", "performance", "targets"]
+  },
+  {
+    "title": "Customer Support",
+    "division": "Operations",
+    "path": "/operations/customer_support.html",
+    "description": "Support tiers and SLAs, FAQ template, escalation chain, and refund policy.",
+    "keywords": ["customer support", "sla", "tiers", "faq", "escalation", "refund", "cancellation", "helpdesk"]
+  },
+  {
+    "title": "Customer Memory",
+    "division": "Operations",
+    "path": "/operations/customer_memory.html",
+    "description": "CRM-style customer contact cards with interaction history and next steps.",
+    "keywords": ["customer", "crm", "contacts", "interaction", "history", "pipeline", "churn", "relationship"]
+  },
+  {
+    "title": "Terms of Service",
+    "division": "Operations",
+    "path": "/operations/terms_of_service.html",
+    "description": "Service description, user obligations, IP, liability, termination, and GDPR/LGPD compliance.",
+    "keywords": ["terms", "terms of service", "tos", "legal", "user obligations", "ip", "liability", "termination", "gdpr"]
+  },
+  {
+    "title": "Privacy Policy",
+    "division": "Operations",
+    "path": "/operations/privacy_policy.html",
+    "description": "Data collection, legal basis, usage, retention, third-party processors, GDPR/LGPD/CCPA rights.",
+    "keywords": ["privacy", "privacy policy", "gdpr", "lgpd", "ccpa", "data", "personal data", "rights", "processors"]
+  },
+  {
+    "title": "Cookie Policy",
+    "division": "Operations",
+    "path": "/operations/cookie_policy.html",
+    "description": "Cookie types, consent mechanism, third-party cookies, and opt-out instructions.",
+    "keywords": ["cookies", "cookie policy", "consent", "gdpr", "analytics", "tracking", "opt-out", "third party"]
+  },
+  {
+    "title": "DPA & SLA",
+    "division": "Operations",
+    "path": "/operations/dpa_sla.html",
+    "description": "Data Processing Agreement (GDPR Art. 28) and Service Level Agreement with uptime commitments.",
+    "keywords": ["dpa", "sla", "data processing", "gdpr", "uptime", "response time", "service level", "sub-processors"]
+  },
+  {
+    "title": "Pitch Deck",
+    "division": "Investor Relations",
+    "path": "/investor-relations/pitch.html",
+    "description": "11-slide pitch deck: problem, solution, market size, business model, traction, team, financials, use of funds, cap table, comparables, and the ask.",
+    "keywords": ["pitch", "deck", "investor", "problem", "solution", "traction", "team", "financials", "raise", "valuation", "cap table"]
+  },
+  {
+    "title": "Investor Memory",
+    "division": "Investor Relations",
+    "path": "/investor-relations/investor_memory.html",
+    "description": "CRM investor pipeline tracker with contact cards, interaction history, and pipeline status.",
+    "keywords": ["investor", "crm", "pipeline", "contact", "fund", "term sheet", "intro", "meeting", "follow up", "portfolio"]
+  }
+]

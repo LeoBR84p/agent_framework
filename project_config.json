@@ -1,0 +1,33 @@
+{
+  "project": {
+    "name": "PROJECT_NAME",
+    "tagline": "PROJECT_TAGLINE",
+    "stage": "pre-seed",
+    "version": "0.1.0",
+    "lastUpdated": "YYYY-MM-DD",
+    "logo": "assets/logo.svg",
+    "favicon": "assets/favicon.ico",
+    "externalLinks": {
+      "github": "",
+      "figma": "",
+      "notion": "",
+      "analytics": "",
+      "stripe": "",
+      "vercel": ""
+    },
+    "team": [
+      {
+        "name": "FILL: Founder Name",
+        "role": "FILL: CEO / CTO / etc.",
+        "email": "FILL: email@domain.com",
+        "github": ""
+      }
+    ],
+    "allowedUsers": [
+      "FILL: email@domain.com"
+    ],
+    "investorAllowedUsers": [
+      "FILL: investor@fund.com"
+    ]
+  }
+}

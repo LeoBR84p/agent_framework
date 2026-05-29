@@ -1,0 +1,182 @@
+<!-- LLM_CONTEXT: Operational Costs document for AIz Intel framework. Detailed breakdown of monthly SaaS/infra costs, one-time setup costs, contractor/freelancer costs, and unit economics. More granular than cost_tracking.html. Update monthly. Cross-reference with cost_tracking.html totals. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Operational Costs — PROJECT_NAME | AIz Intel">
+  <title>Operational Costs — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge operations">Operations</span>
+        <h1 class="doc-title">Operational Costs</h1>
+        <p class="doc-subtitle">Granular cost breakdown: SaaS subscriptions, infrastructure, one-time setup, contractors, and unit economics per customer.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Monthly SaaS / Infra Costs -->
+    <section class="section" id="monthly-saas-infra">
+      <h2>Monthly SaaS / Infrastructure Costs</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Service</th><th>Category</th><th>Plan</th><th>Monthly Cost</th><th>Annual Cost</th><th>Notes / Usage</th></tr></thead>
+          <tbody>
+            <!-- FILL: List every SaaS tool and infrastructure provider -->
+            <tr>
+              <td><!-- FILL: e.g., Vercel --></td>
+              <td>Hosting</td>
+              <td><!-- FILL: Pro / Team / Enterprise --></td>
+              <td><!-- FILL: $X/mo --></td>
+              <td><!-- FILL: $X/yr --></td>
+              <td><!-- FILL: frontend hosting --></td>
+            </tr>
+            <tr>
+              <td><!-- FILL: e.g., Supabase --></td>
+              <td>Database</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td><!-- FILL: e.g., Firebase --></td>
+              <td>Auth / DB</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td><!-- FILL: e.g., Stripe --></td>
+              <td>Payments</td>
+              <td>Standard (2.9% + 30¢)</td>
+              <td><!-- FILL: Variable --></td>
+              <td><!-- FILL --></td>
+              <td>% of revenue</td>
+            </tr>
+            <tr>
+              <td><!-- FILL: e.g., GitHub --></td>
+              <td>Dev Tools</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr style="font-weight:var(--weight-semibold);background:var(--card);">
+              <td colspan="3"><strong>Total Monthly SaaS/Infra</strong></td>
+              <td><!-- FILL: $X --></td>
+              <td><!-- FILL: $X --></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- One-Time Setup Costs -->
+    <section class="section" id="one-time-setup-costs">
+      <h2>One-Time Setup Costs</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Item</th><th>Category</th><th>Amount</th><th>Date</th><th>Notes</th></tr></thead>
+          <tbody>
+            <!-- FILL: List all one-time costs paid at project inception -->
+            <tr>
+              <td><!-- FILL: e.g., Domain registration --></td>
+              <td><!-- FILL: Infrastructure --></td>
+              <td><!-- FILL: $X --></td>
+              <td><!-- FILL: YYYY-MM-DD --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td><!-- FILL: e.g., Legal / incorporation --></td>
+              <td><!-- FILL: Legal --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr style="font-weight:var(--weight-semibold);background:var(--card);">
+              <td colspan="2"><strong>Total One-Time Costs</strong></td>
+              <td><!-- FILL: $X --></td>
+              <td></td><td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Contractor / Freelancer Costs -->
+    <section class="section" id="contractor-freelancer-costs">
+      <h2>Contractor / Freelancer Costs</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Person / Agency</th><th>Role</th><th>Rate</th><th>Monthly Hrs</th><th>Monthly Cost</th><th>Contract Status</th></tr></thead>
+          <tbody>
+            <!-- FILL: List all contractors and freelancers -->
+            <tr>
+              <td><!-- FILL: Name / Agency --></td>
+              <td><!-- FILL: e.g., Backend dev, Designer, Lawyer --></td>
+              <td><!-- FILL: $X/hr or $X/project --></td>
+              <td><!-- FILL: X hrs --></td>
+              <td><!-- FILL: $X/mo --></td>
+              <td><span class="status-badge" data-status="in-progress">Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Unit Economics -->
+    <section class="section" id="unit-economics">
+      <h2>Unit Economics per Customer</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Cross-reference with <a href="../business/economics.html#cac-ltv-churn">economics.html CAC/LTV table</a>.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Cost Item</th><th>Total Monthly</th><th>Customers Served</th><th>Cost per Customer/Month</th></tr></thead>
+          <tbody>
+            <tr><td>Infrastructure (per customer)</td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td></tr>
+            <tr><td>Support (per ticket × avg tickets)</td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td></tr>
+            <tr><td>Payment processing fees</td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td></tr>
+            <tr style="font-weight:var(--weight-semibold);"><td><strong>COGS per Customer/Month</strong></td><td><!-- FILL --></td><td></td><td><!-- FILL --></td></tr>
+            <tr><td>ARPU</td><td><!-- FILL --></td><td></td><td><!-- FILL --></td></tr>
+            <tr style="color:var(--success);font-weight:var(--weight-semibold);"><td><strong>Gross Margin per Customer</strong></td><td><!-- FILL --></td><td></td><td><!-- FILL: X% --></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody><tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL --></td><td>Initial draft</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['monthly-saas-infra','one-time-setup-costs','contractor-freelancer-costs','unit-economics','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

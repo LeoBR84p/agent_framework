@@ -1,0 +1,136 @@
+<!-- LLM_CONTEXT: Customer Memory CRM document for AIz Intel framework. One contact card per customer with: name, company, channel, interaction history, and next step. This is the team's lightweight CRM — no external tool needed. Add a card for every customer. Update interaction history after every meaningful touchpoint. Next steps should always be actionable and dated. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Customer Memory — PROJECT_NAME | AIz Intel">
+  <title>Customer Memory — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge operations">Operations</span>
+        <h1 class="doc-title">Customer Memory</h1>
+        <p class="doc-subtitle">CRM-style contact cards for every customer. Interaction history and next steps always current.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="in-progress">In Progress</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Filter / Stats Bar -->
+    <div style="display:flex;gap:var(--space-4);align-items:center;margin-bottom:var(--space-6);flex-wrap:wrap;">
+      <div class="metric-card" style="padding:var(--space-3) var(--space-5);">
+        <div class="metric-label">Total Customers</div>
+        <div class="metric-value" style="font-size:var(--text-2xl);"><!-- FILL: # --></div>
+      </div>
+      <div class="metric-card" style="padding:var(--space-3) var(--space-5);">
+        <div class="metric-label">Active</div>
+        <div class="metric-value" style="font-size:var(--text-2xl);color:var(--success);"><!-- FILL: # --></div>
+      </div>
+      <div class="metric-card" style="padding:var(--space-3) var(--space-5);">
+        <div class="metric-label">Churned</div>
+        <div class="metric-value" style="font-size:var(--text-2xl);color:var(--error);"><!-- FILL: # --></div>
+      </div>
+      <div class="metric-card" style="padding:var(--space-3) var(--space-5);">
+        <div class="metric-label">Trial</div>
+        <div class="metric-value" style="font-size:var(--text-2xl);color:var(--warning);"><!-- FILL: # --></div>
+      </div>
+    </div>
+
+    <!-- Contact Cards -->
+    <section class="section" id="contact-cards">
+      <h2>Contact Cards</h2>
+      <div class="contact-grid">
+
+        <!-- FILL: Add one card per customer. Duplicate this template. -->
+        <div class="contact-card">
+          <div class="contact-card-header">
+            <div class="contact-avatar"><!-- FILL: Initials --></div>
+            <div>
+              <div class="contact-name"><!-- FILL: Full Name --></div>
+              <div class="contact-role"><!-- FILL: Role @ Company --></div>
+            </div>
+          </div>
+          <div class="contact-field">
+            <span class="contact-field-label">Status</span>
+            <span><span class="status-badge" data-status="in-progress">Active</span></span>
+          </div>
+          <div class="contact-field">
+            <span class="contact-field-label">Plan</span>
+            <span class="contact-field-value"><!-- FILL: Free / Pro / Enterprise --></span>
+          </div>
+          <div class="contact-field">
+            <span class="contact-field-label">MRR</span>
+            <span class="contact-field-value"><!-- FILL: $X/mo --></span>
+          </div>
+          <div class="contact-field">
+            <span class="contact-field-label">Channel</span>
+            <span class="contact-field-value"><!-- FILL: Email / LinkedIn / Referral / etc. --></span>
+          </div>
+          <div class="contact-field">
+            <span class="contact-field-label">Email</span>
+            <span class="contact-field-value"><a href="mailto:<!-- FILL -->"><!-- FILL --></a></span>
+          </div>
+          <div class="contact-field">
+            <span class="contact-field-label">Since</span>
+            <span class="contact-field-value"><!-- FILL: YYYY-MM-DD --></span>
+          </div>
+          <div style="margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--border);">
+            <div style="font-size:var(--text-xs);font-weight:bold;color:var(--text-muted);margin-bottom:var(--space-2);">INTERACTION HISTORY</div>
+            <!-- FILL: Chronological list of interactions (newest first) -->
+            <div style="font-size:var(--text-sm);color:var(--text-secondary);">
+              <div style="padding:var(--space-2) 0;border-bottom:1px solid var(--border-subtle);">
+                <span style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-muted);"><!-- FILL: YYYY-MM-DD --></span>
+                <p style="margin-top:2px;line-height:1.5;"><!-- FILL: What happened — e.g., "Onboarding call, 45 min. Shared feature request for X. Positive NPS feedback." --></p>
+              </div>
+              <div style="padding:var(--space-2) 0;">
+                <span style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-muted);"><!-- FILL: YYYY-MM-DD --></span>
+                <p style="margin-top:2px;line-height:1.5;"><!-- FILL: Interaction note --></p>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:var(--space-4);padding:var(--space-3);background:rgba(99,102,241,0.08);border-radius:var(--radius-md);border:1px solid rgba(99,102,241,0.2);">
+            <div style="font-size:var(--text-xs);font-weight:bold;color:var(--brand-primary);margin-bottom:var(--space-1);">NEXT STEP</div>
+            <div style="font-size:var(--text-sm);color:var(--text-secondary);">
+              <!-- FILL: Specific next action with date, e.g., "Follow up on feature request by 2025-02-15" -->
+            </div>
+          </div>
+        </div>
+
+        <!-- FILL: Add more customer cards here -->
+
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody><tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL --></td><td>Initial draft</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['contact-cards','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

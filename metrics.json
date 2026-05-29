@@ -1,0 +1,58 @@
+{
+  "_comment": "Update these values manually. All monetary values in USD. Percentages as numbers (e.g. 5.2 for 5.2%). Dates as YYYY-MM-DD.",
+  "last_updated": "YYYY-MM-DD",
+
+  "revenue": {
+    "mrr": null,
+    "mrr_delta": null,
+    "arr": null,
+    "arr_delta": null,
+    "mrr_target": null,
+    "revenue_ytd": null
+  },
+
+  "growth": {
+    "active_users": null,
+    "active_users_delta": null,
+    "total_signups": null,
+    "new_signups_mtd": null,
+    "dau": null,
+    "wau": null,
+    "mau": null
+  },
+
+  "unit_economics": {
+    "cac": null,
+    "ltv": null,
+    "ltv_cac_ratio": null,
+    "churn_rate": null,
+    "nps": null,
+    "arpu": null,
+    "gross_margin_pct": null
+  },
+
+  "financials": {
+    "runway_months": null,
+    "cash_on_hand": null,
+    "monthly_burn": null,
+    "total_raised": null,
+    "break_even_date": null
+  },
+
+  "operations": {
+    "sprint_status": null,
+    "open_tickets": null,
+    "closed_tickets_mtd": null,
+    "uptime_pct": null,
+    "support_tickets_open": null,
+    "avg_response_time_hrs": null
+  },
+
+  "pipeline": {
+    "leads": null,
+    "demos_scheduled": null,
+    "trials_active": null,
+    "deals_closing": null,
+    "pipeline_value": null
+  }
+}

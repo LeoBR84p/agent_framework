@@ -1,0 +1,259 @@
+<!-- LLM_CONTEXT: Risk document for AIz Intel framework. Contains full risk register, heat map description, category taxonomy, and mitigation status tracker. CONSISTENCY RULES: Risks listed here must cross-reference the risk matrix in business_plan.html (strategic risks). Technical risks must reference technology/disaster_recovery.html. Financial risks must align with economics.html bear case scenario. Update risk status quarterly or when a risk materializes. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Risk — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Risk register, heat map, category taxonomy, and mitigation status tracker.">
+  <title>Risk — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+  <style>
+    .risk-row-critical { border-left: 3px solid var(--error); }
+    .risk-row-high     { border-left: 3px solid var(--warning); }
+    .risk-row-medium   { border-left: 3px solid var(--info); }
+    .risk-row-low      { border-left: 3px solid var(--success); }
+  </style>
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge business">Business</span>
+        <h1 class="doc-title">Risk</h1>
+        <p class="doc-subtitle">Comprehensive risk register with probability/impact scoring, category taxonomy, and mitigation tracker.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Risk Register -->
+    <section class="section" id="risk-register">
+      <h2>Risk Register</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Scoring: Probability × Impact = Risk Score (1–9). Critical = 7–9, High = 5–6, Medium = 3–4, Low = 1–2.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Risk Description</th><th>Category</th><th>Probability</th><th>Impact</th><th>Score</th><th>Owner</th><th>Mitigation</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <!-- FILL: Add all identified risks. Risk IDs: R-001, R-002, etc.
+              Probability: 1=Low, 2=Medium, 3=High
+              Impact: 1=Low, 2=Medium, 3=High
+              Score = Probability × Impact (max 9)
+              Status: Open / Mitigated / Accepted / Closed
+            -->
+            <tr class="risk-row-critical">
+              <td style="font-family:var(--font-mono);font-size:var(--text-xs);">R-001</td>
+              <td><!-- FILL: Risk description --></td>
+              <td><!-- FILL: Market / Technical / Financial / Legal / Team / Operational --></td>
+              <td><span class="badge" style="background:var(--error-bg);color:var(--error);">3 — High</span></td>
+              <td><span class="badge" style="background:var(--error-bg);color:var(--error);">3 — High</span></td>
+              <td style="font-weight:var(--weight-bold);color:var(--error);">9</td>
+              <td><!-- FILL: Owner --></td>
+              <td><!-- FILL: Mitigation action --></td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">Open</span></td>
+            </tr>
+            <tr class="risk-row-high">
+              <td style="font-family:var(--font-mono);font-size:var(--text-xs);">R-002</td>
+              <td><!-- FILL: Risk description --></td>
+              <td><!-- FILL --></td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">2 — Medium</span></td>
+              <td><span class="badge" style="background:var(--error-bg);color:var(--error);">3 — High</span></td>
+              <td style="font-weight:var(--weight-bold);color:var(--warning);">6</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">Open</span></td>
+            </tr>
+            <tr class="risk-row-medium">
+              <td style="font-family:var(--font-mono);font-size:var(--text-xs);">R-003</td>
+              <td><!-- FILL: Risk description --></td>
+              <td><!-- FILL --></td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">2 — Medium</span></td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">2 — Medium</span></td>
+              <td style="font-weight:var(--weight-bold);color:var(--info);">4</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><span class="badge" style="background:var(--info-bg);color:var(--info);">In Progress</span></td>
+            </tr>
+            <tr class="risk-row-low">
+              <td style="font-family:var(--font-mono);font-size:var(--text-xs);">R-004</td>
+              <td><!-- FILL: Risk description --></td>
+              <td><!-- FILL --></td>
+              <td><span class="badge" style="background:var(--success-bg);color:var(--success);">1 — Low</span></td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">2 — Medium</span></td>
+              <td style="font-weight:var(--weight-bold);color:var(--success);">2</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><span class="badge" style="background:var(--card);color:var(--text-muted);">Accepted</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Heat Map Visual -->
+    <section class="section" id="heat-map-visual">
+      <h2>Risk Heat Map</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">5×5 probability/impact matrix. Risk IDs plotted by score.</p>
+      <div style="max-width:500px;">
+        <!-- Y axis = Impact (5 = Critical, 1 = Negligible), X axis = Probability (1 = Rare, 5 = Almost Certain) -->
+        <div style="display:flex;gap:var(--space-4);margin-bottom:var(--space-2);">
+          <div style="width:80px;font-size:var(--text-xs);color:var(--text-muted);text-align:right;padding-top:var(--space-2);">Impact ↑</div>
+          <div>
+            <div class="risk-matrix">
+              <!-- Row 5 (Critical impact) -->
+              <div class="risk-cell low">1</div>
+              <div class="risk-cell medium">2</div>
+              <div class="risk-cell high">3</div>
+              <div class="risk-cell high">4</div>
+              <div class="risk-cell high">5</div>
+              <!-- Row 4 -->
+              <div class="risk-cell low">1</div>
+              <div class="risk-cell medium">2</div>
+              <div class="risk-cell medium">3</div>
+              <div class="risk-cell high">4</div>
+              <div class="risk-cell high">5</div>
+              <!-- Row 3 -->
+              <div class="risk-cell low">1</div>
+              <div class="risk-cell low">2</div>
+              <div class="risk-cell medium">3</div>
+              <div class="risk-cell medium">4</div>
+              <div class="risk-cell high">5</div>
+              <!-- Row 2 -->
+              <div class="risk-cell low">1</div>
+              <div class="risk-cell low">2</div>
+              <div class="risk-cell low">3</div>
+              <div class="risk-cell medium">4</div>
+              <div class="risk-cell medium">5</div>
+              <!-- Row 1 (Negligible impact) -->
+              <div class="risk-cell low">1</div>
+              <div class="risk-cell low">2</div>
+              <div class="risk-cell low">3</div>
+              <div class="risk-cell low">4</div>
+              <div class="risk-cell medium">5</div>
+            </div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);text-align:center;margin-top:var(--space-2);">Probability →</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-placeholder" style="margin-top:var(--space-4);">
+        <!-- FILL: Plot each risk from the register on the heat map by listing which cell (Probability X, Impact Y) each risk ID falls into.
+          Format: R-001: Probability 3, Impact 3 (Critical zone)
+        -->
+        <p>List where each risk falls on the heat map. Format: R-001: P3×I3 (Critical). R-002: P2×I3 (High). etc.</p>
+      </div>
+    </section>
+
+    <!-- Category Taxonomy -->
+    <section class="section" id="category-taxonomy">
+      <h2>Category Taxonomy</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--space-4);">
+        <!-- FILL: For each risk category, summarize the key risks and overall exposure -->
+        <div class="card">
+          <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-3);">⚠️ Market Risks</div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);"><!-- FILL: Summarize market risks: competition, TAM shrinkage, regulatory --></div>
+          <div style="margin-top:var(--space-3);display:flex;justify-content:space-between;font-size:var(--text-xs);">
+            <span style="color:var(--text-muted);">Risk count</span>
+            <span><!-- FILL: X --></span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-3);">⚙️ Technical Risks</div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);"><!-- FILL: Technical risks: scalability, security, third-party dependencies --></div>
+          <div style="margin-top:var(--space-3);display:flex;justify-content:space-between;font-size:var(--text-xs);">
+            <span style="color:var(--text-muted);">Risk count</span>
+            <span><!-- FILL: X --></span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-3);">💰 Financial Risks</div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);"><!-- FILL: Financial risks: runway, cost overruns, pricing failure --></div>
+          <div style="margin-top:var(--space-3);display:flex;justify-content:space-between;font-size:var(--text-xs);">
+            <span style="color:var(--text-muted);">Risk count</span>
+            <span><!-- FILL: X --></span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-3);">👥 Team Risks</div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);"><!-- FILL: Team risks: key person dependency, co-founder disagreement, hiring --></div>
+          <div style="margin-top:var(--space-3);display:flex;justify-content:space-between;font-size:var(--text-xs);">
+            <span style="color:var(--text-muted);">Risk count</span>
+            <span><!-- FILL: X --></span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-3);">⚖️ Legal Risks</div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);"><!-- FILL: Legal risks: IP, compliance, GDPR/LGPD, contracts --></div>
+          <div style="margin-top:var(--space-3);display:flex;justify-content:space-between;font-size:var(--text-xs);">
+            <span style="color:var(--text-muted);">Risk count</span>
+            <span><!-- FILL: X --></span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-3);">🏭 Operational Risks</div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);"><!-- FILL: Operational risks: vendor dependency, process failures --></div>
+          <div style="margin-top:var(--space-3);display:flex;justify-content:space-between;font-size:var(--text-xs);">
+            <span style="color:var(--text-muted);">Risk count</span>
+            <span><!-- FILL: X --></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mitigation Status Tracker -->
+    <section class="section" id="mitigation-status-tracker">
+      <h2>Mitigation Status Tracker</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Risk ID</th><th>Mitigation Action</th><th>Owner</th><th>Due Date</th><th>Progress</th><th>Status</th></tr></thead>
+          <tbody>
+            <!-- FILL: Track progress of mitigation actions -->
+            <tr>
+              <td style="font-family:var(--font-mono);font-size:var(--text-xs);">R-001</td>
+              <td><!-- FILL: Specific action --></td>
+              <td><!-- FILL: Owner --></td>
+              <td><!-- FILL: YYYY-MM-DD --></td>
+              <td>
+                <div class="progress-bar" style="min-width:80px;">
+                  <div class="progress-fill" style="width:<!-- FILL: X -->%"></div>
+                </div>
+              </td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">Open</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['risk-register','heat-map-visual','category-taxonomy','mitigation-status-tracker','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

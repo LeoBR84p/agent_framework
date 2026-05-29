@@ -1,0 +1,202 @@
+<!-- LLM_CONTEXT: Economics document for AIz Intel framework. Contains S-curve projections (3m/6m/1y/3y/5y), break-even analysis, CAC/LTV/churn table, cash flow scenarios (base/bull/bear), and price adequacy vs market. All financial figures here must align with: pricing.html (price points), business_plan.html (revenue model), operations/cost_tracking.html (cost figures). When updating projections, always update all three scenarios and note assumptions. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Economics — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Revenue projections, unit economics, break-even analysis, and cash flow scenarios.">
+  <title>Economics — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge business">Business</span>
+        <h1 class="doc-title">Economics</h1>
+        <p class="doc-subtitle">Revenue projections, unit economics, break-even analysis, and cash flow scenario modeling.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- S-Curve Projections -->
+    <section class="section" id="s-curve-projections">
+      <h2>S-Curve Revenue Projections</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Revenue and user growth projections across time horizons. All figures in USD. Assumptions listed below each table.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Horizon</th><th>Customers</th><th>MRR</th><th>ARR</th><th>MoM Growth</th><th>Cumulative Revenue</th></tr>
+          </thead>
+          <tbody>
+            <!-- FILL: Fill in projection figures for each milestone -->
+            <tr><td><strong>3 months</strong></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL -->%</td><td><!-- FILL --></td></tr>
+            <tr><td><strong>6 months</strong></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL -->%</td><td><!-- FILL --></td></tr>
+            <tr><td><strong>1 year</strong></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL -->%</td><td><!-- FILL --></td></tr>
+            <tr><td><strong>3 years</strong></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL -->%</td><td><!-- FILL --></td></tr>
+            <tr><td><strong>5 years</strong></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL -->%</td><td><!-- FILL --></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="section-placeholder">
+        <!-- FILL: Key assumptions driving these projections:
+          - Monthly customer acquisition rate and growth rate
+          - Average contract value / ARPU
+          - Churn rate assumption
+          - Expansion revenue assumptions
+          - Seasonality factors
+        -->
+        <p>List the key assumptions driving these projections (acquisition rate, ARPU, churn, expansion, seasonality).</p>
+      </div>
+    </section>
+
+    <!-- Break-Even Analysis -->
+    <section class="section" id="break-even-analysis">
+      <h2>Break-Even Analysis</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--space-4);margin-bottom:var(--space-6);">
+        <div class="metric-card">
+          <div class="metric-label">Break-Even Date</div>
+          <div class="metric-value" style="font-size:var(--text-xl);"><!-- FILL: Month/Year --></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Customers at Break-Even</div>
+          <div class="metric-value"><!-- FILL: # --></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">MRR at Break-Even</div>
+          <div class="metric-value"><!-- FILL: $X --></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Monthly Fixed Costs</div>
+          <div class="metric-value"><!-- FILL: $X --></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Gross Margin</div>
+          <div class="metric-value"><!-- FILL: X% --></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Contribution Margin</div>
+          <div class="metric-value"><!-- FILL: $X/customer --></div>
+        </div>
+      </div>
+      <div class="section-placeholder">
+        <!-- FILL: Break-even formula and detailed calculation:
+          Break-Even Revenue = Fixed Costs / Gross Margin %
+          Break-Even Customers = Break-Even Revenue / ARPU
+          Show sensitivity analysis: what changes the break-even date by ±3 months?
+        -->
+        <p>Show the break-even formula, calculation steps, and a sensitivity analysis (what changes the date by ±3 months?).</p>
+      </div>
+    </section>
+
+    <!-- CAC / LTV / Churn -->
+    <section class="section" id="cac-ltv-churn">
+      <h2>CAC / LTV / Churn Table</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Metric</th><th>Current</th><th>6-Month Target</th><th>1-Year Target</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>CAC</strong> (Customer Acquisition Cost)</td><td><!-- FILL: $X --></td><td><!-- FILL: $X --></td><td><!-- FILL: $X --></td><td><!-- FILL: blend of channels --></td></tr>
+            <tr><td><strong>LTV</strong> (Lifetime Value)</td><td><!-- FILL: $X --></td><td><!-- FILL: $X --></td><td><!-- FILL: $X --></td><td><!-- FILL: calculation basis --></td></tr>
+            <tr><td><strong>LTV:CAC Ratio</strong></td><td><!-- FILL: X:1 --></td><td><!-- FILL: X:1 --></td><td><!-- FILL: X:1 --></td><td>Target: 3:1 or higher</td></tr>
+            <tr><td><strong>Monthly Churn</strong></td><td><!-- FILL: X% --></td><td><!-- FILL: X% --></td><td><!-- FILL: X% --></td><td><!-- FILL: voluntary vs involuntary --></td></tr>
+            <tr><td><strong>Average Customer Lifetime</strong></td><td><!-- FILL: X months --></td><td><!-- FILL: X months --></td><td><!-- FILL: X months --></td><td>= 1 / churn rate</td></tr>
+            <tr><td><strong>ARPU</strong> (Average Revenue Per User)</td><td><!-- FILL: $X/mo --></td><td><!-- FILL: $X/mo --></td><td><!-- FILL: $X/mo --></td><td><!-- FILL: expansion revenue --></td></tr>
+            <tr><td><strong>Payback Period</strong></td><td><!-- FILL: X months --></td><td><!-- FILL: X months --></td><td><!-- FILL: X months --></td><td>= CAC / (ARPU × gross margin)</td></tr>
+            <tr><td><strong>NPS</strong></td><td><!-- FILL: X --></td><td><!-- FILL: X --></td><td><!-- FILL: X --></td><td>Target: 50+</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Cash Flow Scenarios -->
+    <section class="section" id="cash-flow-scenarios">
+      <h2>Cash Flow Scenarios (12-Month)</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Three scenarios modeled to show risk range. All figures monthly, in USD thousands.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Month</th><th>Base MRR</th><th>Base Net Cash</th><th>Bull MRR</th><th>Bull Net Cash</th><th>Bear MRR</th><th>Bear Net Cash</th></tr>
+          </thead>
+          <tbody>
+            <!-- FILL: 12 rows of monthly cash flow for all three scenarios -->
+            <tr><td>Month 1</td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td></tr>
+            <tr><td>Month 3</td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td></tr>
+            <tr><td>Month 6</td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td></tr>
+            <tr><td>Month 9</td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td></tr>
+            <tr><td>Month 12</td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-4);margin-top:var(--space-4);">
+        <div class="card" style="border-color:rgba(56,189,248,0.3);">
+          <div style="font-weight:var(--weight-bold);color:var(--info);margin-bottom:var(--space-2);">Base Case</div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);">
+            <!-- FILL: Key assumptions for base case: growth rate, churn, costs -->
+          </div>
+        </div>
+        <div class="card" style="border-color:rgba(34,197,94,0.3);">
+          <div style="font-weight:var(--weight-bold);color:var(--success);margin-bottom:var(--space-2);">Bull Case</div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);">
+            <!-- FILL: Key assumptions for bull case -->
+          </div>
+        </div>
+        <div class="card" style="border-color:rgba(239,68,68,0.3);">
+          <div style="font-weight:var(--weight-bold);color:var(--error);margin-bottom:var(--space-2);">Bear Case</div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);">
+            <!-- FILL: Key assumptions for bear case -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Price Adequacy vs Market -->
+    <section class="section" id="price-adequacy">
+      <h2>Price Adequacy vs Market</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Cross-reference with <a href="pricing.html">pricing.html</a> for full pricing analysis.</p>
+      <div class="section-placeholder">
+        <!-- FILL: Analyze whether current pricing is:
+          - High enough to be sustainable (covers CAC, supports LTV:CAC > 3:1)
+          - Low enough to be competitive (vs. market benchmarks)
+          - Appropriately positioned vs. competitors (see competitor_analysis.html)
+          Include: willingness-to-pay research results, price elasticity estimates, expansion revenue potential
+        -->
+        <p>Analyze whether pricing supports healthy unit economics. Is the price too high (killing conversion) or too low (killing margin)? Cross-reference competitor pricing.</p>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['s-curve-projections','break-even-analysis','cac-ltv-churn','cash-flow-scenarios','price-adequacy','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!-- LLM_CONTEXT: Tech Plan document for AIz Intel framework. Contains architecture diagram (text/ASCII), stack decision log, sprint checklists, and API surface summary. CONSISTENCY RULES: Sprint status here must match operations/okr_kpi.html quarterly OKR progress. Architecture decisions must align with technology/db_schema.html. API surface must be kept in sync with actual implementation. Stack decisions should be logged with rationale, not just outcomes. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Tech Plan — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Architecture, stack decisions, sprint checklists, and API surface.">
+  <title>Tech Plan — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge technology">Technology</span>
+        <h1 class="doc-title">Tech Plan</h1>
+        <p class="doc-subtitle">System architecture, technology stack decisions, active sprint checklists, and API surface documentation.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Architecture Diagram -->
+    <section class="section" id="architecture-diagram">
+      <h2>Architecture Diagram</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Text-based architecture overview. Replace with an image link when a proper diagram is created.</p>
+      <pre style="font-size:var(--text-xs);line-height:1.8;"><!-- FILL: ASCII architecture diagram. Example structure:
+
+  ┌─────────────────────────────────────────────────────┐
+  │                    CLIENT LAYER                      │
+  │   Browser / Mobile (React / Next.js / Expo)         │
+  └───────────────────┬─────────────────────────────────┘
+                      │ HTTPS
+  ┌───────────────────▼─────────────────────────────────┐
+  │                   API LAYER                          │
+  │   REST / GraphQL / tRPC  (Node.js / Python FastAPI) │
+  │   Auth: Firebase / JWT                              │
+  └──────┬────────────┬────────────┬────────────────────┘
+         │            │            │
+  ┌──────▼──┐  ┌──────▼──┐  ┌────▼──────────────┐
+  │  DB     │  │  Cache  │  │  External Services │
+  │Postgres │  │ Redis   │  │  Stripe, SendGrid  │
+  │Firebase │  │         │  │  S3 / GCS          │
+  └─────────┘  └─────────┘  └────────────────────┘
+                      │
+  ┌───────────────────▼─────────────────────────────────┐
+  │              INFRASTRUCTURE                          │
+  │   Vercel (frontend) / Railway / Render (backend)    │
+  │   GitHub Actions (CI/CD)                            │
+  └─────────────────────────────────────────────────────┘
+
+  Replace this with your actual architecture.
+--></pre>
+      <div class="section-placeholder">
+        <!-- FILL: Explain the architecture in prose:
+          - Frontend framework and why chosen
+          - Backend runtime and framework
+          - Database choice and rationale
+          - Auth strategy
+          - Hosting providers
+          - Key external services/APIs integrated
+        -->
+        <p>Describe the system architecture in prose. Frontend, backend, database, auth, hosting, and key integrations.</p>
+      </div>
+    </section>
+
+    <!-- Stack Decision Log -->
+    <section class="section" id="stack-decision-log">
+      <h2>Stack Decision Log</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">All technology decisions with rationale. Log decisions as they are made — never delete entries.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Date</th><th>Component</th><th>Decision</th><th>Alternatives Considered</th><th>Rationale</th><th>Decided By</th></tr></thead>
+          <tbody>
+            <!-- FILL: Log each tech stack decision -->
+            <tr>
+              <td><!-- FILL: YYYY-MM-DD --></td>
+              <td><!-- FILL: e.g., Frontend Framework --></td>
+              <td style="color:var(--brand-primary);font-weight:var(--weight-medium);"><!-- FILL: e.g., Next.js 14 --></td>
+              <td><!-- FILL: e.g., Remix, SvelteKit --></td>
+              <td><!-- FILL: Why this over alternatives --></td>
+              <td><!-- FILL: name --></td>
+            </tr>
+            <tr>
+              <td><!-- FILL --></td>
+              <td><!-- FILL: e.g., Database --></td>
+              <td style="color:var(--brand-primary);font-weight:var(--weight-medium);"><!-- FILL: e.g., PostgreSQL (Supabase) --></td>
+              <td><!-- FILL: e.g., Firebase Firestore, MongoDB --></td>
+              <td><!-- FILL: Rationale --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td><!-- FILL --></td>
+              <td><!-- FILL: e.g., Auth --></td>
+              <td style="color:var(--brand-primary);font-weight:var(--weight-medium);"><!-- FILL: e.g., Firebase Auth --></td>
+              <td><!-- FILL: e.g., Auth0, Clerk --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td><!-- FILL --></td>
+              <td><!-- FILL: e.g., Payments --></td>
+              <td style="color:var(--brand-primary);font-weight:var(--weight-medium);"><!-- FILL: e.g., Stripe --></td>
+              <td><!-- FILL: e.g., LemonSqueezy, Paddle --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Sprint Checklists -->
+    <section class="section" id="sprint-checklists">
+      <h2>Sprint Checklists</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Active and recent sprints. Sprint status must align with <a href="../operations/okr_kpi.html">OKR/KPI</a> dashboard.</p>
+
+      <!-- Current Sprint -->
+      <div class="card" style="margin-bottom:var(--space-5);">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><!-- FILL: Sprint X — Name --></div>
+            <div class="card-subtitle"><!-- FILL: Start Date → End Date --></div>
+          </div>
+          <span class="status-badge" data-status="in-progress">In Progress</span>
+        </div>
+        <div style="padding-top:var(--space-4);">
+          <ul class="checklist">
+            <!-- FILL: Sprint tasks -->
+            <li class="checklist-item">
+              <input type="checkbox" <!-- FILL: checked if done -->>
+              <div class="checklist-item-body">
+                <div class="checklist-item-title"><!-- FILL: Task name --></div>
+                <div class="checklist-item-desc"><!-- FILL: Assignee | Story points --></div>
+              </div>
+            </li>
+            <li class="checklist-item">
+              <input type="checkbox">
+              <div class="checklist-item-body">
+                <div class="checklist-item-title"><!-- FILL: Task name --></div>
+                <div class="checklist-item-desc"><!-- FILL: Assignee | Story points --></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:var(--text-sm);color:var(--text-muted);">Sprint Goal: <!-- FILL: One-sentence sprint goal --></span>
+          <span class="status-badge" data-status="in-progress"><!-- FILL: X/Y tasks done --></span>
+        </div>
+      </div>
+
+      <!-- Previous Sprint -->
+      <div class="card" style="opacity:0.7;">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><!-- FILL: Previous Sprint name --></div>
+            <div class="card-subtitle"><!-- FILL: Completed date --></div>
+          </div>
+          <span class="status-badge" data-status="final">Completed</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- API Surface Summary -->
+    <section class="section" id="api-surface-summary">
+      <h2>API Surface Summary</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">High-level overview of public and internal API endpoints. For full OpenAPI spec, link to the live docs.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Endpoint</th><th>Method</th><th>Auth</th><th>Description</th><th>Status</th></tr></thead>
+          <tbody>
+            <!-- FILL: List all API endpoints -->
+            <tr>
+              <td><code>/api/v1/<!-- FILL: resource --></code></td>
+              <td><span class="badge" style="background:var(--success-bg);color:var(--success);">GET</span></td>
+              <td><!-- FILL: JWT / API Key / Public --></td>
+              <td><!-- FILL: What this endpoint does --></td>
+              <td><span class="status-badge" data-status="final">Live</span></td>
+            </tr>
+            <tr>
+              <td><code>/api/v1/<!-- FILL: resource --></code></td>
+              <td><span class="badge" style="background:var(--info-bg);color:var(--info);">POST</span></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><span class="status-badge" data-status="in-progress">In Dev</span></td>
+            </tr>
+            <tr>
+              <td><code>/api/v1/<!-- FILL: resource --></code></td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">PUT</span></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><span class="status-badge" data-status="draft">Planned</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['architecture-diagram','stack-decision-log','sprint-checklists','api-surface-summary','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

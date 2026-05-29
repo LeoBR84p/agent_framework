@@ -1,0 +1,240 @@
+<!-- LLM_CONTEXT: Disaster Recovery document for AIz Intel framework. Contains recovery runbooks, RTO/RPO targets, escalation matrix, and post-mortem template. This document must be tested at least quarterly. RTO/RPO targets must be reflected in operations/dpa_sla.html SLA section. Post-mortem template should be used for every production incident. Keep runbooks specific and copy-pasteable. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Disaster Recovery — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Recovery runbooks, RTO/RPO targets, escalation matrix, and post-mortem template.">
+  <title>Disaster Recovery — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge technology">Technology</span>
+        <h1 class="doc-title">Disaster Recovery</h1>
+        <p class="doc-subtitle">Recovery runbooks, RTO/RPO targets, escalation chain, and post-mortem template for production incidents.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Recovery Runbooks -->
+    <section class="section" id="recovery-runbooks">
+      <h2>Recovery Runbooks</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-6);">Step-by-step procedures for common incident types. Commands must be copy-pasteable. Test each runbook quarterly.</p>
+
+      <!-- Runbook: Database Recovery -->
+      <div class="card" style="margin-bottom:var(--space-5);">
+        <div class="card-header" style="margin-bottom:var(--space-4);">
+          <div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);font-family:var(--font-mono);">RUNBOOK-001</div>
+            <div class="card-title">Database Recovery / Point-in-Time Restore</div>
+            <div class="card-subtitle">Severity: Critical · Estimated Time: <!-- FILL: X minutes --></div>
+          </div>
+          <span class="status-badge" data-status="draft">Draft</span>
+        </div>
+        <div>
+          <div style="font-size:var(--text-sm);color:var(--text-muted);margin-bottom:var(--space-2);">TRIGGER</div>
+          <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-4);"><!-- FILL: When to use this runbook --></p>
+          <div style="font-size:var(--text-sm);color:var(--text-muted);margin-bottom:var(--space-2);">STEPS</div>
+          <ol style="font-size:var(--text-sm);color:var(--text-secondary);padding-left:var(--space-6);">
+            <!-- FILL: Step-by-step recovery procedure with copy-pasteable commands -->
+            <li><!-- FILL: Step 1 --><pre style="margin-top:var(--space-2);"><!-- FILL: command --></pre></li>
+            <li><!-- FILL: Step 2 --></li>
+            <li><!-- FILL: Step 3 — Verification step --></li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Runbook: Service Outage -->
+      <div class="card" style="margin-bottom:var(--space-5);">
+        <div class="card-header" style="margin-bottom:var(--space-4);">
+          <div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);font-family:var(--font-mono);">RUNBOOK-002</div>
+            <div class="card-title">Service Outage / Full Recovery</div>
+            <div class="card-subtitle">Severity: Critical · Estimated Time: <!-- FILL: X minutes --></div>
+          </div>
+          <span class="status-badge" data-status="draft">Draft</span>
+        </div>
+        <ol style="font-size:var(--text-sm);color:var(--text-secondary);padding-left:var(--space-6);">
+          <!-- FILL: Full service recovery steps -->
+          <li><!-- FILL --></li>
+          <li><!-- FILL --></li>
+        </ol>
+      </div>
+
+      <div class="section-placeholder">
+        <!-- FILL: Add runbooks for:
+          - Application server failure
+          - CDN / static hosting failure
+          - Auth service failure
+          - Payment processing failure
+          - DDoS / abuse mitigation
+          - Data breach response
+        -->
+        <p>Add additional runbooks for each type of production incident your system might face.</p>
+      </div>
+    </section>
+
+    <!-- RTO/RPO Targets -->
+    <section class="section" id="rto-rpo-targets">
+      <h2>RTO / RPO Targets</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">These targets are committed in <a href="../operations/dpa_sla.html">operations/dpa_sla.html</a>. Changes here must be reflected there.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Component</th><th>RTO Target</th><th>RPO Target</th><th>Backup Frequency</th><th>Backup Location</th><th>Last Tested</th></tr></thead>
+          <tbody>
+            <!-- FILL: Define RTO/RPO for each system component -->
+            <tr>
+              <td>Primary Database</td>
+              <td><!-- FILL: e.g., 1 hour --></td>
+              <td><!-- FILL: e.g., 15 minutes --></td>
+              <td><!-- FILL: e.g., Every 15 min / Daily --></td>
+              <td><!-- FILL: e.g., S3 us-east-1 --></td>
+              <td><!-- FILL: YYYY-MM-DD --></td>
+            </tr>
+            <tr>
+              <td>Application Server</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td>Static Assets / CDN</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td>User Data / Files</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Escalation Matrix -->
+    <section class="section" id="escalation-matrix">
+      <h2>Escalation Matrix</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Severity</th><th>Definition</th><th>Response Time</th><th>First Responder</th><th>Escalate To</th><th>Communication Channel</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="badge" style="background:var(--error-bg);color:var(--error);">P0 — Critical</span></td>
+              <td>Full outage / data loss</td>
+              <td><!-- FILL: e.g., 15 min --></td>
+              <td><!-- FILL: On-call engineer --></td>
+              <td><!-- FILL: CTO / CEO --></td>
+              <td><!-- FILL: PagerDuty / phone --></td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">P1 — High</span></td>
+              <td>Major feature degraded</td>
+              <td><!-- FILL: e.g., 1 hour --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:var(--info-bg);color:var(--info);">P2 — Medium</span></td>
+              <td>Minor feature impacted</td>
+              <td><!-- FILL: e.g., 4 hours --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td><span class="badge" style="background:var(--success-bg);color:var(--success);">P3 — Low</span></td>
+              <td>Cosmetic / minor bug</td>
+              <td><!-- FILL: e.g., Next sprint --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Post-Mortem Template -->
+    <section class="section" id="post-mortem-template">
+      <h2>Post-Mortem Template</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Use this template for every P0/P1 incident. Complete within 24 hours of resolution. Blameless — focus on systems, not people.</p>
+      <div class="card" style="border-style:dashed;">
+        <div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-6);">COPY THIS TEMPLATE FOR EACH INCIDENT</div>
+        <div style="font-size:var(--text-sm);color:var(--text-secondary);">
+          <p><strong>Incident ID:</strong> INC-XXX</p>
+          <p><strong>Date:</strong> YYYY-MM-DD HH:MM UTC</p>
+          <p><strong>Duration:</strong> X hours Y minutes</p>
+          <p><strong>Severity:</strong> P0 / P1</p>
+          <p><strong>Affected Services:</strong> [List services impacted]</p>
+          <hr>
+          <p><strong>Summary</strong><br><!-- FILL: 2–3 sentence summary of what happened and impact --></p>
+          <p><strong>Timeline</strong></p>
+          <ul>
+            <li><code>HH:MM</code> — <!-- FILL: Event --></li>
+            <li><code>HH:MM</code> — Incident detected</li>
+            <li><code>HH:MM</code> — Response initiated</li>
+            <li><code>HH:MM</code> — Root cause identified</li>
+            <li><code>HH:MM</code> — Mitigation deployed</li>
+            <li><code>HH:MM</code> — Incident resolved</li>
+          </ul>
+          <p><strong>Root Cause</strong><br><!-- FILL: Technical root cause --></p>
+          <p><strong>Impact</strong><br><!-- FILL: Users affected, data impacted, revenue impact --></p>
+          <p><strong>What Went Well</strong></p>
+          <ul><li><!-- FILL --></li></ul>
+          <p><strong>What Went Wrong</strong></p>
+          <ul><li><!-- FILL --></li></ul>
+          <p><strong>Action Items</strong></p>
+          <div class="table-wrapper">
+            <table><thead><tr><th>Action</th><th>Owner</th><th>Due Date</th><th>Status</th></tr></thead>
+            <tbody><tr><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td><td>Open</td></tr></tbody></table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['recovery-runbooks','rto-rpo-targets','escalation-matrix','post-mortem-template','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>
