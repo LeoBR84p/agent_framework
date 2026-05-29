@@ -1,0 +1,200 @@
+<!-- LLM_CONTEXT: Marketing document for AIz Intel framework. Contains ICP definition, messaging matrix, channel strategy and budget, and campaign calendar. CONSISTENCY RULES: ICP here must align with target audience in idea.html. Channel strategy must align with launch_plan.html. Budget must align with economics.html CAC targets. Update campaign calendar monthly. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Marketing — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="ICP definition, messaging matrix, channel strategy, and campaign calendar.">
+  <title>Marketing — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge business">Business</span>
+        <h1 class="doc-title">Marketing</h1>
+        <p class="doc-subtitle">Ideal Customer Profile, messaging architecture, channel strategy, and live campaign calendar.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- ICP Definition -->
+    <section class="section" id="icp-definition">
+      <h2>ICP Definition — Ideal Customer Profile</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">See also: <a href="idea.html#target-audience">idea.html Target Audience</a>. This ICP drives all channel and messaging decisions below.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-4);">
+        <div class="card">
+          <div class="card-title" style="margin-bottom:var(--space-4);">Firmographic Profile</div>
+          <div class="contact-field"><span class="contact-field-label">Company Size</span><span class="contact-field-value"><!-- FILL: e.g., 1–50 employees --></span></div>
+          <div class="contact-field"><span class="contact-field-label">Industry</span><span class="contact-field-value"><!-- FILL: e.g., B2B SaaS, Fintech --></span></div>
+          <div class="contact-field"><span class="contact-field-label">Geography</span><span class="contact-field-value"><!-- FILL: e.g., US, Brazil, UK --></span></div>
+          <div class="contact-field"><span class="contact-field-label">Revenue</span><span class="contact-field-value"><!-- FILL: e.g., $0–$5M ARR --></span></div>
+          <div class="contact-field"><span class="contact-field-label">Stage</span><span class="contact-field-value"><!-- FILL: e.g., Seed–Series A --></span></div>
+          <div class="contact-field"><span class="contact-field-label">Tech Stack</span><span class="contact-field-value"><!-- FILL: e.g., Uses Slack, Notion, Linear --></span></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:var(--space-4);">Champion / Decision Maker</div>
+          <div class="contact-field"><span class="contact-field-label">Job Title</span><span class="contact-field-value"><!-- FILL: e.g., CTO, Head of Product --></span></div>
+          <div class="contact-field"><span class="contact-field-label">Age Range</span><span class="contact-field-value"><!-- FILL: e.g., 28–42 --></span></div>
+          <div class="contact-field"><span class="contact-field-label">Goals</span><span class="contact-field-value"><!-- FILL: primary professional goals --></span></div>
+          <div class="contact-field"><span class="contact-field-label">Pain Points</span><span class="contact-field-value"><!-- FILL: top 2 pain points --></span></div>
+          <div class="contact-field"><span class="contact-field-label">Channels Used</span><span class="contact-field-value"><!-- FILL: e.g., LinkedIn, X/Twitter, newsletters --></span></div>
+          <div class="contact-field"><span class="contact-field-label">Decision Process</span><span class="contact-field-value"><!-- FILL: e.g., PLG / bottoms-up / top-down --></span></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:var(--space-4);">Negative ICP (Anti-Profile)</div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);">
+            <!-- FILL: Who is NOT our customer? What signals disqualify a prospect?
+              This helps sales avoid chasing bad-fit deals.
+            -->
+            <ul>
+              <li><!-- FILL: Not a good fit: [signal] --></li>
+              <li><!-- FILL: Not a good fit: [signal] --></li>
+              <li><!-- FILL: Not a good fit: [signal] --></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Messaging Matrix -->
+    <section class="section" id="messaging-matrix">
+      <h2>Messaging Matrix</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Audience Segment</th><th>Primary Pain</th><th>Core Message</th><th>Proof Point</th><th>CTA</th></tr>
+          </thead>
+          <tbody>
+            <!-- FILL: One row per audience segment / persona -->
+            <tr>
+              <td><!-- FILL: Persona name --></td>
+              <td><!-- FILL: Their #1 pain --></td>
+              <td><!-- FILL: The one message that resonates most --></td>
+              <td><!-- FILL: Stat, testimonial, or case study --></td>
+              <td><!-- FILL: e.g., "Start free trial" --></td>
+            </tr>
+            <tr>
+              <td><!-- FILL: Persona name --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:var(--space-6);">
+        <h3>Core Brand Messages</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--space-4);">
+          <!-- FILL: 3–5 key messages used consistently across all marketing -->
+          <div class="card">
+            <div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-2);">HEADLINE MESSAGE</div>
+            <div style="font-size:var(--text-lg);font-weight:var(--weight-semibold);color:var(--text-primary);"><!-- FILL: Hero headline --></div>
+            <div style="font-size:var(--text-sm);color:var(--text-secondary);margin-top:var(--space-2);"><!-- FILL: Supporting sub-headline --></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Channel Strategy & Budget -->
+    <section class="section" id="channel-strategy-budget">
+      <h2>Channel Strategy &amp; Budget</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Channel</th><th>Goal</th><th>Monthly Budget</th><th>KPIs</th><th>Owner</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <!-- FILL: All marketing channels with budgets and KPIs -->
+            <tr>
+              <td><!-- FILL: e.g., SEO / Blog --></td>
+              <td><!-- FILL: e.g., Organic traffic, brand awareness --></td>
+              <td><!-- FILL: $X/mo content cost --></td>
+              <td><!-- FILL: e.g., X organic visits/mo, X leads/mo --></td>
+              <td><!-- FILL: name --></td>
+              <td><span class="status-badge" data-status="in-progress">Active</span></td>
+            </tr>
+            <tr>
+              <td><!-- FILL: e.g., LinkedIn Ads --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><span class="status-badge" data-status="draft">Planned</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:var(--space-4);" class="card">
+        <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-3);">Total Monthly Marketing Budget</div>
+        <div style="font-size:var(--text-3xl);font-weight:var(--weight-bold);color:var(--brand-primary);"><!-- FILL: $X,XXX/mo --></div>
+        <div style="font-size:var(--text-sm);color:var(--text-muted);margin-top:var(--space-2);">Target blended CAC: <!-- FILL: $X --> | Cross-reference with <a href="economics.html#cac-ltv-churn">economics.html</a></div>
+      </div>
+    </section>
+
+    <!-- Campaign Calendar -->
+    <section class="section" id="campaign-calendar">
+      <h2>Campaign Calendar</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Month</th><th>Campaign</th><th>Channels</th><th>Budget</th><th>Goal / KPI</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <!-- FILL: Monthly campaign plan. Update each month. -->
+            <tr>
+              <td><!-- FILL: Month/Year --></td>
+              <td><!-- FILL: Campaign name --></td>
+              <td><!-- FILL: Channels used --></td>
+              <td><!-- FILL: $X --></td>
+              <td><!-- FILL: Primary KPI and target --></td>
+              <td><span class="status-badge" data-status="draft">Planned</span></td>
+            </tr>
+            <tr>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><span class="status-badge" data-status="draft">Planned</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['icp-definition','messaging-matrix','channel-strategy-budget','campaign-calendar','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

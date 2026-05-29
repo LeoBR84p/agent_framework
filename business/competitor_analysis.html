@@ -1,0 +1,202 @@
+<!-- LLM_CONTEXT: Competitor Analysis document for AIz Intel framework. Contains competitor cards, feature comparison matrix, positioning map description, and relative SWOT. CONSISTENCY RULES: Competitors listed here must have matching price data in pricing.html. The positioning analysis must inform the UVP in idea.html. Update whenever a new competitor launches or a competitor changes pricing/features. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Competitor Analysis — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Competitive landscape analysis, feature matrix, and positioning.">
+  <title>Competitor Analysis — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge business">Business</span>
+        <h1 class="doc-title">Competitor Analysis</h1>
+        <p class="doc-subtitle">Competitive landscape: who we compete with, how we compare, and where we win.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Competitor Cards -->
+    <section class="section" id="competitor-cards">
+      <h2>Competitor Cards</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-6);">Direct and indirect competitors. Updated: <!-- FILL: date -->. Prices cross-referenced with <a href="pricing.html">pricing.html</a>.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--space-5);">
+        <!-- FILL: Add one card per competitor (aim for 3–8 competitors) -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><!-- FILL: Competitor Name --></div>
+              <div class="card-subtitle"><!-- FILL: website URL --></div>
+            </div>
+            <span class="badge" style="background:var(--error-bg);color:var(--error);">Direct</span>
+          </div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);margin-bottom:var(--space-4);font-size:var(--text-sm);">
+              <div><div style="color:var(--text-muted);font-size:var(--text-xs);margin-bottom:2px;">Founding Year</div><div><!-- FILL --></div></div>
+              <div><div style="color:var(--text-muted);font-size:var(--text-xs);margin-bottom:2px;">Funding</div><div><!-- FILL: $XM raised --></div></div>
+              <div><div style="color:var(--text-muted);font-size:var(--text-xs);margin-bottom:2px;">Price Range</div><div><!-- FILL: $X–$Y/mo --></div></div>
+              <div><div style="color:var(--text-muted);font-size:var(--text-xs);margin-bottom:2px;">Customers</div><div><!-- FILL --></div></div>
+            </div>
+            <div style="margin-bottom:var(--space-3);">
+              <div style="font-size:var(--text-xs);font-weight:var(--weight-bold);text-transform:uppercase;color:var(--text-muted);margin-bottom:var(--space-2);">Strengths</div>
+              <ul style="font-size:var(--text-sm);color:var(--text-secondary);">
+                <!-- FILL: List 2–3 key strengths -->
+                <li><!-- FILL --></li>
+                <li><!-- FILL --></li>
+              </ul>
+            </div>
+            <div>
+              <div style="font-size:var(--text-xs);font-weight:var(--weight-bold);text-transform:uppercase;color:var(--text-muted);margin-bottom:var(--space-2);">Weaknesses / Our Opportunity</div>
+              <ul style="font-size:var(--text-sm);color:var(--text-secondary);">
+                <!-- FILL: List 2–3 gaps we can exploit -->
+                <li><!-- FILL --></li>
+                <li><!-- FILL --></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- FILL: Repeat card for each competitor -->
+      </div>
+    </section>
+
+    <!-- Feature Comparison Matrix -->
+    <section class="section" id="feature-comparison-matrix">
+      <h2>Feature Comparison Matrix</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Our Product</th>
+              <!-- FILL: Add one column per competitor -->
+              <th><!-- FILL: Competitor A --></th>
+              <th><!-- FILL: Competitor B --></th>
+              <th><!-- FILL: Competitor C --></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- FILL: Add one row per key feature. Use ✅ / ❌ / ⚠️ (partial) -->
+            <tr>
+              <td><!-- FILL: Feature --></td>
+              <td style="color:var(--success);">✅</td>
+              <td style="color:var(--error);">❌</td>
+              <td style="color:var(--warning);">⚠️ Partial</td>
+              <td style="color:var(--error);">❌</td>
+            </tr>
+            <tr>
+              <td><!-- FILL: Feature --></td>
+              <td style="color:var(--success);">✅</td>
+              <td style="color:var(--success);">✅</td>
+              <td style="color:var(--success);">✅</td>
+              <td style="color:var(--error);">❌</td>
+            </tr>
+            <tr>
+              <td><!-- FILL: Our unique feature --></td>
+              <td style="color:var(--brand-primary);font-weight:bold;">✅ Unique</td>
+              <td style="color:var(--error);">❌</td>
+              <td style="color:var(--error);">❌</td>
+              <td style="color:var(--error);">❌</td>
+            </tr>
+            <tr>
+              <td><strong>Price (entry tier)</strong></td>
+              <td style="color:var(--brand-primary);font-weight:bold;"><!-- FILL: $X/mo --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Positioning Map -->
+    <section class="section" id="positioning-map">
+      <h2>Positioning Map</h2>
+      <div class="section-placeholder">
+        <!-- FILL: Describe the 2x2 or 2-axis positioning map. Since this is text-based, describe the axes and where each competitor falls.
+          Example axes: Price (Low→High) vs. Feature Depth (Simple→Enterprise)
+          Or: Market Focus (SMB→Enterprise) vs. Tech Sophistication (No-code→Developer)
+          List where your product sits and why that position is defensible.
+          Optional: Insert an image of a positioning map diagram here.
+        -->
+        <p>Describe the positioning map axes (e.g., Price vs. Feature Depth, SMB vs. Enterprise) and where each competitor falls. Explain why your position is strategically defensible.</p>
+      </div>
+    </section>
+
+    <!-- Relative SWOT -->
+    <section class="section" id="relative-swot">
+      <h2>Relative SWOT</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Our SWOT analysis relative to the competitive landscape above.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+        <div class="card" style="border-color:rgba(34,197,94,0.3);">
+          <div style="font-weight:var(--weight-bold);color:var(--success);margin-bottom:var(--space-3);">💪 Strengths</div>
+          <ul>
+            <!-- FILL: 3–5 competitive strengths -->
+            <li><!-- FILL --></li>
+            <li><!-- FILL --></li>
+            <li><!-- FILL --></li>
+          </ul>
+        </div>
+        <div class="card" style="border-color:rgba(239,68,68,0.3);">
+          <div style="font-weight:var(--weight-bold);color:var(--error);margin-bottom:var(--space-3);">⚠️ Weaknesses</div>
+          <ul>
+            <!-- FILL: 3–5 competitive weaknesses -->
+            <li><!-- FILL --></li>
+            <li><!-- FILL --></li>
+          </ul>
+        </div>
+        <div class="card" style="border-color:rgba(56,189,248,0.3);">
+          <div style="font-weight:var(--weight-bold);color:var(--info);margin-bottom:var(--space-3);">🚀 Opportunities</div>
+          <ul>
+            <!-- FILL: 3–5 market opportunities -->
+            <li><!-- FILL --></li>
+            <li><!-- FILL --></li>
+          </ul>
+        </div>
+        <div class="card" style="border-color:rgba(245,158,11,0.3);">
+          <div style="font-weight:var(--weight-bold);color:var(--warning);margin-bottom:var(--space-3);">🛡️ Threats</div>
+          <ul>
+            <!-- FILL: 3–5 competitive threats -->
+            <li><!-- FILL --></li>
+            <li><!-- FILL --></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['competitor-cards','feature-comparison-matrix','positioning-map','relative-swot','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

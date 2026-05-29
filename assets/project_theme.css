@@ -1,0 +1,38 @@
+/* ==========================================================================
+   AIz Intel - Proprietary Agentic Framework
+   project_theme.css — Per-Project Theme Override
+   ============================================================================
+   INSTRUCTIONS:
+   Override any design token from design_system.css here.
+   This file is loaded AFTER design_system.css, so all overrides take effect.
+   Do NOT edit design_system.css directly — keep overrides here only.
+
+   Common overrides:
+   - --brand-primary / --brand-accent (brand color)
+   - --font-brand (heading font from Google Fonts)
+   - --font-sans (body font)
+   - Logo & favicon are set in project_config.json
+
+   Example (uncomment and customize):
+   ========================================================================== */
+
+:root {
+  /* --- Brand Colors (override defaults) --- */
+  /* --brand-primary: #your-color; */
+  /* --brand-accent:  #your-accent; */
+  /* --brand-glow:    rgba(r, g, b, 0.15); */
+
+  /* --- Typography (override defaults) --- */
+  /* --font-brand: 'Inter', system-ui, sans-serif; */
+  /* --font-sans:  'Inter', system-ui, sans-serif; */
+  /* --font-mono:  'JetBrains Mono', monospace; */
+}
+
+/* --- Light Mode Brand Override --- */
+.light-mode {
+  /* --brand-primary: #your-light-color; */
+  /* --brand-accent:  #your-light-accent; */
+}
+
+/* --- Custom Project Components (add below) --- */
+/* Example: custom hero section, custom badge colors, etc. */

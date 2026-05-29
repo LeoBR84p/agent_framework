@@ -1,0 +1,92 @@
+<!-- LLM_CONTEXT: Global search page for AIz Intel framework. Searches across all documents using a pre-built search index (search-index.json) or window.SEARCH_INDEX. Results show doc title, division, description/excerpt, and a direct link. Auth-protected. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Search — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Search across all knowledge base documents.">
+  <title>Search — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="assets/design_system.css">
+  <link rel="stylesheet" href="assets/project_theme.css">
+</head>
+<body class="search-page">
+  <button class="nav-toggle-btn" id="sidebar-toggle" aria-label="Toggle navigation">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+
+  <main class="content" style="max-width:860px;">
+    <div style="margin-bottom:var(--space-8);">
+      <h1 style="font-size:var(--text-3xl);margin-bottom:var(--space-2);">Search</h1>
+      <p style="color:var(--text-secondary);">Search across all documents in this knowledge base.</p>
+    </div>
+
+    <!-- Search Input -->
+    <div class="search-input-wrapper">
+      <span class="search-icon">🔍</span>
+      <input
+        type="search"
+        id="search-input"
+        class="search-input"
+        placeholder="Search documents, sections, keywords..."
+        autocomplete="off"
+        spellcheck="false"
+      >
+    </div>
+
+    <!-- Results -->
+    <div id="search-results">
+      <div class="search-empty">
+        <div style="font-size:2rem;margin-bottom:var(--space-4);">📚</div>
+        <p style="color:var(--text-muted);">Start typing to search all documents.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    window.FIREBASE_CONFIG = {
+      apiKey:            "FILL_API_KEY",
+      authDomain:        "FILL_PROJECT_ID.firebaseapp.com",
+      projectId:         "FILL_PROJECT_ID",
+      storageBucket:     "FILL_PROJECT_ID.appspot.com",
+      messagingSenderId: "FILL_SENDER_ID",
+      appId:             "FILL_APP_ID"
+    };
+
+    // Static search index — update as you add documents
+    // FILL: Add keywords relevant to each document
+    window.SEARCH_INDEX = [
+      { title: "Idea", division: "Business", path: "business/idea.html", description: "Problem statement, target audience, proposed solution, UVP, validation.", keywords: ["problem","solution","audience","uvp","validation","idea"] },
+      { title: "Business Plan", division: "Business", path: "business/business_plan.html", description: "BMC, TAM/SAM/SOM, revenue model, team, risk matrix.", keywords: ["bmc","business model canvas","tam","sam","som","revenue","team"] },
+      { title: "Economics", division: "Business", path: "business/economics.html", description: "S-curve projections, break-even, CAC/LTV/churn, cash flow.", keywords: ["economics","mrr","arr","cac","ltv","churn","cash flow","break-even","projections"] },
+      { title: "Pricing", division: "Business", path: "business/pricing.html", description: "Pricing tiers, competitor price matrix, value perception.", keywords: ["pricing","tiers","plans","price","freemium","subscription","competitor"] },
+      { title: "Competitor Analysis", division: "Business", path: "business/competitor_analysis.html", description: "Competitor cards, feature comparison matrix, positioning, SWOT.", keywords: ["competitor","analysis","feature matrix","positioning","swot"] },
+      { title: "Launch Plan", division: "Business", path: "business/launch_plan.html", description: "Launch phases, early adopters, paid/organic channels, partnerships.", keywords: ["launch","gtm","go-to-market","early adopter","channels","ads","social media"] },
+      { title: "Marketing", division: "Business", path: "business/marketing.html", description: "ICP definition, messaging matrix, channel strategy, campaign calendar.", keywords: ["marketing","icp","ideal customer","messaging","channels","campaigns","budget"] },
+      { title: "Risk", division: "Business", path: "business/risk.html", description: "Risk register, heat map, category taxonomy, mitigation tracker.", keywords: ["risk","risk register","heat map","mitigation","probability","impact"] },
+      { title: "Tech Plan", division: "Technology", path: "technology/tech_plan.html", description: "Architecture diagram, stack decisions, sprint checklists, API surface.", keywords: ["architecture","stack","tech","api","sprint","backend","frontend","infrastructure"] },
+      { title: "Zero to Hero", division: "Technology", path: "technology/zero_hero.html", description: "Environment setup, bootstrap commands, architecture decisions, gotchas.", keywords: ["setup","environment","bootstrap","commands","onboarding","developer","install"] },
+      { title: "DB Schema", division: "Technology", path: "technology/db_schema.html", description: "Table definitions, relationships, foreign keys, indexes, migrations.", keywords: ["database","schema","tables","sql","migrations","indexes","foreign keys"] },
+      { title: "Code Review", division: "Technology", path: "technology/code_review.html", description: "Issue register with severity, status, and file+line references.", keywords: ["code review","bugs","issues","severity","critical","refactor"] },
+      { title: "Disaster Recovery", division: "Technology", path: "technology/disaster_recovery.html", description: "Runbooks, RTO/RPO targets, escalation matrix, post-mortem template.", keywords: ["disaster recovery","runbook","rto","rpo","escalation","post-mortem","incident"] },
+      { title: "Roadmap", division: "Technology", path: "technology/roadmap.html", description: "Timeline swimlanes across business, tech, brand, and operations.", keywords: ["roadmap","timeline","milestones","swimlane","q1","q2","features","release"] },
+      { title: "Brand Guidelines", division: "Brand", path: "brand/brand_guidelines.html", description: "Logo usage, color palette tokens, typography system, tone of voice.", keywords: ["brand","logo","colors","typography","tone","voice","design","identity"] },
+      { title: "Cost Tracking", division: "Operations", path: "operations/cost_tracking.html", description: "Expense log, budget vs actuals, burn rate, runway.", keywords: ["cost","expense","budget","burn rate","runway","tracking","actuals"] },
+      { title: "Operational Costs", division: "Operations", path: "operations/operational_costs.html", description: "Monthly SaaS/infra costs, one-time setup, unit economics.", keywords: ["operational","saas","infrastructure","hosting","contractors","freelancers","unit economics"] },
+      { title: "OKR / KPI", division: "Operations", path: "operations/okr_kpi.html", description: "Quarterly OKRs with key results, progress sliders, KPI dashboard.", keywords: ["okr","kpi","objectives","key results","goals","quarterly","metrics","dashboard"] },
+      { title: "Customer Support", division: "Operations", path: "operations/customer_support.html", description: "Support tiers, SLAs, FAQ template, escalation chain, refund policy.", keywords: ["support","sla","faq","escalation","refund","cancellation","customer","helpdesk"] },
+      { title: "Customer Memory", division: "Operations", path: "operations/customer_memory.html", description: "CRM-style contact cards with interaction history and next steps.", keywords: ["crm","customer","contact","interaction","history","account","follow-up"] },
+      { title: "Terms of Service", division: "Operations", path: "operations/terms_of_service.html", description: "Service description, user obligations, IP, liability, LGPD/GDPR.", keywords: ["terms","tos","service","obligations","ip","liability","gdpr","lgpd","legal"] },
+      { title: "Privacy Policy", division: "Operations", path: "operations/privacy_policy.html", description: "Data collected, legal basis, GDPR/LGPD/CCPA rights, third-party processors.", keywords: ["privacy","gdpr","lgpd","ccpa","data","personal data","retention","rights"] },
+      { title: "Cookie Policy", division: "Operations", path: "operations/cookie_policy.html", description: "Cookie types, consent mechanism, third-party cookies, opt-out.", keywords: ["cookies","consent","tracking","analytics","gdpr","opt-out"] },
+      { title: "DPA & SLA", division: "Operations", path: "operations/dpa_sla.html", description: "Data processing agreement, service level agreement, uptime commitments.", keywords: ["dpa","sla","data processing","service level","uptime","response time","compliance"] },
+      { title: "Pitch Deck", division: "Investor Relations", path: "investor-relations/pitch.html", description: "Problem, solution, market, traction, team, financials, use of funds, the ask.", keywords: ["pitch","investor","funding","ask","cap table","valuation","traction","deck"] },
+      { title: "Investor Memory", division: "Investor Relations", path: "investor-relations/investor_memory.html", description: "CRM-style investor contact cards with fund, check size, status, interaction history.", keywords: ["investor","fund","vc","angel","check size","pipeline","interaction","outreach"] },
+      { title: "Due Diligence", division: "Investor", path: "investor/due_diligence.html", description: "DD checklist across legal, financial, technical, team, market, product.", keywords: ["due diligence","dd","checklist","legal","financial","technical","market"] },
+      { title: "Setup Checklist", division: "Framework", path: "setup_checklist.html", description: "Complete initialization checklist for a new AIz Intel project instance.", keywords: ["setup","checklist","initialize","onboarding","configuration","deploy"] }
+    ];
+  </script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

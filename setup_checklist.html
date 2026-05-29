@@ -1,0 +1,402 @@
+<!-- LLM_CONTEXT: Project initialization checklist for AIz Intel framework. Guides a new project owner (or LLM) through all required setup steps in order. Checkbox state is persisted in localStorage. LLM instruction: run these steps in order when initializing a new project instance. Each checkbox has a unique ID for state persistence. Auth-protected. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Setup Checklist — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Complete initialization checklist for a new AIz Intel project.">
+  <title>Setup Checklist — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="stylesheet" href="assets/design_system.css">
+  <link rel="stylesheet" href="assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle" aria-label="Toggle navigation">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge" style="background:var(--brand-glow);color:var(--brand-primary);border:1px solid rgba(99,102,241,0.2);">Framework</span>
+        <h1 class="doc-title">Setup Checklist</h1>
+        <p class="doc-subtitle">Complete initialization guide for a new AIz Intel project instance. Check off each item as you complete it — progress is saved in your browser.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+      </div>
+    </header>
+
+    <!-- Overall Progress -->
+    <div class="overall-progress">
+      <div class="overall-progress-label">
+        <span>Overall Setup Progress</span>
+        <strong id="setup-progress-label">0 / 0 complete (0%)</strong>
+      </div>
+      <div class="overall-progress-bar">
+        <div class="overall-progress-fill" id="setup-progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Step 1: Repo & Config -->
+    <section class="section" id="step-repo">
+      <h2>Step 1 — Repository &amp; Configuration</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Fork the template and configure project identity files.</p>
+      <ul class="checklist">
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-fork">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Fork or use template from GitHub</div>
+            <div class="checklist-item-desc">Create a new repo from the AIz Intel template. One repo per project.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-project-config">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Fill in <code>project_config.json</code></div>
+            <div class="checklist-item-desc">Set <code>name</code>, <code>tagline</code>, <code>stage</code>, <code>lastUpdated</code>, team members, <code>allowedUsers</code>, and <code>investorAllowedUsers</code>.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-logo">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Replace <code>assets/logo.svg</code></div>
+            <div class="checklist-item-desc">Upload your project logo. Recommended: SVG, 64×64px, transparent background.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-favicon">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Add <code>assets/favicon.ico</code></div>
+            <div class="checklist-item-desc">Generate a 32×32 ICO file from your logo and place it in assets/.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-theme">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Customize <code>assets/project_theme.css</code></div>
+            <div class="checklist-item-desc">Override <code>--brand-primary</code>, <code>--brand-accent</code>, and font variables to match your brand.</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Step 2: Firebase -->
+    <section class="section" id="step-firebase">
+      <h2>Step 2 — Firebase Authentication</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Set up Google OAuth and Firestore allowlist for access control.</p>
+      <ul class="checklist">
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-firebase-project">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Create Firebase project at console.firebase.google.com</div>
+            <div class="checklist-item-desc">Enable Google Authentication under Build → Authentication → Sign-in method.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-firebase-config">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Fill <code>window.FIREBASE_CONFIG</code> in all HTML files</div>
+            <div class="checklist-item-desc">Copy your Firebase web app config from Project Settings and replace all FILL placeholders. Files: auth.html, index.html, and all division pages.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-firestore-allowlist">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Create Firestore <code>allowedUsers</code> collection</div>
+            <div class="checklist-item-desc">For each authorized user, create a document with their email as the document ID. No fields required — existence check only.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-firestore-rules">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Set Firestore security rules</div>
+            <div class="checklist-item-desc">Allow authenticated users to read <code>allowedUsers/{email}</code> documents only. Deny all write access from client.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-firebaserc">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Update <code>.firebaserc</code> with your project ID</div>
+            <div class="checklist-item-desc">Replace <code>FILL_FIREBASE_PROJECT_ID</code> with your actual Firebase project ID.</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Step 3: Vercel Deploy -->
+    <section class="section" id="step-vercel">
+      <h2>Step 3 — Vercel Deployment</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Deploy as a static site on Vercel with auto-deploy on push.</p>
+      <ul class="checklist">
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-vercel-import">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Import GitHub repo into Vercel</div>
+            <div class="checklist-item-desc">Go to vercel.com → New Project → Import GitHub repository. Select your forked repo.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-vercel-settings">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Configure Vercel project settings</div>
+            <div class="checklist-item-desc">Framework Preset: Other. Root directory: / (root). Output directory: . (dot). No build command needed.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-vercel-domain">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Add custom domain (optional)</div>
+            <div class="checklist-item-desc">In Vercel project → Settings → Domains. Add your domain and configure DNS records.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-firebase-auth-domain">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Add Vercel domain to Firebase authorized domains</div>
+            <div class="checklist-item-desc">In Firebase console → Authentication → Settings → Authorized domains. Add your vercel.app URL and custom domain.</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Step 4: Content — Business -->
+    <section class="section" id="step-business">
+      <h2>Step 4 — Business Division Content</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Fill in all business-critical documents. Pricing must match Economics.</p>
+      <ul class="checklist">
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-idea">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="business/idea.html">business/idea.html</a></div>
+            <div class="checklist-item-desc">Fill: Problem Statement, Target Audience, Proposed Solution, UVP, Key Assumptions, Validation Status.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-biz-plan">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="business/business_plan.html">business/business_plan.html</a></div>
+            <div class="checklist-item-desc">Fill: Executive Summary, BMC (9 blocks), TAM/SAM/SOM, Revenue Model, Team, Risk Matrix.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-economics">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="business/economics.html">business/economics.html</a></div>
+            <div class="checklist-item-desc">Fill: S-Curve Projections, Break-Even, CAC/LTV/Churn, Cash Flow Scenarios, Price Adequacy.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-pricing">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="business/pricing.html">business/pricing.html</a></div>
+            <div class="checklist-item-desc">Fill: Pricing Tiers, Competitor Price Matrix, Value Perception. Ensure alignment with economics.html.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-competitors">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="business/competitor_analysis.html">business/competitor_analysis.html</a></div>
+            <div class="checklist-item-desc">Fill: Competitor Cards, Feature Matrix, Positioning Map, Relative SWOT.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-launch">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="business/launch_plan.html">business/launch_plan.html</a></div>
+            <div class="checklist-item-desc">Fill: Launch Phases, Early Adopter Strategy, Channels, Partnerships, Ad Campaigns.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-marketing">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="business/marketing.html">business/marketing.html</a></div>
+            <div class="checklist-item-desc">Fill: ICP Definition, Messaging Matrix, Channel Strategy, Campaign Calendar.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-risk">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="business/risk.html">business/risk.html</a></div>
+            <div class="checklist-item-desc">Fill: Risk Register, Heat Map, Category Taxonomy, Mitigation Status. Cross-reference business_plan.html.</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Step 5: Technology -->
+    <section class="section" id="step-technology">
+      <h2>Step 5 — Technology Division Content</h2>
+      <ul class="checklist">
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-tech-plan">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="technology/tech_plan.html">technology/tech_plan.html</a></div>
+            <div class="checklist-item-desc">Fill: Architecture Diagram, Stack Decision Log, Sprint Checklists, API Surface Summary.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-zero-hero">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="technology/zero_hero.html">technology/zero_hero.html</a></div>
+            <div class="checklist-item-desc">Fill: Environment Setup, Bootstrap Commands, Architecture Decisions, Gotchas &amp; Workarounds.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-db-schema">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="technology/db_schema.html">technology/db_schema.html</a></div>
+            <div class="checklist-item-desc">Fill: Table Definitions, Relationships, Indexes, Migration History.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-roadmap">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="technology/roadmap.html">technology/roadmap.html</a></div>
+            <div class="checklist-item-desc">Fill: Timeline Swimlanes, Milestone Definitions. Sprint status must align with okr_kpi.html.</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Step 6: Brand & Ops -->
+    <section class="section" id="step-brand-ops">
+      <h2>Step 6 — Brand &amp; Operations</h2>
+      <ul class="checklist">
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-brand">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="brand/brand_guidelines.html">brand/brand_guidelines.html</a></div>
+            <div class="checklist-item-desc">Fill: Logo Usage, Color Palette Tokens, Typography System, Copy &amp; Tone of Voice.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-okr">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="operations/okr_kpi.html">operations/okr_kpi.html</a></div>
+            <div class="checklist-item-desc">Fill: Quarterly OKRs with Key Results, KPI Dashboard. Must align with roadmap.html sprint status.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-legal">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Legal documents (ToS, Privacy, Cookie, DPA/SLA)</div>
+            <div class="checklist-item-desc">Complete all four legal documents with counsel review. Ensure LGPD/GDPR compliance sections are filled.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-metrics-json">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Initialize <code>metrics.json</code> with real values</div>
+            <div class="checklist-item-desc">Replace null values with actual metrics data. Update monthly or as data changes.</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Step 7: Investor -->
+    <section class="section" id="step-investor">
+      <h2>Step 7 — Investor &amp; Fundraising</h2>
+      <ul class="checklist">
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-pitch">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="investor-relations/pitch.html">investor-relations/pitch.html</a></div>
+            <div class="checklist-item-desc">Fill: Problem, Solution, Market Size, Business Model, Traction, Team, Financials, Use of Funds, Cap Table, The Ask.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-dd">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title"><a href="investor/due_diligence.html">investor/due_diligence.html</a></div>
+            <div class="checklist-item-desc">Fill: DD Checklist across legal, financial, technical, team, market, product categories.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-investor-portal">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Test investor/index.html NDA gate</div>
+            <div class="checklist-item-desc">Open investor/index.html in incognito. Verify NDA acceptance is required. Verify links work.</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Step 8: Final checks -->
+    <section class="section" id="step-final">
+      <h2>Step 8 — Final Checks &amp; Go-Live</h2>
+      <ul class="checklist">
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-auth-test">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Test auth flow end-to-end</div>
+            <div class="checklist-item-desc">Sign out, visit a protected page, verify redirect to auth.html, sign in, verify redirect back.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-mobile-test">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Test on mobile (375px width)</div>
+            <div class="checklist-item-desc">Verify sidebar toggle works, nav collapses, all text is readable, no horizontal scroll.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-print-test">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Test print/PDF export on a key document</div>
+            <div class="checklist-item-desc">Open business_plan.html, press Ctrl+P, verify sidebar is hidden and content is clean.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-dark-light">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Test dark/light mode toggle</div>
+            <div class="checklist-item-desc">Toggle theme from sidebar, verify preference persists after page reload.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-search-test">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Test global search</div>
+            <div class="checklist-item-desc">Visit search.html, type a keyword, verify results appear with correct titles and links.</div>
+          </div>
+        </li>
+        <li class="checklist-item">
+          <input type="checkbox" class="setup-check" id="chk-production">
+          <div class="checklist-item-body">
+            <div class="checklist-item-title">Push to main and verify Vercel auto-deploy</div>
+            <div class="checklist-item-desc">Commit all changes, push to main branch, verify Vercel deploys successfully, visit production URL.</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <!-- FILL: Add changelog entries here -->
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author name --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.FIREBASE_CONFIG = {
+      apiKey:            "FILL_API_KEY",
+      authDomain:        "FILL_PROJECT_ID.firebaseapp.com",
+      projectId:         "FILL_PROJECT_ID",
+      storageBucket:     "FILL_PROJECT_ID.appspot.com",
+      messagingSenderId: "FILL_SENDER_ID",
+      appId:             "FILL_APP_ID"
+    };
+  </script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

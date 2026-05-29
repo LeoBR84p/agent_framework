@@ -1,0 +1,199 @@
+<!-- LLM_CONTEXT: Privacy Policy document for AIz Intel framework. Legal document covering GDPR, LGPD, and CCPA compliance. All sections require legal counsel review before publishing. Cross-reference: terms_of_service.html (data protection clause), dpa_sla.html (data processing agreement), cookie_policy.html (cookie-specific disclosures). Update on every change to data collection practices. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Privacy Policy — PROJECT_NAME | AIz Intel">
+  <title>Privacy Policy — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge operations">Operations</span>
+        <h1 class="doc-title">Privacy Policy</h1>
+        <p class="doc-subtitle">Effective Date: <!-- FILL: YYYY-MM-DD --> · Version <!-- FILL: 1.0 --> · Covers GDPR, LGPD, CCPA. Requires legal review before publishing.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <div class="card" style="background:var(--warning-bg);border-color:rgba(245,158,11,0.3);margin-bottom:var(--space-8);">
+      <p style="color:var(--warning);font-size:var(--text-sm);">⚠️ <strong>DRAFT — NOT PUBLISHED.</strong> Requires legal counsel review. All FILL placeholders must be replaced.</p>
+    </div>
+
+    <section class="section" id="data-collected">
+      <h2>1. Data We Collect</h2>
+      <div class="section-placeholder">
+        <!-- FILL: Categories of personal data collected:
+          - Account data: name, email, profile picture (from Google OAuth)
+          - Usage data: pages visited, features used, click events
+          - Technical data: IP address, browser type, device, OS
+          - Payment data: handled by Stripe (we do not store card numbers)
+          - User-generated content: data entered into the product
+          - Communications: support emails, feedback
+          For each: whether collection is mandatory or optional
+        -->
+        <p>List every category of personal data collected with examples and whether collection is mandatory or optional.</p>
+      </div>
+    </section>
+
+    <section class="section" id="legal-basis">
+      <h2>2. Legal Basis for Processing</h2>
+      <div class="section-placeholder">
+        <!-- FILL: GDPR Article 6 legal bases:
+          - Contractual necessity (to provide the service)
+          - Legitimate interests (analytics, fraud prevention)
+          - Consent (marketing emails, non-essential cookies)
+          - Legal obligation (tax records, law enforcement)
+          For LGPD (Brazil): map to Art. 7 legal bases
+        -->
+        <p>For each data category, specify the legal basis for processing under GDPR Art. 6 and LGPD Art. 7.</p>
+      </div>
+    </section>
+
+    <section class="section" id="data-usage">
+      <h2>3. How We Use Your Data</h2>
+      <div class="section-placeholder">
+        <!-- FILL: Purposes of processing:
+          - To create and manage your account
+          - To provide the service
+          - To process payments
+          - To send service notifications and updates
+          - To send marketing communications (with consent)
+          - To improve the product (analytics)
+          - To prevent fraud and abuse
+          - To comply with legal obligations
+        -->
+        <p>List all purposes for which personal data is processed. Link each purpose to a legal basis defined above.</p>
+      </div>
+    </section>
+
+    <section class="section" id="data-retention-deletion">
+      <h2>4. Data Retention &amp; Deletion</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Data Category</th><th>Retention Period</th><th>Deletion Trigger</th><th>Notes</th></tr></thead>
+          <tbody>
+            <!-- FILL: Retention schedule for each data category -->
+            <tr><td>Account data</td><td><!-- FILL: Duration of account + X years --></td><td>Account deletion request</td><td><!-- FILL --></td></tr>
+            <tr><td>Usage / analytics data</td><td><!-- FILL: e.g., 2 years --></td><td>Anonymized after retention period</td><td><!-- FILL --></td></tr>
+            <tr><td>Payment records</td><td><!-- FILL: e.g., 7 years (tax obligation) --></td><td>Legal retention minimum</td><td><!-- FILL --></td></tr>
+            <tr><td>Support communications</td><td><!-- FILL: e.g., 2 years --></td><td>Ticket closure + retention period</td><td><!-- FILL --></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="third-party-processors">
+      <h2>5. Third-Party Data Processors</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Processor</th><th>Purpose</th><th>Data Shared</th><th>Location</th><th>Privacy Policy</th></tr></thead>
+          <tbody>
+            <!-- FILL: List all third-party processors -->
+            <tr><td>Firebase (Google)</td><td>Auth, database</td><td>Email, user ID</td><td>US</td><td><a href="https://policies.google.com/privacy" target="_blank">View</a></td></tr>
+            <tr><td>Vercel</td><td>Hosting</td><td>IP, request logs</td><td>US/EU</td><td><a href="https://vercel.com/legal/privacy-policy" target="_blank">View</a></td></tr>
+            <tr><td>Stripe</td><td>Payments</td><td>Payment details</td><td>US</td><td><a href="https://stripe.com/privacy" target="_blank">View</a></td></tr>
+            <!-- FILL: Add all other processors -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="gdpr-rights">
+      <h2>6. Your Rights (GDPR — EU/UK)</h2>
+      <div class="section-placeholder">
+        <!-- FILL: GDPR rights:
+          - Right to access (Art. 15)
+          - Right to rectification (Art. 16)
+          - Right to erasure / "right to be forgotten" (Art. 17)
+          - Right to restriction of processing (Art. 18)
+          - Right to data portability (Art. 20)
+          - Right to object (Art. 21)
+          - Right to not be subject to automated decision-making (Art. 22)
+          - How to exercise rights: email address
+          - Response time: 30 days
+          - Right to lodge complaint with supervisory authority
+        -->
+        <p>List all GDPR rights with how to exercise them, response time (30 days), and supervisory authority complaint right.</p>
+      </div>
+    </section>
+
+    <section class="section" id="lgpd-rights">
+      <h2>7. Your Rights (LGPD — Brazil)</h2>
+      <div class="section-placeholder">
+        <!-- FILL: LGPD rights (Art. 18):
+          - Confirmation of processing existence
+          - Access to data
+          - Correction of incomplete/inaccurate/outdated data
+          - Anonymization, blocking, or deletion
+          - Data portability
+          - Deletion of data processed with consent
+          - Information about third-party sharing
+          - Denial of consent and consequences
+          - Revocation of consent
+          ANPD: Autoridade Nacional de Proteção de Dados (complaint right)
+        -->
+        <p>List all LGPD rights (Art. 18) with how to exercise them. Include ANPD complaint right for Brazilian users.</p>
+      </div>
+    </section>
+
+    <section class="section" id="ccpa-rights">
+      <h2>8. California Privacy Rights (CCPA) — Optional</h2>
+      <div class="section-placeholder">
+        <!-- FILL (if applicable for California users):
+          - Right to know what data is collected/sold
+          - Right to delete
+          - Right to opt-out of sale
+          - Non-discrimination right
+          - "Do Not Sell My Personal Information" link requirement
+        -->
+        <p>If serving California users, add CCPA rights: right to know, delete, opt-out of sale, and non-discrimination. Include "Do Not Sell" link if selling data.</p>
+      </div>
+    </section>
+
+    <section class="section" id="privacy-contact">
+      <h2>9. Contact</h2>
+      <div class="section-placeholder">
+        <!-- FILL: Data controller contact information:
+          - Company name and address
+          - Privacy contact email
+          - DPO appointment (if required for GDPR)
+          - Response time commitment
+        -->
+        <p>Provide data controller contact details, privacy email, and DPO information if required.</p>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody><tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL --></td><td>Initial draft template</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['data-collected','legal-basis','data-usage','data-retention-deletion','third-party-processors','gdpr-rights','lgpd-rights','ccpa-rights','privacy-contact','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

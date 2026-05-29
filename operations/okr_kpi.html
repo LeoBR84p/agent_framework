@@ -1,0 +1,219 @@
+<!-- LLM_CONTEXT: OKR/KPI document for AIz Intel framework. Contains quarterly OKRs with key results and progress sliders, and a KPI dashboard. CONSISTENCY RULES: Sprint status must match technology/tech_plan.html sprint checklists. OKR dates must align with technology/roadmap.html milestones. Update OKR progress weekly; archive completed quarters. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="OKR / KPI — PROJECT_NAME | AIz Intel">
+  <title>OKR / KPI — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+  <style>
+    .okr-objective {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      margin-bottom: var(--space-5);
+    }
+    .okr-objective-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-5);
+    }
+    .okr-objective-title {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+    }
+    .key-result {
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .key-result:last-child { border-bottom: none; }
+    .kr-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2); }
+    .kr-title { font-size: var(--text-sm); color: var(--text-secondary); flex: 1; }
+    .kr-progress-pct { font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--brand-primary); min-width: 40px; text-align: right; }
+  </style>
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge operations">Operations</span>
+        <h1 class="doc-title">OKR / KPI</h1>
+        <p class="doc-subtitle">Quarterly Objectives and Key Results with live progress tracking, plus KPI dashboard.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="in-progress">In Progress</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Current Quarter OKRs -->
+    <section class="section" id="quarterly-okrs">
+      <div class="section-header">
+        <h2><!-- FILL: Q1 2025 --> — Quarterly OKRs</h2>
+        <div style="display:flex;gap:var(--space-3);align-items:center;">
+          <span style="font-size:var(--text-sm);color:var(--text-muted);"><!-- FILL: Jan 1 – Mar 31, 2025 --></span>
+          <span class="status-badge" data-status="in-progress">In Progress</span>
+        </div>
+      </div>
+
+      <!-- Objective 1 -->
+      <div class="okr-objective">
+        <div class="okr-objective-header">
+          <div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-1);">OBJECTIVE 1</div>
+            <div class="okr-objective-title"><!-- FILL: e.g., "Achieve product-market fit with first 10 paying customers" --></div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:var(--text-2xl);font-weight:var(--weight-bold);color:var(--brand-primary);"><!-- FILL: 0% --></div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);">objective progress</div>
+          </div>
+        </div>
+
+        <div class="key-result">
+          <div class="kr-header">
+            <div class="kr-title"><!-- FILL: KR1 — e.g., "Onboard 10 paying customers at $49/mo" --></div>
+            <div class="kr-progress-pct"><!-- FILL: X% --></div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:<!-- FILL: X -->%;"></div></div>
+          <div style="font-size:var(--text-xs);color:var(--text-muted);margin-top:var(--space-1);">Current: <!-- FILL: X --> / Target: <!-- FILL: 10 --></div>
+        </div>
+
+        <div class="key-result">
+          <div class="kr-header">
+            <div class="kr-title"><!-- FILL: KR2 --></div>
+            <div class="kr-progress-pct"><!-- FILL: X% --></div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:<!-- FILL: X -->%;"></div></div>
+          <div style="font-size:var(--text-xs);color:var(--text-muted);margin-top:var(--space-1);">Current: <!-- FILL --> / Target: <!-- FILL --></div>
+        </div>
+
+        <div class="key-result">
+          <div class="kr-header">
+            <div class="kr-title"><!-- FILL: KR3 --></div>
+            <div class="kr-progress-pct"><!-- FILL: X% --></div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:<!-- FILL: X -->%;"></div></div>
+          <div style="font-size:var(--text-xs);color:var(--text-muted);margin-top:var(--space-1);">Current: <!-- FILL --> / Target: <!-- FILL --></div>
+        </div>
+      </div>
+
+      <!-- Objective 2 -->
+      <div class="okr-objective">
+        <div class="okr-objective-header">
+          <div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-1);">OBJECTIVE 2</div>
+            <div class="okr-objective-title"><!-- FILL: Objective 2 title --></div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:var(--text-2xl);font-weight:var(--weight-bold);color:var(--brand-primary);"><!-- FILL: 0% --></div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);">objective progress</div>
+          </div>
+        </div>
+        <div class="key-result">
+          <div class="kr-header"><div class="kr-title"><!-- FILL: KR1 --></div><div class="kr-progress-pct"><!-- FILL: X% --></div></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:<!-- FILL: X -->%;"></div></div>
+        </div>
+        <div class="key-result">
+          <div class="kr-header"><div class="kr-title"><!-- FILL: KR2 --></div><div class="kr-progress-pct"><!-- FILL: X% --></div></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:<!-- FILL: X -->%;"></div></div>
+        </div>
+      </div>
+
+      <!-- Objective 3 -->
+      <div class="okr-objective">
+        <div class="okr-objective-header">
+          <div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-1);">OBJECTIVE 3</div>
+            <div class="okr-objective-title"><!-- FILL: Objective 3 title --></div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:var(--text-2xl);font-weight:var(--weight-bold);color:var(--brand-primary);"><!-- FILL: 0% --></div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);">objective progress</div>
+          </div>
+        </div>
+        <div class="key-result">
+          <div class="kr-header"><div class="kr-title"><!-- FILL: KR1 --></div><div class="kr-progress-pct"><!-- FILL: X% --></div></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:<!-- FILL: X -->%;"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPI Dashboard -->
+    <section class="section" id="kpi-dashboard">
+      <h2>KPI Dashboard</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Last updated: <!-- FILL: YYYY-MM-DD -->. Values from metrics.json.</p>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">MRR</div>
+          <div class="metric-value"><!-- FILL --></div>
+          <div class="metric-delta neutral">Target: <!-- FILL --></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Active Users (MAU)</div>
+          <div class="metric-value"><!-- FILL --></div>
+          <div class="metric-delta neutral">Target: <!-- FILL --></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Churn Rate</div>
+          <div class="metric-value"><!-- FILL -->%</div>
+          <div class="metric-delta neutral">Target: &lt;<!-- FILL -->%</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">NPS</div>
+          <div class="metric-value"><!-- FILL --></div>
+          <div class="metric-delta neutral">Target: 50+</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">CAC</div>
+          <div class="metric-value"><!-- FILL --></div>
+          <div class="metric-delta neutral">Target: <!-- FILL --></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">LTV:CAC</div>
+          <div class="metric-value"><!-- FILL -->:1</div>
+          <div class="metric-delta neutral">Target: 3:1+</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Sprint Velocity</div>
+          <div class="metric-value"><!-- FILL --></div>
+          <div class="metric-delta neutral">story pts/sprint</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Uptime</div>
+          <div class="metric-value"><!-- FILL -->%</div>
+          <div class="metric-delta neutral">Target: 99.9%</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody><tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL --></td><td>Initial draft</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['quarterly-okrs','kpi-dashboard','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

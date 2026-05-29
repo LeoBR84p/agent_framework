@@ -1,0 +1,152 @@
+<!-- LLM_CONTEXT: Cost Tracking document for AIz Intel framework. Expense log, budget vs actuals, burn rate, and runway. All figures must align with economics.html (financial scenarios) and operational_costs.html (detailed cost breakdown). Update monthly. Burn rate here feeds metrics.json. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Cost Tracking — PROJECT_NAME | AIz Intel">
+  <title>Cost Tracking — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge operations">Operations</span>
+        <h1 class="doc-title">Cost Tracking</h1>
+        <p class="doc-subtitle">Monthly expense log, budget vs actuals, burn rate, and runway calculations.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Key Metrics -->
+    <div class="metrics-grid" style="margin-bottom:var(--space-8);">
+      <div class="metric-card"><div class="metric-label">Monthly Burn</div><div class="metric-value"><!-- FILL: $X,XXX --></div></div>
+      <div class="metric-card"><div class="metric-label">Cash on Hand</div><div class="metric-value"><!-- FILL: $X,XXX --></div></div>
+      <div class="metric-card"><div class="metric-label">Runway</div><div class="metric-value"><!-- FILL: X months --></div></div>
+      <div class="metric-card"><div class="metric-label">YTD Spend</div><div class="metric-value"><!-- FILL: $X,XXX --></div></div>
+    </div>
+
+    <!-- Expense Log -->
+    <section class="section" id="expense-log">
+      <h2>Expense Log</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Date</th><th>Category</th><th>Vendor</th><th>Description</th><th>Amount</th><th>Type</th><th>Notes</th></tr></thead>
+          <tbody>
+            <!-- FILL: Log every expense. Update monthly. -->
+            <tr>
+              <td><!-- FILL: YYYY-MM-DD --></td>
+              <td><!-- FILL: Infrastructure / People / Marketing / Legal / etc. --></td>
+              <td><!-- FILL: Vendor name --></td>
+              <td><!-- FILL: What for --></td>
+              <td><!-- FILL: $X.XX --></td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">Recurring</span></td>
+              <td><!-- FILL --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Budget vs Actuals -->
+    <section class="section" id="budget-vs-actuals">
+      <h2>Budget vs Actuals</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Category</th><th>Monthly Budget</th><th>Actual (MTD)</th><th>Variance</th><th>YTD Budget</th><th>YTD Actual</th></tr></thead>
+          <tbody>
+            <!-- FILL: Budget vs actuals per category -->
+            <tr>
+              <td>Infrastructure &amp; Hosting</td>
+              <td><!-- FILL: $X --></td><td><!-- FILL: $X --></td>
+              <td style="color:var(--success);"><!-- FILL: -$X (under) --></td>
+              <td><!-- FILL --></td><td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td>People / Contractors</td>
+              <td><!-- FILL --></td><td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td><td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td>Marketing &amp; Ads</td>
+              <td><!-- FILL --></td><td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td><td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td>SaaS Tools</td>
+              <td><!-- FILL --></td><td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td><td><!-- FILL --></td>
+            </tr>
+            <tr style="font-weight:var(--weight-semibold);">
+              <td><strong>Total</strong></td>
+              <td><!-- FILL --></td><td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td><td><!-- FILL --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Burn Rate & Runway -->
+    <section class="section" id="burn-rate-runway">
+      <h2>Burn Rate &amp; Runway</h2>
+      <div class="section-placeholder">
+        <!-- FILL: Monthly burn rate trend (last 6 months), projected runway calculation.
+          Net Burn = Total Spend - Revenue
+          Runway = Cash on Hand / Net Monthly Burn
+          Include: gross burn, net burn, break-even projection (align with economics.html)
+        -->
+        <p>Document monthly burn rate trend (last 6 months), net vs gross burn, and runway calculation. Cross-reference economics.html break-even analysis.</p>
+      </div>
+    </section>
+
+    <!-- One-Time vs Recurring Split -->
+    <section class="section" id="one-time-recurring-split">
+      <h2>One-Time vs Recurring Split</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Type</th><th>Monthly Amount</th><th>% of Total</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Recurring (monthly)</td><td><!-- FILL: $X --></td><td><!-- FILL: X% --></td><td><!-- FILL --></td></tr>
+            <tr><td>One-time / occasional</td><td><!-- FILL: $X avg --></td><td><!-- FILL: X% --></td><td><!-- FILL --></td></tr>
+            <tr><td>Annual (amortized monthly)</td><td><!-- FILL: $X --></td><td><!-- FILL: X% --></td><td><!-- FILL --></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody><tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL --></td><td>Initial draft</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['expense-log','budget-vs-actuals','burn-rate-runway','one-time-recurring-split','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

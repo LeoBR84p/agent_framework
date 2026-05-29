@@ -1,0 +1,343 @@
+<!-- LLM_CONTEXT: Pitch Deck document for AIz Intel framework. The primary fundraising document. Contains: Problem, Solution, Market Size, Business Model, Traction, Team, Financials, Use of Funds, Cap Table, Comparable Valuations, and The Ask. CONSISTENCY RULES: Market size must match business_plan.html TAM/SAM/SOM. Financial figures must match economics.html. Team section must match business_plan.html team. Cap table must match investor/due_diligence.html. Update after every investor meeting. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Pitch Deck — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Investor pitch deck for PROJECT_NAME. Confidential.">
+  <title>Pitch Deck — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+  <style>
+    .pitch-section { padding: var(--space-8) 0; border-bottom: 1px solid var(--border); }
+    .pitch-section:last-of-type { border-bottom: none; }
+    .slide-number { font-size: var(--text-xs); color: var(--text-muted); font-family: var(--font-mono); margin-bottom: var(--space-2); }
+  </style>
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge investor-relations">Investor Relations</span>
+        <h1 class="doc-title">Pitch Deck</h1>
+        <p class="doc-subtitle">Fundraising pitch document. Confidential — for authorized investors only.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Slide 1: Problem -->
+    <section class="section pitch-section" id="problem">
+      <div class="slide-number">SLIDE 01 / PROBLEM</div>
+      <h2>The Problem</h2>
+      <div class="section-placeholder">
+        <!-- FILL: The problem in investor language:
+          - Specific, painful, frequent problem
+          - Market size of people affected ($X/year wasted on this)
+          - Why existing solutions fail
+          - Quote from potential customer (if available)
+          Keep to 3 key points maximum. Each point must be memorable.
+        -->
+        <p>State the problem in 3 memorable points. Quantify the pain. Reference a customer quote if available. Cross-reference idea.html problem statement.</p>
+      </div>
+    </section>
+
+    <!-- Slide 2: Solution -->
+    <section class="section pitch-section" id="solution">
+      <div class="slide-number">SLIDE 02 / SOLUTION</div>
+      <h2>Our Solution</h2>
+      <div class="section-placeholder">
+        <!-- FILL: The solution — brief and visual:
+          - One-sentence product description
+          - 3 key capabilities / differentiators
+          - Product screenshot or demo link
+          - Key insight that makes this possible now (timing)
+        -->
+        <p>Describe the solution in one sentence. List 3 key differentiators. Include product screenshot or demo link. Explain the "why now" timing insight.</p>
+      </div>
+    </section>
+
+    <!-- Slide 3: Market Size -->
+    <section class="section pitch-section" id="market-size">
+      <div class="slide-number">SLIDE 03 / MARKET SIZE</div>
+      <h2>Market Size</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-4);margin-bottom:var(--space-4);">
+        <div class="card" style="text-align:center;border-color:rgba(99,102,241,0.3);">
+          <div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-2);">TAM</div>
+          <div style="font-size:var(--text-3xl);font-weight:var(--weight-bold);color:var(--brand-primary);"><!-- FILL: $XB --></div>
+        </div>
+        <div class="card" style="text-align:center;border-color:rgba(167,139,250,0.3);">
+          <div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-2);">SAM</div>
+          <div style="font-size:var(--text-3xl);font-weight:var(--weight-bold);color:var(--brand-accent);"><!-- FILL: $XM --></div>
+        </div>
+        <div class="card" style="text-align:center;border-color:rgba(34,197,94,0.3);">
+          <div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:var(--space-2);">SOM</div>
+          <div style="font-size:var(--text-3xl);font-weight:var(--weight-bold);color:var(--success);"><!-- FILL: $XM --></div>
+        </div>
+      </div>
+      <div class="section-placeholder">
+        <!-- FILL: Market context: growth rate, macro tailwind, why this market is expanding -->
+        <p>Provide market context: growth rate (CAGR), macro tailwind, and why this market is expanding now.</p>
+      </div>
+    </section>
+
+    <!-- Slide 4: Business Model -->
+    <section class="section pitch-section" id="business-model">
+      <div class="slide-number">SLIDE 04 / BUSINESS MODEL</div>
+      <h2>Business Model</h2>
+      <div class="section-placeholder">
+        <!-- FILL: How we make money:
+          - Revenue model (SaaS, usage-based, marketplace, etc.)
+          - Pricing tiers summary (cross-reference pricing.html)
+          - Unit economics snapshot (CAC, LTV, payback period)
+          - Path to profitability
+        -->
+        <p>Summarize revenue model, pricing tiers, and unit economics. Show the path to profitability.</p>
+      </div>
+    </section>
+
+    <!-- Slide 5: Traction -->
+    <section class="section pitch-section" id="traction">
+      <div class="slide-number">SLIDE 05 / TRACTION</div>
+      <h2>Traction</h2>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">MRR</div>
+          <div class="metric-value"><!-- FILL --></div>
+          <div class="metric-delta positive"><!-- FILL: MoM growth --></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Customers</div>
+          <div class="metric-value"><!-- FILL --></div>
+          <div class="metric-delta positive"><!-- FILL --></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">NPS</div>
+          <div class="metric-value"><!-- FILL --></div>
+          <div class="metric-delta neutral"><!-- FILL: sample size --></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Churn</div>
+          <div class="metric-value"><!-- FILL -->%</div>
+          <div class="metric-delta neutral">monthly</div>
+        </div>
+      </div>
+      <div class="section-placeholder" style="margin-top:var(--space-4);">
+        <!-- FILL: Key traction milestones:
+          - Revenue milestones (first $1K MRR, first $10K MRR)
+          - Notable customers or logos
+          - Partnerships signed
+          - Press coverage
+          - Awards or recognition
+        -->
+        <p>List key traction milestones: revenue milestones, notable customers/logos, partnerships, press.</p>
+      </div>
+    </section>
+
+    <!-- Slide 6: Team -->
+    <section class="section pitch-section" id="team">
+      <div class="slide-number">SLIDE 06 / TEAM</div>
+      <h2>Team</h2>
+      <div class="contact-grid">
+        <!-- FILL: Founder/key team cards. Cross-reference business_plan.html team section. -->
+        <div class="contact-card">
+          <div class="contact-card-header">
+            <div class="contact-avatar"><!-- FILL: Initials --></div>
+            <div>
+              <div class="contact-name"><!-- FILL: Name --></div>
+              <div class="contact-role"><!-- FILL: CEO / CTO --></div>
+            </div>
+          </div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);">
+            <!-- FILL: 2–3 sentence bio highlighting relevant experience. What makes this person uniquely qualified? -->
+          </div>
+          <div class="contact-field" style="margin-top:var(--space-3);">
+            <span class="contact-field-label">Previously</span>
+            <span class="contact-field-value"><!-- FILL: Previous company / role --></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 7: Financials -->
+    <section class="section pitch-section" id="financials">
+      <div class="slide-number">SLIDE 07 / FINANCIALS</div>
+      <h2>Financials</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">See <a href="../business/economics.html">economics.html</a> for full projections and assumptions.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Metric</th><th><!-- FILL: Year 1 --></th><th><!-- FILL: Year 2 --></th><th><!-- FILL: Year 3 --></th></tr></thead>
+          <tbody>
+            <tr><td>ARR</td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td></tr>
+            <tr><td>Gross Margin</td><td><!-- FILL -->%</td><td><!-- FILL -->%</td><td><!-- FILL -->%</td></tr>
+            <tr><td>Burn Rate</td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td></tr>
+            <tr><td>EBITDA</td><td><!-- FILL --></td><td><!-- FILL --></td><td><!-- FILL --></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Slide 8: Use of Funds -->
+    <section class="section pitch-section" id="use-of-funds">
+      <div class="slide-number">SLIDE 08 / USE OF FUNDS</div>
+      <h2>Use of Funds</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Category</th><th>Allocation</th><th>Amount</th><th>Milestone Enabled</th></tr></thead>
+          <tbody>
+            <!-- FILL: How the raised capital will be deployed -->
+            <tr>
+              <td><!-- FILL: e.g., Engineering (hire 2 devs) --></td>
+              <td><!-- FILL: X% --></td>
+              <td><!-- FILL: $X --></td>
+              <td><!-- FILL: e.g., Launch v2.0 --></td>
+            </tr>
+            <tr>
+              <td><!-- FILL: e.g., Sales & Marketing --></td>
+              <td><!-- FILL: X% --></td>
+              <td><!-- FILL: $X --></td>
+              <td><!-- FILL: e.g., Reach $50K MRR --></td>
+            </tr>
+            <tr>
+              <td><!-- FILL: e.g., Operations / Legal --></td>
+              <td><!-- FILL: X% --></td>
+              <td><!-- FILL: $X --></td>
+              <td><!-- FILL: e.g., Compliance, scale infra --></td>
+            </tr>
+            <tr style="font-weight:var(--weight-semibold);">
+              <td><strong>Total Raise</strong></td>
+              <td>100%</td>
+              <td><!-- FILL: $X --></td>
+              <td><!-- FILL: X months of runway --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Slide 9: Cap Table -->
+    <section class="section pitch-section" id="cap-table">
+      <div class="slide-number">SLIDE 09 / CAP TABLE</div>
+      <h2>Cap Table</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Stakeholder</th><th>Type</th><th>Shares</th><th>% Ownership</th><th>Notes</th></tr></thead>
+          <tbody>
+            <!-- FILL: Current cap table pre-raise -->
+            <tr>
+              <td><!-- FILL: Founder 1 --></td>
+              <td>Common</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL: X% --></td>
+              <td><!-- FILL: vesting schedule --></td>
+            </tr>
+            <tr>
+              <td><!-- FILL: Founder 2 --></td>
+              <td>Common</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL: X% --></td>
+              <td><!-- FILL --></td>
+            </tr>
+            <tr>
+              <td>Option Pool</td>
+              <td>Options</td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL: X% --></td>
+              <td><!-- FILL: Authorized but unissued --></td>
+            </tr>
+            <tr style="font-weight:var(--weight-semibold);">
+              <td><strong>Total (Pre-Money)</strong></td>
+              <td></td>
+              <td><!-- FILL --></td>
+              <td>100%</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Slide 10: Comparable Valuations -->
+    <section class="section pitch-section" id="comparable-valuations">
+      <div class="slide-number">SLIDE 10 / COMPARABLES</div>
+      <h2>Comparable Valuations</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Company</th><th>Stage</th><th>ARR at Raise</th><th>Valuation</th><th>ARR Multiple</th><th>Relevance</th></tr></thead>
+          <tbody>
+            <!-- FILL: List comparable companies at similar stages and their valuation multiples -->
+            <tr>
+              <td><!-- FILL: Company name --></td>
+              <td><!-- FILL: Seed / Series A --></td>
+              <td><!-- FILL: $XM --></td>
+              <td><!-- FILL: $XM --></td>
+              <td><!-- FILL: Xx --></td>
+              <td><!-- FILL: Why comparable --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Slide 11: The Ask -->
+    <section class="section pitch-section" id="the-ask">
+      <div class="slide-number">SLIDE 11 / THE ASK</div>
+      <h2>The Ask</h2>
+      <div class="card" style="background:linear-gradient(135deg,var(--brand-glow),transparent);border-color:rgba(99,102,241,0.3);text-align:center;padding:var(--space-10);">
+        <div style="font-size:var(--text-4xl);font-weight:var(--weight-bold);color:var(--brand-primary);margin-bottom:var(--space-4);"><!-- FILL: $X00K / $XM --></div>
+        <div style="font-size:var(--text-xl);color:var(--text-secondary);margin-bottom:var(--space-6);"><!-- FILL: Round type — e.g., Pre-Seed / Seed / Series A --></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-4);max-width:600px;margin:0 auto;">
+          <div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);">INSTRUMENT</div>
+            <div style="font-weight:var(--weight-semibold);color:var(--text-primary);"><!-- FILL: SAFE / Convertible Note / Equity --></div>
+          </div>
+          <div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);">VALUATION CAP</div>
+            <div style="font-weight:var(--weight-semibold);color:var(--text-primary);"><!-- FILL: $XM --></div>
+          </div>
+          <div>
+            <div style="font-size:var(--text-xs);color:var(--text-muted);">RUNWAY</div>
+            <div style="font-weight:var(--weight-semibold);color:var(--text-primary);"><!-- FILL: X months --></div>
+          </div>
+        </div>
+      </div>
+      <div class="section-placeholder" style="margin-top:var(--space-4);">
+        <!-- FILL: Context for the ask:
+          - What milestones this capital achieves
+          - Why raise now (timing)
+          - What happens if you don't raise (path to revenue/profitability without external capital)
+          - Investor fit criteria (what kind of investor are you looking for beyond the check size)
+        -->
+        <p>Explain why this amount, why now, what milestones it achieves, and what ideal investor fit looks like beyond just the check size.</p>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody><tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL --></td><td>Initial draft</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['problem','solution','market-size','business-model','traction','team','financials','use-of-funds','cap-table','comparable-valuations','the-ask','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

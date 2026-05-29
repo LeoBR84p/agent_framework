@@ -1,0 +1,207 @@
+<!-- LLM_CONTEXT: Zero to Hero onboarding document for AIz Intel framework. The definitive developer setup guide — from zero to running the full stack locally. Contains environment setup, bootstrap command sequence, architecture decisions log, and gotchas/workarounds. Keep this document current — outdated setup docs waste developer time. Every command should be copy-pasteable and tested. When a gotcha is discovered, add it immediately. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Zero to Hero — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Complete developer onboarding guide: environment setup, bootstrap commands, and gotchas.">
+  <title>Zero to Hero — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge technology">Technology</span>
+        <h1 class="doc-title">Zero to Hero</h1>
+        <p class="doc-subtitle">Complete developer onboarding: from zero to a fully running local environment with all services connected.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Environment Setup -->
+    <section class="section" id="environment-setup">
+      <h2>Environment Setup</h2>
+      <h3>Prerequisites</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Tool</th><th>Version</th><th>Install Command / Link</th><th>Notes</th></tr></thead>
+          <tbody>
+            <!-- FILL: List all required tools and versions -->
+            <tr><td><code>Node.js</code></td><td><!-- FILL: e.g., v20.x LTS --></td><td><code>nvm install 20</code></td><td><!-- FILL: any notes --></td></tr>
+            <tr><td><code><!-- FILL --></code></td><td><!-- FILL --></td><td><code><!-- FILL --></code></td><td><!-- FILL --></td></tr>
+            <tr><td><code><!-- FILL --></code></td><td><!-- FILL --></td><td><code><!-- FILL --></code></td><td><!-- FILL --></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Environment Variables</h3>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-3);">Copy <code>.env.example</code> to <code>.env.local</code> and fill in values. Never commit <code>.env.local</code>.</p>
+      <pre><!-- FILL: List all required environment variables with descriptions
+# Authentication
+FIREBASE_API_KEY=
+FIREBASE_AUTH_DOMAIN=
+FIREBASE_PROJECT_ID=
+
+# Database
+DATABASE_URL=
+
+# Payments
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+
+# External APIs
+# FILL: Add all required env vars with descriptive comments
+--></pre>
+
+      <h3>Service Accounts &amp; Access</h3>
+      <div class="section-placeholder">
+        <!-- FILL: List all external accounts needed with who to contact for access:
+          - Firebase project access: contact [name]
+          - Database credentials: stored in [location]
+          - Stripe test keys: available at [URL]
+          - etc.
+        -->
+        <p>List all external service accounts needed and who to contact for access credentials.</p>
+      </div>
+    </section>
+
+    <!-- Bootstrap Command Sequence -->
+    <section class="section" id="bootstrap-command-sequence">
+      <h2>Bootstrap Command Sequence</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Run these commands in order. Each step must complete successfully before proceeding.</p>
+
+      <h3>Step 1: Clone and Install</h3>
+      <pre><!-- FILL: Copy-pasteable commands
+# Clone the repository
+git clone https://github.com/YOUR_ORG/YOUR_REPO.git
+cd YOUR_REPO
+
+# Install dependencies
+npm install  # or: pnpm install / yarn install
+
+# Copy environment file
+cp .env.example .env.local
+# Edit .env.local with your credentials
+--></pre>
+
+      <h3>Step 2: Database Setup</h3>
+      <pre><!-- FILL: Database initialization commands
+# Start local database (if using Docker)
+docker-compose up -d db
+
+# Run migrations
+npm run db:migrate
+
+# Seed development data
+npm run db:seed
+--></pre>
+
+      <h3>Step 3: Start Development Server</h3>
+      <pre><!-- FILL: Start commands
+# Start all services
+npm run dev
+
+# Or individual services:
+npm run dev:frontend  # http://localhost:3000
+npm run dev:backend   # http://localhost:8000
+--></pre>
+
+      <h3>Step 4: Verify Setup</h3>
+      <div class="section-placeholder">
+        <!-- FILL: List the checks to verify the setup is working:
+          - Open http://localhost:3000 and see [expected page]
+          - Sign in with Google and verify auth works
+          - Create a test record and verify it appears in DB
+          - etc.
+        -->
+        <p>List 3–5 verification steps to confirm the setup is working correctly.</p>
+      </div>
+    </section>
+
+    <!-- Architecture Decisions Log -->
+    <section class="section" id="architecture-decisions-log">
+      <h2>Architecture Decisions Log</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Key architectural decisions made during development. Context and reasoning preserved for future reference. See also: <a href="tech_plan.html#stack-decision-log">tech_plan.html Stack Decision Log</a>.</p>
+      <div style="display:flex;flex-direction:column;gap:var(--space-4);">
+        <!-- FILL: Add one block per architectural decision (ADR format) -->
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:var(--space-3);">
+            <div>
+              <span style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--text-muted);">ADR-001 · <!-- FILL: YYYY-MM-DD --></span>
+              <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-top:2px;"><!-- FILL: Decision title --></div>
+            </div>
+            <span class="badge" style="background:var(--success-bg);color:var(--success);">Accepted</span>
+          </div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);">
+            <div style="font-weight:var(--weight-medium);color:var(--text-primary);margin-bottom:var(--space-2);">Context</div>
+            <p><!-- FILL: What situation led to this decision --></p>
+            <div style="font-weight:var(--weight-medium);color:var(--text-primary);margin:var(--space-3) 0 var(--space-2);">Decision</div>
+            <p><!-- FILL: What was decided --></p>
+            <div style="font-weight:var(--weight-medium);color:var(--text-primary);margin:var(--space-3) 0 var(--space-2);">Consequences</div>
+            <p><!-- FILL: What becomes easier or harder as a result --></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gotchas & Workarounds -->
+    <section class="section" id="gotchas-workarounds">
+      <h2>Gotchas &amp; Workarounds</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Known issues, non-obvious behaviors, and workarounds. Add new entries as they are discovered.</p>
+      <div style="display:flex;flex-direction:column;gap:var(--space-4);">
+        <!-- FILL: Add one card per gotcha -->
+        <div class="card" style="border-left:3px solid var(--warning);">
+          <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2);">
+            <span style="font-size:var(--text-lg);">⚠️</span>
+            <div style="font-weight:var(--weight-semibold);color:var(--text-primary);"><!-- FILL: Gotcha title --></div>
+          </div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3);"><!-- FILL: What happens / symptoms --></div>
+          <div style="font-size:var(--text-xs);font-weight:bold;color:var(--text-muted);margin-bottom:var(--space-2);">WORKAROUND</div>
+          <pre style="font-size:var(--text-xs);"><!-- FILL: Copy-pasteable workaround or command --></pre>
+          <div style="margin-top:var(--space-2);font-size:var(--text-xs);color:var(--text-muted);">Discovered: <!-- FILL: date --> · <!-- FILL: by whom --></div>
+        </div>
+        <div class="card" style="border-left:3px solid var(--info);">
+          <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2);">
+            <span style="font-size:var(--text-lg);">💡</span>
+            <div style="font-weight:var(--weight-semibold);color:var(--text-primary);"><!-- FILL: Tip/Non-obvious behavior title --></div>
+          </div>
+          <div style="font-size:var(--text-sm);color:var(--text-secondary);"><!-- FILL: Explanation --></div>
+          <div style="margin-top:var(--space-2);font-size:var(--text-xs);color:var(--text-muted);">Added: <!-- FILL: date --></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['environment-setup','bootstrap-command-sequence','architecture-decisions-log','gotchas-workarounds','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

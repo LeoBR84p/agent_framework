@@ -1,0 +1,305 @@
+<!-- LLM_CONTEXT: Due diligence checklist for investor review. Accessible from the investor portal (investor/index.html). Covers legal, financial, technical, team, market, and product categories. Each item has a status: Provided | Pending | N/A. Update statuses as materials become available. This doc is shown to investors — keep it current and professional. Cross-reference with investor-relations/pitch.html for consistency. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Due Diligence — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Due diligence materials checklist for investor review.">
+  <title>Due Diligence — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+  <style>
+    .dd-category { margin-bottom: var(--space-8); }
+    .dd-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: var(--space-4);
+      align-items: center;
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .dd-row:last-child { border-bottom: none; }
+    .dd-row:hover { background: var(--card); border-radius: var(--radius-md); }
+    .dd-item-name { font-size: var(--text-sm); color: var(--text-primary); font-weight: var(--weight-medium); }
+    .dd-item-note { font-size: var(--text-xs); color: var(--text-muted); margin-top: 2px; }
+    .dd-status-provided { background: var(--success-bg); color: var(--success); border: 1px solid rgba(34,197,94,0.2); }
+    .dd-status-pending  { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(245,158,11,0.2); }
+    .dd-status-na       { background: var(--card); color: var(--text-muted); border: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle" aria-label="Toggle navigation">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge investor">Investor</span>
+        <h1 class="doc-title">Due Diligence</h1>
+        <p class="doc-subtitle">Comprehensive checklist of materials available for investor review. Updated as documents are prepared and provided.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="in-progress">In Progress</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections">
+        <summary>Required Sections Checklist</summary>
+        <ul id="required-sections-list"></ul>
+      </details>
+    </header>
+
+    <!-- DD Legend -->
+    <div style="display:flex;gap:var(--space-4);flex-wrap:wrap;margin-bottom:var(--space-8);">
+      <div style="display:flex;align-items:center;gap:var(--space-2);">
+        <span class="badge dd-status-provided">Provided</span>
+        <span style="font-size:var(--text-sm);color:var(--text-secondary);">Material available</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:var(--space-2);">
+        <span class="badge dd-status-pending">Pending</span>
+        <span style="font-size:var(--text-sm);color:var(--text-secondary);">In preparation</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:var(--space-2);">
+        <span class="badge dd-status-na">N/A</span>
+        <span style="font-size:var(--text-sm);color:var(--text-secondary);">Not applicable</span>
+      </div>
+    </div>
+
+    <!-- Legal -->
+    <section class="section" id="legal">
+      <h2>Legal</h2>
+      <div class="card dd-category">
+        <div class="dd-row">
+          <div><div class="dd-item-name">Certificate of Incorporation</div><div class="dd-item-note"><!-- FILL: incorporation jurisdiction, date --></div></div>
+          <span class="badge dd-status-pending">Pending</span><!-- FILL: change to Provided when available -->
+          <a href="#" class="btn btn-ghost btn-sm" style="display:none">View</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Cap Table</div><div class="dd-item-note"><!-- FILL: current cap table version --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Founder Agreements &amp; Vesting Schedules</div><div class="dd-item-note"><!-- FILL: cliff, vesting period --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">IP Assignment Agreements</div><div class="dd-item-note">All founders and employees signed</div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Customer Contracts / MSA Template</div><div class="dd-item-note"><!-- FILL: contract type --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Terms of Service &amp; Privacy Policy</div><div class="dd-item-note">Published and LGPD/GDPR compliant</div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../operations/terms_of_service.html" class="btn btn-ghost btn-sm">View ToS</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Open Source License Compliance</div><div class="dd-item-note"><!-- FILL: key dependencies and licenses --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Litigation History</div><div class="dd-item-note"><!-- FILL: none / describe if any --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Financial -->
+    <section class="section" id="financial">
+      <h2>Financial</h2>
+      <div class="card dd-category">
+        <div class="dd-row">
+          <div><div class="dd-item-name">Financial Projections (3–5 year)</div><div class="dd-item-note"><!-- FILL: projection date --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../business/economics.html" class="btn btn-ghost btn-sm">View</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Bank Statements (last 3 months)</div><div class="dd-item-note"><!-- FILL: period covered --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Current Burn Rate &amp; Runway</div><div class="dd-item-note"><!-- FILL: monthly burn, runway months --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../operations/cost_tracking.html" class="btn btn-ghost btn-sm">View</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Revenue &amp; MRR Breakdown</div><div class="dd-item-note"><!-- FILL: MRR, customer count --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Unit Economics (CAC, LTV, Churn)</div><div class="dd-item-note"><!-- FILL: current values --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../business/economics.html" class="btn btn-ghost btn-sm">View</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Prior Funding &amp; Use of Funds</div><div class="dd-item-note"><!-- FILL: prior rounds, amounts --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical -->
+    <section class="section" id="technical">
+      <h2>Technical</h2>
+      <div class="card dd-category">
+        <div class="dd-row">
+          <div><div class="dd-item-name">Architecture Overview</div><div class="dd-item-note"><!-- FILL: tech stack summary --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../technology/tech_plan.html" class="btn btn-ghost btn-sm">View</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Security &amp; Data Protection</div><div class="dd-item-note"><!-- FILL: encryption, auth, compliance --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Uptime &amp; SLA Commitments</div><div class="dd-item-note"><!-- FILL: SLA targets --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../operations/dpa_sla.html" class="btn btn-ghost btn-sm">View SLA</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Database Schema &amp; Data Model</div><div class="dd-item-note"><!-- FILL: primary data entities --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../technology/db_schema.html" class="btn btn-ghost btn-sm">View</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Disaster Recovery Plan</div><div class="dd-item-note"><!-- FILL: RTO/RPO targets --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../technology/disaster_recovery.html" class="btn btn-ghost btn-sm">View</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Code Repository Access</div><div class="dd-item-note"><!-- FILL: GitHub org/repo --></div></div>
+          <span class="badge dd-status-na">N/A</span>
+          <span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section class="section" id="team">
+      <h2>Team</h2>
+      <div class="card dd-category">
+        <div class="dd-row">
+          <div><div class="dd-item-name">Founder Bios &amp; LinkedIn Profiles</div><div class="dd-item-note"><!-- FILL: founder names --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../investor-relations/pitch.html#team" class="btn btn-ghost btn-sm">View</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Advisor Agreements</div><div class="dd-item-note"><!-- FILL: advisors, equity --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Employee / Contractor List</div><div class="dd-item-note"><!-- FILL: headcount, roles --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Reference Contacts</div><div class="dd-item-note"><!-- FILL: available on request --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Market -->
+    <section class="section" id="market">
+      <h2>Market</h2>
+      <div class="card dd-category">
+        <div class="dd-row">
+          <div><div class="dd-item-name">TAM / SAM / SOM Analysis</div><div class="dd-item-note"><!-- FILL: market size figures --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../business/business_plan.html" class="btn btn-ghost btn-sm">View</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Competitor Landscape</div><div class="dd-item-note"><!-- FILL: key competitors --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../business/competitor_analysis.html" class="btn btn-ghost btn-sm">View</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Market Research Sources</div><div class="dd-item-note"><!-- FILL: research sources, date --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Customer Validation / Interviews</div><div class="dd-item-note"><!-- FILL: number of interviews, insights --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product -->
+    <section class="section" id="product">
+      <h2>Product</h2>
+      <div class="card dd-category">
+        <div class="dd-row">
+          <div><div class="dd-item-name">Live Product Demo</div><div class="dd-item-note"><!-- FILL: demo URL or contact --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">User Metrics &amp; Engagement Data</div><div class="dd-item-note"><!-- FILL: DAU, WAU, retention --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Customer Testimonials / Case Studies</div><div class="dd-item-note"><!-- FILL: reference customers --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">Product Roadmap</div><div class="dd-item-note"><!-- FILL: next 12-month milestones --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <a href="../technology/roadmap.html" class="btn btn-ghost btn-sm">View</a>
+        </div>
+        <div class="dd-row">
+          <div><div class="dd-item-name">NPS Score</div><div class="dd-item-note"><!-- FILL: current NPS, sample size --></div></div>
+          <span class="badge dd-status-pending">Pending</span>
+          <span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <!-- FILL: Add changelog entries -->
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author name --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.FIREBASE_CONFIG = {
+      apiKey: "FILL_API_KEY", authDomain: "FILL_PROJECT_ID.firebaseapp.com",
+      projectId: "FILL_PROJECT_ID", storageBucket: "FILL_PROJECT_ID.appspot.com",
+      messagingSenderId: "FILL_SENDER_ID", appId: "FILL_APP_ID"
+    };
+    window.PAGE_REQUIRED_SECTIONS = ['legal','financial','technical','team','market','product','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!-- LLM_CONTEXT: Launch Plan document for AIz Intel framework. Contains launch phases timeline, early adopter strategy, paid vs organic channels, partnership strategy, and ad/social media campaigns. Must align with: marketing.html (ICP and channels), economics.html (CAC budgets), business_plan.html (channels block in BMC). When updating launch phases, synchronize with technology/roadmap.html milestones. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Launch Plan — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Go-to-market strategy: launch phases, channels, early adopters, and campaigns.">
+  <title>Launch Plan — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+  <style>
+    .phase-timeline { display:flex; flex-direction:column; gap:var(--space-6); margin-bottom:var(--space-6); }
+    .phase { display:grid; grid-template-columns:120px 1fr; gap:var(--space-6); align-items:start; }
+    .phase-label { text-align:right; }
+    .phase-num { font-size:var(--text-2xl); font-weight:var(--weight-bold); color:var(--brand-primary); }
+    .phase-date { font-size:var(--text-xs); color:var(--text-muted); margin-top:2px; }
+    .phase-content { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-xl); padding:var(--space-5); border-left:3px solid var(--brand-primary); }
+    .phase-title { font-size:var(--text-lg); font-weight:var(--weight-semibold); color:var(--text-primary); margin-bottom:var(--space-2); }
+    @media(max-width:768px) { .phase { grid-template-columns:1fr; } .phase-label { text-align:left; } }
+  </style>
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge business">Business</span>
+        <h1 class="doc-title">Launch Plan</h1>
+        <p class="doc-subtitle">Go-to-market strategy: phased launch timeline, early adopter playbook, channel strategy, and campaign planning.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Launch Phases Timeline -->
+    <section class="section" id="launch-phases">
+      <h2>Launch Phases Timeline</h2>
+      <div class="phase-timeline">
+        <!-- FILL: Define 3–5 launch phases with dates, goals, and success metrics -->
+        <div class="phase">
+          <div class="phase-label">
+            <div class="phase-num">Phase 1</div>
+            <div class="phase-date"><!-- FILL: e.g., Jan–Feb 2025 --></div>
+          </div>
+          <div class="phase-content">
+            <div class="phase-title"><!-- FILL: Phase name, e.g., "Private Beta / Friends & Family" --></div>
+            <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3);"><!-- FILL: Description of this phase --></p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+              <div>
+                <div style="font-size:var(--text-xs);font-weight:bold;color:var(--text-muted);margin-bottom:var(--space-2);">Goals</div>
+                <ul style="font-size:var(--text-sm);color:var(--text-secondary);">
+                  <!-- FILL: Phase goals -->
+                  <li><!-- FILL --></li>
+                  <li><!-- FILL --></li>
+                </ul>
+              </div>
+              <div>
+                <div style="font-size:var(--text-xs);font-weight:bold;color:var(--text-muted);margin-bottom:var(--space-2);">Success Metrics</div>
+                <ul style="font-size:var(--text-sm);color:var(--text-secondary);">
+                  <!-- FILL: Measurable success criteria for this phase -->
+                  <li><!-- FILL: e.g., "25 active beta users" --></li>
+                  <li><!-- FILL --></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">
+            <div class="phase-num">Phase 2</div>
+            <div class="phase-date"><!-- FILL: dates --></div>
+          </div>
+          <div class="phase-content">
+            <div class="phase-title"><!-- FILL: Phase name, e.g., "Public Launch / Product Hunt" --></div>
+            <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3);"><!-- FILL: Description --></p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+              <div>
+                <div style="font-size:var(--text-xs);font-weight:bold;color:var(--text-muted);margin-bottom:var(--space-2);">Goals</div>
+                <ul style="font-size:var(--text-sm);color:var(--text-secondary);"><li><!-- FILL --></li></ul>
+              </div>
+              <div>
+                <div style="font-size:var(--text-xs);font-weight:bold;color:var(--text-muted);margin-bottom:var(--space-2);">Success Metrics</div>
+                <ul style="font-size:var(--text-sm);color:var(--text-secondary);"><li><!-- FILL --></li></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">
+            <div class="phase-num">Phase 3</div>
+            <div class="phase-date"><!-- FILL: dates --></div>
+          </div>
+          <div class="phase-content">
+            <div class="phase-title"><!-- FILL: Phase name, e.g., "Growth / Paid Acquisition" --></div>
+            <p style="font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:var(--space-3);"><!-- FILL: Description --></p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+              <div>
+                <div style="font-size:var(--text-xs);font-weight:bold;color:var(--text-muted);margin-bottom:var(--space-2);">Goals</div>
+                <ul style="font-size:var(--text-sm);color:var(--text-secondary);"><li><!-- FILL --></li></ul>
+              </div>
+              <div>
+                <div style="font-size:var(--text-xs);font-weight:bold;color:var(--text-muted);margin-bottom:var(--space-2);">Success Metrics</div>
+                <ul style="font-size:var(--text-sm);color:var(--text-secondary);"><li><!-- FILL --></li></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Early Adopter Strategy -->
+    <section class="section" id="early-adopter-strategy">
+      <h2>Early Adopter Strategy</h2>
+      <div class="section-placeholder">
+        <!-- FILL: How will you find, recruit, and retain early adopters?
+          Include:
+          - Target profile for ideal early adopter (not just any user)
+          - Where to find them (communities, LinkedIn, Slack groups, events)
+          - Incentives offered (discount, lifetime deal, advisory role)
+          - Feedback loop: how will early adopters inform product development?
+          - Target number: how many early adopters needed for validation?
+          - Concierge approach: any white-glove onboarding planned?
+        -->
+        <p>Define the ideal early adopter profile, where to find them, incentives offered, and how their feedback feeds back into product development.</p>
+      </div>
+    </section>
+
+    <!-- Paid vs Organic Channels -->
+    <section class="section" id="paid-vs-organic-channels">
+      <h2>Paid vs Organic Channels</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Channel</th><th>Type</th><th>Monthly Budget</th><th>Target CAC</th><th>Expected Volume</th><th>Priority</th><th>Status</th></tr></thead>
+          <tbody>
+            <!-- FILL: List all customer acquisition channels -->
+            <tr>
+              <td><!-- FILL: e.g., Google Ads --></td>
+              <td><span class="badge" style="background:var(--warning-bg);color:var(--warning);">Paid</span></td>
+              <td><!-- FILL: $X/mo --></td>
+              <td><!-- FILL: $X --></td>
+              <td><!-- FILL: X leads/mo --></td>
+              <td><!-- FILL: P0/P1/P2 --></td>
+              <td><span class="status-badge" data-status="draft">Planned</span></td>
+            </tr>
+            <tr>
+              <td><!-- FILL: e.g., SEO / Content --></td>
+              <td><span class="badge" style="background:var(--success-bg);color:var(--success);">Organic</span></td>
+              <td><!-- FILL: $0 / $X content budget --></td>
+              <td><!-- FILL: $X --></td>
+              <td><!-- FILL: X/mo --></td>
+              <td><!-- FILL --></td>
+              <td><span class="status-badge" data-status="draft">Planned</span></td>
+            </tr>
+            <tr>
+              <td><!-- FILL: e.g., LinkedIn Outbound --></td>
+              <td><span class="badge" style="background:var(--info-bg);color:var(--info);">Outbound</span></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><!-- FILL --></td>
+              <td><span class="status-badge" data-status="draft">Planned</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Partnership Strategy -->
+    <section class="section" id="partnership-strategy">
+      <h2>Partnership Strategy</h2>
+      <div class="section-placeholder">
+        <!-- FILL: Strategic partnerships that accelerate distribution or add value.
+          Include:
+          - Integration partners (tools your users already use)
+          - Distribution partners (sell alongside or bundle with)
+          - Referral partners (complementary businesses)
+          - Technology partners (APIs, data providers)
+          - For each: target partner, value exchange, current status
+        -->
+        <p>List strategic partnership opportunities: integration, distribution, referral, and technology partners. For each, describe the value exchange and target status.</p>
+      </div>
+    </section>
+
+    <!-- Ad Campaign & Social Media -->
+    <section class="section" id="ad-campaign-social-media">
+      <h2>Ad Campaign &amp; Social Media Strategy</h2>
+      <div class="section-placeholder">
+        <!-- FILL: Paid ad and organic social media plan.
+          Cover:
+          - Platform selection and rationale (why these platforms for this ICP)
+          - Ad creative strategy (hooks, formats, A/B tests planned)
+          - Organic social content calendar overview (see marketing.html for full calendar)
+          - Community building approach (subreddits, Discord, LinkedIn groups)
+          - Influencer / creator partnerships (if any)
+          - Budget allocation per platform
+          - KPIs: CPL, ROAS, impressions, engagement rate targets
+        -->
+        <p>Describe platform selection, ad creative strategy, organic content approach, community strategy, and per-platform budget and KPI targets.</p>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['launch-phases','early-adopter-strategy','paid-vs-organic-channels','partnership-strategy','ad-campaign-social-media','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

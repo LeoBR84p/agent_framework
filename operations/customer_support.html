@@ -1,0 +1,164 @@
+<!-- LLM_CONTEXT: Customer Support document for AIz Intel framework. Contains support tiers/SLAs, FAQ template, escalation chain, and refund/cancellation policy. SLA response times must align with operations/dpa_sla.html. Update FAQ as new questions emerge. Escalation chain must match disaster_recovery.html escalation matrix. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Customer Support — PROJECT_NAME | AIz Intel">
+  <title>Customer Support — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge operations">Operations</span>
+        <h1 class="doc-title">Customer Support</h1>
+        <p class="doc-subtitle">Support tiers, SLAs, FAQ template, escalation chain, and refund policy.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Support Tiers & SLAs -->
+    <section class="section" id="support-tiers-slas">
+      <h2>Support Tiers &amp; SLAs</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Tier</th><th>Plan</th><th>Channels</th><th>First Response</th><th>Resolution Target</th><th>Hours</th></tr></thead>
+          <tbody>
+            <!-- FILL: Define support tiers matching your pricing tiers -->
+            <tr>
+              <td><strong>Community</strong></td>
+              <td>Free</td>
+              <td>Community forum, docs</td>
+              <td>Best effort</td>
+              <td>Best effort</td>
+              <td>Community-driven</td>
+            </tr>
+            <tr>
+              <td><strong>Standard</strong></td>
+              <td><!-- FILL: Pro tier --></td>
+              <td>Email, in-app chat</td>
+              <td><!-- FILL: e.g., 24 hours --></td>
+              <td><!-- FILL: e.g., 3 business days --></td>
+              <td><!-- FILL: e.g., Business hours --></td>
+            </tr>
+            <tr>
+              <td><strong>Priority</strong></td>
+              <td><!-- FILL: Enterprise tier --></td>
+              <td>Email, chat, dedicated Slack</td>
+              <td><!-- FILL: e.g., 4 hours --></td>
+              <td><!-- FILL: e.g., Same business day --></td>
+              <td><!-- FILL: 24/5 --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FAQ Template -->
+    <section class="section" id="faq-template">
+      <h2>FAQ Template</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Add questions as they come in from customers. Most common questions should be addressed in product documentation.</p>
+      <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+        <!-- FILL: Add Q&A pairs as they come in from customer support -->
+        <details class="required-sections" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);">
+          <summary style="padding:var(--space-4);font-weight:var(--weight-medium);color:var(--text-primary);cursor:pointer;">
+            <!-- FILL: Q1 — e.g., "How do I cancel my subscription?" -->
+          </summary>
+          <div style="padding:0 var(--space-4) var(--space-4);">
+            <p style="color:var(--text-secondary);font-size:var(--text-sm);"><!-- FILL: Answer --></p>
+          </div>
+        </details>
+        <details class="required-sections" style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);">
+          <summary style="padding:var(--space-4);font-weight:var(--weight-medium);color:var(--text-primary);cursor:pointer;">
+            <!-- FILL: Q2 -->
+          </summary>
+          <div style="padding:0 var(--space-4) var(--space-4);">
+            <p style="color:var(--text-secondary);font-size:var(--text-sm);"><!-- FILL: Answer --></p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Escalation Chain -->
+    <section class="section" id="escalation-chain">
+      <h2>Escalation Chain</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Level</th><th>Role</th><th>Contact</th><th>When to Escalate</th><th>Response Time</th></tr></thead>
+          <tbody>
+            <!-- FILL: Define escalation chain -->
+            <tr>
+              <td>L1</td>
+              <td><!-- FILL: e.g., Support Agent / Bot --></td>
+              <td><!-- FILL: channel --></td>
+              <td>All incoming tickets</td>
+              <td><!-- FILL: 24h --></td>
+            </tr>
+            <tr>
+              <td>L2</td>
+              <td><!-- FILL: e.g., Senior Support / Product Manager --></td>
+              <td><!-- FILL: contact --></td>
+              <td>L1 unresolved after 2 days, billing issues</td>
+              <td><!-- FILL: 4h --></td>
+            </tr>
+            <tr>
+              <td>L3</td>
+              <td><!-- FILL: e.g., CTO / CEO --></td>
+              <td><!-- FILL: contact --></td>
+              <td>Outages, data issues, angry enterprise customers</td>
+              <td><!-- FILL: 1h --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Refund & Cancellation Policy -->
+    <section class="section" id="refund-cancellation-policy">
+      <h2>Refund &amp; Cancellation Policy</h2>
+      <div class="section-placeholder">
+        <!-- FILL: Define refund and cancellation policy:
+          - Cancellation process: how to cancel, when takes effect
+          - Refund window: e.g., 30-day money-back guarantee
+          - Pro-rated refunds: yes/no, under what conditions
+          - Annual plan refunds: partial refund policy
+          - Exceptions: fraud, abuse, violations
+          - Process: who approves, how long it takes
+          - Cross-reference: terms_of_service.html termination section
+        -->
+        <p>Define the refund window, cancellation process, pro-rated refunds, annual plan policy, and exceptions. Cross-reference terms_of_service.html.</p>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody><tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL --></td><td>Initial draft</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['support-tiers-slas','faq-template','escalation-chain','refund-cancellation-policy','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

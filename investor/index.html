@@ -1,0 +1,262 @@
+<!-- LLM_CONTEXT: External investor landing page for AIz Intel framework. PUBLIC — no Firebase auth required. NDA acceptance gate stored in localStorage. Shows project name, tagline, stage, and links to investor-visible documents only (pitch, economics, pricing, due_diligence). Clean, professional presentation for investors. NDA must be re-accepted on every new browser session. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Investor Overview — PROJECT_NAME">
+  <meta property="og:description" content="Confidential investor materials for PROJECT_NAME. NDA acceptance required.">
+  <title>Investor Overview — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+  <style>
+    body {
+      margin: 0;
+      display: block;
+      background: radial-gradient(ellipse at 50% 0%, rgba(251,146,60,0.08) 0%, transparent 60%), var(--bg);
+    }
+    .investor-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+    }
+    .nda-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: var(--space-6);
+    }
+    .investor-hero {
+      text-align: center;
+      padding: var(--space-16) var(--space-8) var(--space-12);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--space-10);
+    }
+    .investor-hero-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto var(--space-6);
+      display: block;
+      border-radius: var(--radius-xl);
+    }
+    .investor-hero-name {
+      font-size: var(--text-4xl);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-3);
+    }
+    .investor-hero-tagline {
+      font-size: var(--text-xl);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-5);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .investor-doc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-4);
+      margin-bottom: var(--space-10);
+    }
+    .investor-doc-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      text-decoration: none;
+      display: block;
+      transition: all var(--transition-fast);
+    }
+    .investor-doc-card:hover {
+      border-color: var(--div-investor);
+      box-shadow: 0 0 20px rgba(251,146,60,0.15);
+      transform: translateY(-1px);
+    }
+    .dd-section { margin-bottom: var(--space-8); }
+    .dd-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .dd-item:last-child { border-bottom: none; }
+    .dd-item-label { font-size: var(--text-sm); color: var(--text-secondary); }
+    .investor-footer {
+      text-align: center;
+      padding: var(--space-10) 0 var(--space-6);
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+    }
+  </style>
+</head>
+<body>
+  <!-- NDA Gate Overlay -->
+  <div class="nda-overlay" id="nda-gate">
+    <div class="nda-card" style="max-width:540px;width:100%;">
+      <img src="../assets/logo.svg" alt="Project Logo" class="nda-logo" id="nda-logo">
+      <h1 class="nda-title" id="nda-project-name">PROJECT_NAME</h1>
+      <p class="nda-text">
+        The following materials are <strong>strictly confidential</strong> and intended for qualified investors and authorized recipients only.<br><br>
+        By proceeding, you acknowledge that you will not copy, share, or distribute these materials without written consent, and that your access constitutes agreement to the terms below.
+      </p>
+      <div class="nda-accept">
+        <input type="checkbox" id="nda-checkbox" style="margin-top:3px;">
+        <label for="nda-checkbox">
+          I confirm I am an authorized recipient. I agree to maintain strict confidentiality and will not reproduce or distribute any information contained herein without explicit written permission.
+        </label>
+      </div>
+      <button class="btn btn-primary w-full btn-lg" id="nda-accept-btn" onclick="acceptNda()">
+        I Understand — Proceed to Materials
+      </button>
+      <p style="font-size:var(--text-xs);color:var(--text-muted);margin-top:var(--space-4);">
+        Powered by <strong>AIz Intel</strong> · Proprietary Agentic Framework
+      </p>
+    </div>
+  </div>
+
+  <!-- Investor Content (hidden until NDA accepted) -->
+  <div id="investor-content" style="display:none;">
+    <div class="investor-page">
+
+      <!-- Hero -->
+      <div class="investor-hero">
+        <img src="../assets/logo.svg" alt="Project Logo" class="investor-hero-logo">
+        <div class="dashboard-meta" style="justify-content:center;margin-bottom:var(--space-4);">
+          <span class="stage-badge" id="stage-badge">pre-seed</span>
+        </div>
+        <h1 class="investor-hero-name" id="hero-project-name">PROJECT_NAME</h1>
+        <p class="investor-hero-tagline" id="hero-tagline">PROJECT_TAGLINE</p>
+        <div style="display:flex;gap:var(--space-3);justify-content:center;flex-wrap:wrap;">
+          <a href="../investor-relations/pitch.html" class="btn btn-primary">View Pitch Deck</a>
+          <a href="due_diligence.html" class="btn btn-secondary">Due Diligence</a>
+        </div>
+      </div>
+
+      <!-- Available Documents -->
+      <section style="margin-bottom:var(--space-10);">
+        <h2 style="margin-bottom:var(--space-6);">Available Materials</h2>
+        <div class="investor-doc-grid">
+          <a class="investor-doc-card" href="../investor-relations/pitch.html">
+            <div class="division-badge investor">Investor Relations</div>
+            <div style="font-size:var(--text-2xl);margin:var(--space-3) 0;">📈</div>
+            <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-2);">Pitch Deck</div>
+            <p style="font-size:var(--text-sm);color:var(--text-secondary);">Problem, solution, market size, business model, traction, team, and the ask.</p>
+          </a>
+          <a class="investor-doc-card" href="../business/economics.html">
+            <div class="division-badge business">Business</div>
+            <div style="font-size:var(--text-2xl);margin:var(--space-3) 0;">📊</div>
+            <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-2);">Economics</div>
+            <p style="font-size:var(--text-sm);color:var(--text-secondary);">Revenue projections, break-even analysis, CAC/LTV/churn, cash flow scenarios.</p>
+          </a>
+          <a class="investor-doc-card" href="../business/pricing.html">
+            <div class="division-badge business">Business</div>
+            <div style="font-size:var(--text-2xl);margin:var(--space-3) 0;">💰</div>
+            <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-2);">Pricing</div>
+            <p style="font-size:var(--text-sm);color:var(--text-secondary);">Pricing tiers, competitor price matrix, and value perception analysis.</p>
+          </a>
+          <a class="investor-doc-card" href="due_diligence.html">
+            <div class="division-badge investor">Investor</div>
+            <div style="font-size:var(--text-2xl);margin:var(--space-3) 0;">✅</div>
+            <div style="font-weight:var(--weight-semibold);color:var(--text-primary);margin-bottom:var(--space-2);">Due Diligence</div>
+            <p style="font-size:var(--text-sm);color:var(--text-secondary);">DD checklist covering legal, financial, technical, team, market, and product.</p>
+          </a>
+        </div>
+      </section>
+
+      <!-- Quick DD Status -->
+      <section class="dd-section">
+        <h2 style="margin-bottom:var(--space-4);">Due Diligence Summary</h2>
+        <div class="card">
+          <div class="dd-item">
+            <span class="dd-item-label">Legal — Incorporation &amp; Contracts</span>
+            <!-- FILL: Update status badge -->
+            <span class="status-badge" data-status="draft">Pending</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-label">Financial — Statements &amp; Projections</span>
+            <span class="status-badge" data-status="draft">Pending</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-label">Technical — Architecture &amp; Security</span>
+            <span class="status-badge" data-status="draft">Pending</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-label">Team — Backgrounds &amp; Cap Table</span>
+            <span class="status-badge" data-status="draft">Pending</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-label">Market — TAM/SAM/SOM Validation</span>
+            <span class="status-badge" data-status="draft">Pending</span>
+          </div>
+          <div class="dd-item">
+            <span class="dd-item-label">Product — Demo &amp; User Feedback</span>
+            <span class="status-badge" data-status="draft">Pending</span>
+          </div>
+        </div>
+        <p style="margin-top:var(--space-3);"><a href="due_diligence.html">View full due diligence checklist →</a></p>
+      </section>
+
+      <!-- Confidentiality Notice -->
+      <div class="investor-footer">
+        <p><strong>CONFIDENTIAL</strong> — This document contains proprietary information. Unauthorized reproduction or distribution is prohibited.</p>
+        <p style="margin-top:var(--space-2);">
+          <button class="btn btn-ghost btn-sm" onclick="resetNdaGate('default')" style="color:var(--text-muted);">Reset NDA acceptance</button>
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../assets/app.js"></script>
+  <script>
+    function acceptNda() {
+      const checkbox = document.getElementById('nda-checkbox');
+      if (!checkbox.checked) {
+        checkbox.style.outline = '2px solid var(--error)';
+        checkbox.focus();
+        return;
+      }
+      // Store per-project NDA acceptance (session only for security)
+      const projectId = document.getElementById('hero-project-name').textContent || 'default';
+      sessionStorage.setItem('aiz-nda-accepted', 'true');
+      document.getElementById('nda-gate').style.display = 'none';
+      document.getElementById('investor-content').style.display = 'block';
+    }
+
+    // Check session NDA on load
+    document.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('aiz-nda-accepted') === 'true') {
+        document.getElementById('nda-gate').style.display = 'none';
+        document.getElementById('investor-content').style.display = 'block';
+      }
+      // Load project config
+      fetch('../project_config.json')
+        .then(r => r.json())
+        .then(data => {
+          const p = data?.project;
+          if (!p) return;
+          if (p.name) {
+            document.getElementById('nda-project-name').textContent  = p.name;
+            document.getElementById('hero-project-name').textContent = p.name;
+            document.title = 'Investor Overview — ' + p.name + ' | AIz Intel';
+          }
+          if (p.tagline) document.getElementById('hero-tagline').textContent = p.tagline;
+          if (p.stage)   document.getElementById('stage-badge').textContent  = p.stage;
+          if (p.logo) {
+            document.getElementById('nda-logo').src = '../' + p.logo;
+            document.querySelector('.investor-hero-logo').src = '../' + p.logo;
+          }
+        })
+        .catch(() => {});
+    });
+  </script>
+</body>
+</html>

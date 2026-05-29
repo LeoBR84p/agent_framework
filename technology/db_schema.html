@@ -1,0 +1,192 @@
+<!-- LLM_CONTEXT: Database Schema document for AIz Intel framework. Contains table definitions, relationships/foreign keys, indexes/performance notes, and migration history. Keep in sync with actual database at all times — this is the authoritative schema reference. When running migrations, add an entry to the migration history. Schema changes must be backwards-compatible or documented as breaking. -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="DB Schema — PROJECT_NAME | AIz Intel">
+  <meta property="og:description" content="Database schema: table definitions, relationships, indexes, and migration history.">
+  <title>DB Schema — PROJECT_NAME | AIz Intel</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="../assets/design_system.css">
+  <link rel="stylesheet" href="../assets/project_theme.css">
+</head>
+<body>
+  <button class="nav-toggle-btn" id="sidebar-toggle">☰</button>
+  <div class="overlay" id="sidebar-overlay"></div>
+  <nav class="sidebar"></nav>
+  <main class="content">
+    <header class="doc-header">
+      <div class="doc-meta">
+        <span class="division-badge technology">Technology</span>
+        <h1 class="doc-title">DB Schema</h1>
+        <p class="doc-subtitle">Authoritative database schema reference: table definitions, relationships, performance indexes, and migration history.</p>
+      </div>
+      <div class="doc-status-bar">
+        <span class="status-badge" data-status="draft">Draft</span>
+        <div class="completeness-bar">
+          <span class="completeness-label">Completeness: <strong id="completeness-score">0%</strong></span>
+          <div class="progress-bar"><div id="completeness-fill" class="progress-fill"></div></div>
+        </div>
+      </div>
+      <details class="required-sections"><summary>Required Sections Checklist</summary><ul id="required-sections-list"></ul></details>
+    </header>
+
+    <!-- Table Definitions -->
+    <section class="section" id="table-definitions">
+      <h2>Table Definitions</h2>
+      <p style="color:var(--text-secondary);margin-bottom:var(--space-4);">Database: <!-- FILL: PostgreSQL / MySQL / Firestore / etc. --> · Version: <!-- FILL: X.X --></p>
+
+      <!-- FILL: Add one block per table -->
+      <div style="margin-bottom:var(--space-8);">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4);">
+          <h3 style="margin:0;"><code><!-- FILL: table_name --></code></h3>
+          <span style="font-size:var(--text-sm);color:var(--text-muted);"><!-- FILL: Purpose description --></span>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Column</th><th>Type</th><th>Nullable</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+              <!-- FILL: One row per column -->
+              <tr>
+                <td><code>id</code></td>
+                <td><code>uuid</code></td>
+                <td>NO</td>
+                <td><code>gen_random_uuid()</code></td>
+                <td>Primary key</td>
+              </tr>
+              <tr>
+                <td><code><!-- FILL: column_name --></code></td>
+                <td><code><!-- FILL: varchar(255) / int / boolean / timestamptz / etc. --></code></td>
+                <td><!-- FILL: YES / NO --></td>
+                <td><!-- FILL: null / NOW() / false / etc. --></td>
+                <td><!-- FILL: What this column stores --></td>
+              </tr>
+              <tr>
+                <td><code>created_at</code></td>
+                <td><code>timestamptz</code></td>
+                <td>NO</td>
+                <td><code>NOW()</code></td>
+                <td>Record creation timestamp</td>
+              </tr>
+              <tr>
+                <td><code>updated_at</code></td>
+                <td><code>timestamptz</code></td>
+                <td>NO</td>
+                <td><code>NOW()</code></td>
+                <td>Last update timestamp (trigger-managed)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FILL: Add more table blocks as needed -->
+      <div class="section-placeholder">
+        <!-- FILL: Add table definitions for all database entities.
+          Core tables typically include: users, organizations/teams, core domain entities, audit_logs.
+        -->
+        <p>Add a definition block for each database table. Include all columns with types, constraints, and descriptions.</p>
+      </div>
+    </section>
+
+    <!-- Relationships & Foreign Keys -->
+    <section class="section" id="relationships-foreign-keys">
+      <h2>Relationships &amp; Foreign Keys</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>From Table</th><th>From Column</th><th>To Table</th><th>To Column</th><th>Relationship</th><th>On Delete</th></tr></thead>
+          <tbody>
+            <!-- FILL: List all foreign key relationships -->
+            <tr>
+              <td><code><!-- FILL: child_table --></code></td>
+              <td><code><!-- FILL: foreign_key_col --></code></td>
+              <td><code><!-- FILL: parent_table --></code></td>
+              <td><code>id</code></td>
+              <td><!-- FILL: Many-to-One / One-to-One / Many-to-Many --></td>
+              <td><!-- FILL: CASCADE / SET NULL / RESTRICT --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="section-placeholder">
+        <!-- FILL: ERD description or ASCII diagram showing table relationships:
+          users → (1:N) → organizations
+          organizations → (1:N) → projects
+          users → (N:M, via user_org) → organizations
+        -->
+        <p>Describe entity relationships. Include an ASCII ERD or describe cardinalities between entities.</p>
+      </div>
+    </section>
+
+    <!-- Indexes & Performance Notes -->
+    <section class="section" id="indexes-performance-notes">
+      <h2>Indexes &amp; Performance Notes</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Table</th><th>Index Name</th><th>Columns</th><th>Type</th><th>Rationale</th></tr></thead>
+          <tbody>
+            <!-- FILL: List all non-primary-key indexes -->
+            <tr>
+              <td><code><!-- FILL: table --></code></td>
+              <td><code><!-- FILL: idx_table_column --></code></td>
+              <td><code><!-- FILL: column1, column2 --></code></td>
+              <td><!-- FILL: B-tree / GIN / GiST / Hash --></td>
+              <td><!-- FILL: Query this supports --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="section-placeholder">
+        <!-- FILL: Performance notes:
+          - Slow query patterns identified and their solutions
+          - Table size estimates and growth rate
+          - Connection pooling strategy
+          - Read replica configuration (if any)
+          - Query optimization wins (before/after)
+        -->
+        <p>Document performance considerations: slow queries, index strategies, table size estimates, and connection pooling.</p>
+      </div>
+    </section>
+
+    <!-- Migration History -->
+    <section class="section" id="migration-history">
+      <h2>Migration History</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Migration ID</th><th>Date</th><th>Description</th><th>Breaking?</th><th>Rollback Procedure</th><th>Run By</th></tr></thead>
+          <tbody>
+            <!-- FILL: Log every database migration -->
+            <tr>
+              <td><code><!-- FILL: 001_initial_schema --></code></td>
+              <td><!-- FILL: YYYY-MM-DD --></td>
+              <td><!-- FILL: What changed --></td>
+              <td><!-- FILL: No / Yes --></td>
+              <td><!-- FILL: How to roll back --></td>
+              <td><!-- FILL: name --></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="section">
+      <h2>Changelog</h2>
+      <div class="table-wrapper">
+        <table class="changelog-table">
+          <thead><tr><th>Date</th><th>Version</th><th>Author</th><th>Change</th></tr></thead>
+          <tbody>
+            <tr><td>YYYY-MM-DD</td><td>v0.1</td><td><!-- FILL: author --></td><td>Initial draft</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.FIREBASE_CONFIG = { apiKey:"FILL_API_KEY", authDomain:"FILL_PROJECT_ID.firebaseapp.com", projectId:"FILL_PROJECT_ID", storageBucket:"FILL_PROJECT_ID.appspot.com", messagingSenderId:"FILL_SENDER_ID", appId:"FILL_APP_ID" };
+    window.PAGE_REQUIRED_SECTIONS = ['table-definitions','relationships-foreign-keys','indexes-performance-notes','migration-history','changelog'];
+  </script>
+  <script src="../assets/app.js"></script>
+</body>
+</html>
