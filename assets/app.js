@@ -1,213 +1,27 @@
 /**
  * AIz Intel - Proprietary Agentic Framework
- * app.js — Shared JavaScript: Auth, Nav, Dark Mode, Search, Completeness
- * Version: 1.0.0
+ * app.js — Shared JavaScript: Nav, Dark Mode, Search, Completeness
+ * Version: 2.0.0
  *
- * Usage: included at the bottom of every HTML file.
- * Requires: window.FIREBASE_CONFIG set in the page's <head> <script> block.
+ * Auth is handled server-side via Edge Middleware + JWT cookie (api/login.js).
+ * This file no longer imports Firebase.
+ *
  * Optional: window.SEARCH_INDEX array for search indexing.
  * Optional: window.PAGE_REQUIRED_SECTIONS array for completeness scoring.
  */
 
 /* ============================================================
-   1. FIREBASE INITIALIZATION
+   1. SIGN OUT
    ============================================================ */
-
-let firebaseApp = null;
-let firebaseAuth = null;
-let firebaseDb  = null;
-
-async function initFirebase() {
-  if (!window.FIREBASE_CONFIG) {
-    console.warn('[AIz] window.FIREBASE_CONFIG not set. Auth disabled.');
-    return;
-  }
-  try {
-    // Dynamically import Firebase SDK (ESM via CDN, or bundled)
-    if (typeof firebase !== 'undefined') {
-      // Legacy compat SDK
-      if (!firebase.apps.length) {
-        firebase.initializeApp(window.FIREBASE_CONFIG);
-      }
-      firebaseAuth = firebase.auth();
-      firebaseDb   = firebase.firestore();
-    } else {
-      // Modular SDK via CDN (v9+)
-      const { initializeApp }              = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
-      const { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-      const { getFirestore, doc, getDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-
-      firebaseApp  = initializeApp(window.FIREBASE_CONFIG);
-      firebaseAuth = getAuth(firebaseApp);
-      firebaseDb   = getFirestore(firebaseApp);
-
-      // Expose helpers on window for use in page-level scripts
-      window._fb = { onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, doc, getDoc };
-    }
-    initAuthObserver();
-  } catch (err) {
-    console.error('[AIz] Firebase init failed:', err);
-  }
-}
-
-/* ============================================================
-   2. AUTH STATE OBSERVER
-   ============================================================ */
-
-const PUBLIC_PATHS = ['auth.html', '/auth.html', 'auth', 'investor/index.html'];
-
-function isPublicPage() {
-  const path = window.location.pathname;
-  return PUBLIC_PATHS.some(p => path.endsWith(p)) ||
-         path.startsWith('/investor/') ||
-         path === '/' + 'investor';
-}
-
-function initAuthObserver() {
-  if (isPublicPage()) return; // Do not guard public/investor pages
-
-  const redirectToAuth = () => {
-    const returnUrl = encodeURIComponent(window.location.href);
-    window.location.href = '/auth.html?return=' + returnUrl;
-  };
-
-  if (window._fb) {
-    // Modular SDK path
-    window._fb.onAuthStateChanged(firebaseAuth, async (user) => {
-      if (!user) {
-        redirectToAuth();
-        return;
-      }
-      const allowed = await checkEmailAllowlist(user.email);
-      if (!allowed) {
-        showAccessDenied(user.email);
-      } else {
-        updateNavUser(user);
-      }
-    });
-  } else if (firebaseAuth) {
-    // Compat SDK path
-    firebaseAuth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        redirectToAuth();
-        return;
-      }
-      const allowed = await checkEmailAllowlist(user.email);
-      if (!allowed) {
-        showAccessDenied(user.email);
-      } else {
-        updateNavUser(user);
-      }
-    });
-  }
-}
-
-async function checkEmailAllowlist(email) {
-  if (!firebaseDb || !email) return false;
-  try {
-    let docSnap;
-    if (window._fb) {
-      const { doc, getDoc } = window._fb;
-      docSnap = await getDoc(doc(firebaseDb, 'allowedUsers', email));
-    } else {
-      docSnap = await firebaseDb.collection('allowedUsers').doc(email).get();
-    }
-    return docSnap.exists;
-  } catch (err) {
-    console.error('[AIz] Allowlist check failed:', err);
-    return false;
-  }
-}
-
-function showAccessDenied(email) {
-  document.body.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--bg);">
-      <div style="text-align:center;padding:3rem;background:var(--card);border:1px solid var(--border);border-radius:1rem;max-width:400px;">
-        <div style="font-size:3rem;margin-bottom:1rem;">🔒</div>
-        <h2 style="color:var(--text-primary);margin-bottom:0.5rem;">Access Denied</h2>
-        <p style="color:var(--text-secondary);margin-bottom:1.5rem;">
-          <strong>${email}</strong> is not on the access list for this project.
-          Contact the project owner to request access.
-        </p>
-        <button class="btn btn-secondary" onclick="signOutUser()">Sign out</button>
-      </div>
-    </div>`;
-}
-
-function updateNavUser(user) {
-  const nameEl = document.getElementById('nav-user-name');
-  const emailEl = document.getElementById('nav-user-email');
-  if (nameEl)  nameEl.textContent  = user.displayName || 'User';
-  if (emailEl) emailEl.textContent = user.email || '';
-}
-
-/* ============================================================
-   3. SIGN IN / SIGN OUT
-   ============================================================ */
-
-async function signInWithGoogle() {
-  const errorEl = document.getElementById('auth-error');
-  try {
-    if (window._fb) {
-      const { GoogleAuthProvider, signInWithPopup } = window._fb;
-      const provider = new GoogleAuthProvider();
-      const result   = await signInWithPopup(firebaseAuth, provider);
-      const user     = result.user;
-      const allowed  = await checkEmailAllowlist(user.email);
-      if (!allowed) {
-        if (errorEl) {
-          errorEl.textContent = `${user.email} is not authorized for this project.`;
-          errorEl.classList.add('visible');
-        }
-        await signOutUser();
-        return;
-      }
-      const params  = new URLSearchParams(window.location.search);
-      const returnUrl = params.get('return') || '/index.html';
-      window.location.href = returnUrl;
-    } else if (firebaseAuth) {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      const result   = await firebaseAuth.signInWithPopup(provider);
-      const user     = result.user;
-      const allowed  = await checkEmailAllowlist(user.email);
-      if (!allowed) {
-        if (errorEl) {
-          errorEl.textContent = `${user.email} is not authorized for this project.`;
-          errorEl.classList.add('visible');
-        }
-        await firebaseAuth.signOut();
-        return;
-      }
-      const params  = new URLSearchParams(window.location.search);
-      const returnUrl = params.get('return') || '/index.html';
-      window.location.href = returnUrl;
-    }
-  } catch (err) {
-    console.error('[AIz] Sign in failed:', err);
-    if (errorEl) {
-      errorEl.textContent = 'Sign-in failed. Please try again.';
-      errorEl.classList.add('visible');
-    }
-  }
-}
 
 async function signOutUser() {
   try {
-    if (window._fb) {
-      const { signOut } = window._fb;
-      await signOut(firebaseAuth);
-    } else if (firebaseAuth) {
-      await firebaseAuth.signOut();
-    }
-  } catch (err) {
-    console.error('[AIz] Sign out failed:', err);
-  }
+    await fetch('/api/logout', { method: 'POST' });
+  } catch { /* ignore network errors */ }
   window.location.href = '/auth.html';
 }
 
-// Expose globally
-window.signInWithGoogle = signInWithGoogle;
-window.signOutUser      = signOutUser;
+window.signOutUser = signOutUser;
 
 /* ============================================================
    4. DARK / LIGHT MODE TOGGLE
@@ -307,7 +121,7 @@ const NAV_STRUCTURE = [
   {
     label: 'Overview',
     links: [
-      { icon: '🏠', text: 'Dashboard',       href: '/index.html' },
+      { icon: '🏠', text: 'Dashboard',       href: '/dashboard' },
       { icon: '🔍', text: 'Search',           href: '/search.html' },
       { icon: '✅', text: 'Setup Checklist',  href: '/setup_checklist.html' },
     ]
@@ -816,10 +630,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Sidebar toggle
   initSidebar();
 
-  // 4. Firebase (async, non-blocking for page content)
-  initFirebase();
-
-  // 5. Status badges
+  // 4. Status badges
   initStatusBadges();
 
   // 6. Completeness score

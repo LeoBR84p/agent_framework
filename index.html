@@ -1,360 +1,473 @@
-<!-- LLM_CONTEXT: Main authenticated dashboard for AIz Intel framework. Shows live metrics, document grid organized by division, and external tool shortcuts. Auth-protected — redirects to auth.html if not signed in. Update metrics.json for live metric values. Update project_config.json for project name, stage, and external links. -->
+<!-- LLM_CONTEXT: Public landing page for AIz Intel framework. No auth required. Presents all document divisions and links to the authenticated dashboard. -->
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta property="og:title" content="Dashboard — PROJECT_NAME | AIz Intel">
-  <meta property="og:description" content="Unified knowledge management dashboard for PROJECT_NAME.">
-  <title>Dashboard — PROJECT_NAME | AIz Intel</title>
+  <meta property="og:title" content="AIz Intel — Knowledge Management Framework">
+  <meta property="og:description" content="Unified knowledge management for tech startups. HTML-first, Vercel-hosted, Firebase-authenticated.">
+  <title>AIz Intel — Knowledge Management Framework</title>
   <link rel="icon" href="assets/favicon.ico">
   <link rel="stylesheet" href="assets/design_system.css">
   <link rel="stylesheet" href="assets/project_theme.css">
+  <style>
+    body { display: block; }
+
+    .landing-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-8) var(--space-16);
+    }
+
+    /* ── Top bar ── */
+    .landing-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-5) 0 var(--space-10);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--space-12);
+    }
+    .landing-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      text-decoration: none;
+    }
+    .landing-brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+    }
+    .landing-brand-name {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+    .landing-topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    /* ── Hero ── */
+    .landing-hero {
+      margin-bottom: var(--space-12);
+    }
+    .landing-hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand-primary);
+      margin-bottom: var(--space-4);
+    }
+    .landing-hero-eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand-primary);
+      box-shadow: 0 0 8px var(--brand-primary);
+    }
+    .landing-hero h1 {
+      font-size: clamp(var(--text-3xl), 5vw, var(--text-4xl));
+      font-weight: var(--weight-bold);
+      line-height: var(--leading-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+      letter-spacing: -0.03em;
+    }
+    .landing-hero h1 span {
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .landing-hero-sub {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-8);
+    }
+    .landing-hero-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+    .landing-stat-row {
+      display: flex;
+      gap: var(--space-8);
+      margin-top: var(--space-10);
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+    }
+    .landing-stat {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+    .landing-stat-value {
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+    .landing-stat-label {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Sections label ── */
+    .landing-sections-label {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-6);
+    }
+
+    /* ── CTA strip ── */
+    .landing-cta {
+      margin-top: var(--space-12);
+      padding: var(--space-10);
+      background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(167,139,250,0.06));
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-6);
+      flex-wrap: wrap;
+    }
+    .landing-cta-text h2 {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+    .landing-cta-text p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+
+    /* ── Footer ── */
+    .landing-footer {
+      margin-top: var(--space-16);
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+    .landing-footer-copy {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+    }
+    .landing-footer-links {
+      display: flex;
+      gap: var(--space-5);
+    }
+    .landing-footer-links a {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+    .landing-footer-links a:hover { color: var(--text-primary); }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .landing-wrap { padding: var(--space-5) var(--space-5) var(--space-12); }
+      .landing-topbar { padding-bottom: var(--space-8); }
+      .landing-cta { flex-direction: column; align-items: flex-start; }
+      .landing-stat-row { gap: var(--space-6); }
+    }
+  </style>
 </head>
 <body>
-  <!-- Sidebar toggle button (mobile) -->
-  <button class="nav-toggle-btn" id="sidebar-toggle" aria-label="Toggle navigation">☰</button>
-  <div class="overlay" id="sidebar-overlay"></div>
 
-  <!-- Sidebar nav (rendered by app.js) -->
-  <nav class="sidebar"></nav>
+<div class="landing-wrap">
 
-  <main class="content">
-    <!-- Dashboard Header -->
-    <header class="dashboard-header">
-      <div>
-        <div class="dashboard-meta" style="margin-bottom:var(--space-2);">
-          <span class="stage-badge" id="stage-badge">pre-seed</span>
-          <span class="last-updated" id="last-updated">Last updated: —</span>
-        </div>
-        <h1 class="dashboard-title" id="dashboard-project-name">PROJECT_NAME</h1>
-        <p style="color:var(--text-secondary);margin-top:var(--space-2);" id="dashboard-tagline">PROJECT_TAGLINE</p>
-      </div>
-      <div style="display:flex;align-items:center;gap:var(--space-3);">
-        <a href="search.html" class="btn btn-secondary btn-sm">🔍 Search</a>
-        <a href="setup_checklist.html" class="btn btn-secondary btn-sm">✅ Setup</a>
-      </div>
-    </header>
+  <!-- ── Top bar ─────────────────────────────────────────── -->
+  <header class="landing-topbar">
+    <a class="landing-brand" href="/">
+      <img src="assets/favicon.ico" alt="AIz Intel">
+      <span class="landing-brand-name">AIz Intel</span>
+    </a>
+    <div class="landing-topbar-actions">
+      <a href="investor/index.html" class="btn btn-secondary btn-sm" target="_blank">Investor Portal ↗</a>
+      <a href="auth.html" class="btn btn-primary btn-sm">Sign In →</a>
+    </div>
+  </header>
 
-    <!-- Live Metrics Panel -->
-    <section style="margin-bottom:var(--space-8);">
-      <h2 style="font-size:var(--text-lg);color:var(--text-secondary);font-weight:var(--weight-medium);margin-bottom:var(--space-4);">
-        Live Metrics
-        <span style="font-size:var(--text-xs);color:var(--text-muted);font-weight:normal;margin-left:var(--space-2);">from metrics.json</span>
-      </h2>
-      <div class="metrics-grid" id="metrics-container">
-        <!-- Rendered by app.js loadMetrics() -->
-        <div class="metric-card"><div class="metric-label">Loading...</div><div class="metric-value">—</div></div>
+  <!-- ── Hero ─────────────────────────────────────────────── -->
+  <section class="landing-hero">
+    <div class="landing-hero-eyebrow">Knowledge Management Framework</div>
+    <h1>Everything your startup<br>needs, <span>in one place.</span></h1>
+    <p class="landing-hero-sub">
+      AIz Intel is a Vercel-hosted knowledge base template for tech startups.
+      Business strategy, technical docs, operations, and investor materials — all as structured HTML, version-controlled on GitHub.
+    </p>
+    <div class="landing-hero-actions">
+      <a href="auth.html" class="btn btn-primary">Access Dashboard →</a>
+      <a href="setup_checklist.html" class="btn btn-secondary">Setup Checklist</a>
+    </div>
+    <div class="landing-stat-row">
+      <div class="landing-stat">
+        <span class="landing-stat-value">5</span>
+        <span class="landing-stat-label">Divisions</span>
       </div>
-    </section>
-
-    <!-- External Tools -->
-    <section style="margin-bottom:var(--space-8);">
-      <h2 style="font-size:var(--text-lg);color:var(--text-secondary);font-weight:var(--weight-medium);margin-bottom:var(--space-4);">External Tools</h2>
-      <div class="external-links-bar" id="external-links-container">
-        <!-- Rendered by app.js from project_config.json -->
-        <span style="color:var(--text-muted);font-size:var(--text-sm);">Configure external links in project_config.json</span>
+      <div class="landing-stat">
+        <span class="landing-stat-value">26</span>
+        <span class="landing-stat-label">Documents</span>
       </div>
-    </section>
-
-    <!-- Document Grid: Business -->
-    <div class="division-group">
-      <div class="division-header">
-        <span class="division-icon">💼</span>
-        <h2 class="division-title">Business</h2>
-        <span class="division-count">8 documents</span>
+      <div class="landing-stat">
+        <span class="landing-stat-value">100%</span>
+        <span class="landing-stat-label">Static HTML</span>
       </div>
-      <div class="doc-grid">
-        <a class="doc-card" href="business/idea.html">
-          <div class="division-badge business">Business</div>
-          <div class="doc-card-title">💡 Idea</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Problem, solution, UVP, and validation status.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="business/business_plan.html">
-          <div class="division-badge business">Business</div>
-          <div class="doc-card-title">📋 Business Plan</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">BMC, TAM/SAM/SOM, revenue model, team.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="business/economics.html">
-          <div class="division-badge business">Business</div>
-          <div class="doc-card-title">📊 Economics</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">S-curves, break-even, CAC/LTV, cash flow scenarios.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="business/pricing.html">
-          <div class="division-badge business">Business</div>
-          <div class="doc-card-title">💰 Pricing</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Pricing tiers, competitor price matrix, value perception.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="business/competitor_analysis.html">
-          <div class="division-badge business">Business</div>
-          <div class="doc-card-title">🏆 Competitor Analysis</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Competitor cards, feature matrix, positioning map.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="business/launch_plan.html">
-          <div class="division-badge business">Business</div>
-          <div class="doc-card-title">🚀 Launch Plan</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Phases timeline, early adopters, paid/organic channels.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="business/marketing.html">
-          <div class="division-badge business">Business</div>
-          <div class="doc-card-title">📣 Marketing</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">ICP, messaging matrix, channel strategy, campaign calendar.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="business/risk.html">
-          <div class="division-badge business">Business</div>
-          <div class="doc-card-title">⚠️ Risk</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Risk register, heat map, category taxonomy, mitigation.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
+      <div class="landing-stat">
+        <span class="landing-stat-value">0</span>
+        <span class="landing-stat-label">Backend needed</span>
       </div>
     </div>
+  </section>
 
-    <!-- Document Grid: Technology -->
-    <div class="division-group">
-      <div class="division-header">
-        <span class="division-icon">⚙️</span>
-        <h2 class="division-title">Technology</h2>
-        <span class="division-count">6 documents</span>
-      </div>
-      <div class="doc-grid">
-        <a class="doc-card" href="technology/tech_plan.html">
-          <div class="division-badge technology">Technology</div>
-          <div class="doc-card-title">🔧 Tech Plan</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Architecture, stack decisions, sprint checklists, API surface.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="technology/zero_hero.html">
-          <div class="division-badge technology">Technology</div>
-          <div class="doc-card-title">🦸 Zero to Hero</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Environment setup, bootstrap commands, gotchas.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="technology/db_schema.html">
-          <div class="division-badge technology">Technology</div>
-          <div class="doc-card-title">🗄️ DB Schema</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Table definitions, relationships, indexes, migration history.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="technology/code_review.html">
-          <div class="division-badge technology">Technology</div>
-          <div class="doc-card-title">🔍 Code Review</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Issue register with severity, status, file+line references.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="technology/disaster_recovery.html">
-          <div class="division-badge technology">Technology</div>
-          <div class="doc-card-title">🛡️ Disaster Recovery</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Runbooks, RTO/RPO, escalation matrix, post-mortem template.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-        <a class="doc-card" href="technology/roadmap.html">
-          <div class="division-badge technology">Technology</div>
-          <div class="doc-card-title">🗺️ Roadmap</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Timeline swimlanes across business, tech, brand, ops.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-      </div>
+  <!-- ── Document layers ──────────────────────────────────── -->
+  <p class="landing-sections-label">Document Layers</p>
+
+  <!-- Business -->
+  <div class="division-group">
+    <div class="division-header">
+      <span class="division-icon">💼</span>
+      <h2 class="division-title">Business</h2>
+      <span class="division-count">8 documents</span>
     </div>
-
-    <!-- Document Grid: Brand -->
-    <div class="division-group">
-      <div class="division-header">
-        <span class="division-icon">🎨</span>
-        <h2 class="division-title">Brand</h2>
-        <span class="division-count">1 document</span>
-      </div>
-      <div class="doc-grid">
-        <a class="doc-card" href="brand/brand_guidelines.html">
-          <div class="division-badge brand">Brand</div>
-          <div class="doc-card-title">🎨 Brand Guidelines</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Logo usage, color tokens, typography, tone of voice.</p>
-          <div class="doc-card-meta">
-            <span class="status-badge" data-status="draft">Draft</span>
-            <span class="doc-card-date">—</span>
-          </div>
-        </a>
-      </div>
+    <div class="doc-grid">
+      <a class="doc-card" href="business/idea.html">
+        <div class="division-badge business">Business</div>
+        <div class="doc-card-title">💡 Idea</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Problem, solution, UVP, and validation status.</p>
+      </a>
+      <a class="doc-card" href="business/business_plan.html">
+        <div class="division-badge business">Business</div>
+        <div class="doc-card-title">📋 Business Plan</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">BMC, TAM/SAM/SOM, revenue model, team.</p>
+      </a>
+      <a class="doc-card" href="business/economics.html">
+        <div class="division-badge business">Business</div>
+        <div class="doc-card-title">📊 Economics</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">S-curves, break-even, CAC/LTV, cash flow scenarios.</p>
+      </a>
+      <a class="doc-card" href="business/pricing.html">
+        <div class="division-badge business">Business</div>
+        <div class="doc-card-title">💰 Pricing</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Pricing tiers, competitor price matrix, value perception.</p>
+      </a>
+      <a class="doc-card" href="business/competitor_analysis.html">
+        <div class="division-badge business">Business</div>
+        <div class="doc-card-title">🏆 Competitor Analysis</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Competitor cards, feature matrix, positioning map.</p>
+      </a>
+      <a class="doc-card" href="business/launch_plan.html">
+        <div class="division-badge business">Business</div>
+        <div class="doc-card-title">🚀 Launch Plan</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Phases timeline, early adopters, paid/organic channels.</p>
+      </a>
+      <a class="doc-card" href="business/marketing.html">
+        <div class="division-badge business">Business</div>
+        <div class="doc-card-title">📣 Marketing</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">ICP, messaging matrix, channel strategy, campaign calendar.</p>
+      </a>
+      <a class="doc-card" href="business/risk.html">
+        <div class="division-badge business">Business</div>
+        <div class="doc-card-title">⚠️ Risk</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Risk register, heat map, category taxonomy, mitigation.</p>
+      </a>
     </div>
+  </div>
 
-    <!-- Document Grid: Operations -->
-    <div class="division-group">
-      <div class="division-header">
-        <span class="division-icon">⚙️</span>
-        <h2 class="division-title">Operations</h2>
-        <span class="division-count">9 documents</span>
-      </div>
-      <div class="doc-grid">
-        <a class="doc-card" href="operations/cost_tracking.html">
-          <div class="division-badge operations">Operations</div>
-          <div class="doc-card-title">💸 Cost Tracking</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Expense log, budget vs actuals, burn rate, runway.</p>
-          <div class="doc-card-meta"><span class="status-badge" data-status="draft">Draft</span><span class="doc-card-date">—</span></div>
-        </a>
-        <a class="doc-card" href="operations/operational_costs.html">
-          <div class="division-badge operations">Operations</div>
-          <div class="doc-card-title">🧾 Operational Costs</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Monthly SaaS/infra costs, one-time setup, unit economics.</p>
-          <div class="doc-card-meta"><span class="status-badge" data-status="draft">Draft</span><span class="doc-card-date">—</span></div>
-        </a>
-        <a class="doc-card" href="operations/okr_kpi.html">
-          <div class="division-badge operations">Operations</div>
-          <div class="doc-card-title">🎯 OKR / KPI</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Quarterly OKRs with key results and KPI dashboard.</p>
-          <div class="doc-card-meta"><span class="status-badge" data-status="draft">Draft</span><span class="doc-card-date">—</span></div>
-        </a>
-        <a class="doc-card" href="operations/customer_support.html">
-          <div class="division-badge operations">Operations</div>
-          <div class="doc-card-title">🎧 Customer Support</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Support tiers, SLAs, FAQ template, escalation chain.</p>
-          <div class="doc-card-meta"><span class="status-badge" data-status="draft">Draft</span><span class="doc-card-date">—</span></div>
-        </a>
-        <a class="doc-card" href="operations/customer_memory.html">
-          <div class="division-badge operations">Operations</div>
-          <div class="doc-card-title">🧠 Customer Memory</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">CRM-style contact cards with interaction history.</p>
-          <div class="doc-card-meta"><span class="status-badge" data-status="draft">Draft</span><span class="doc-card-date">—</span></div>
-        </a>
-        <a class="doc-card" href="operations/terms_of_service.html">
-          <div class="division-badge operations">Operations</div>
-          <div class="doc-card-title">📄 Terms of Service</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Service description, obligations, IP, liability, LGPD/GDPR.</p>
-          <div class="doc-card-meta"><span class="status-badge" data-status="draft">Draft</span><span class="doc-card-date">—</span></div>
-        </a>
-        <a class="doc-card" href="operations/privacy_policy.html">
-          <div class="division-badge operations">Operations</div>
-          <div class="doc-card-title">🔒 Privacy Policy</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Data collected, legal basis, GDPR/LGPD/CCPA rights.</p>
-          <div class="doc-card-meta"><span class="status-badge" data-status="draft">Draft</span><span class="doc-card-date">—</span></div>
-        </a>
-        <a class="doc-card" href="operations/cookie_policy.html">
-          <div class="division-badge operations">Operations</div>
-          <div class="doc-card-title">🍪 Cookie Policy</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Cookie types, consent mechanism, opt-out instructions.</p>
-          <div class="doc-card-meta"><span class="status-badge" data-status="draft">Draft</span><span class="doc-card-date">—</span></div>
-        </a>
-        <a class="doc-card" href="operations/dpa_sla.html">
-          <div class="division-badge operations">Operations</div>
-          <div class="doc-card-title">📑 DPA &amp; SLA</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Data processing agreement, service level commitments.</p>
-          <div class="doc-card-meta"><span class="status-badge" data-status="draft">Draft</span><span class="doc-card-date">—</span></div>
-        </a>
-      </div>
+  <!-- Technology -->
+  <div class="division-group">
+    <div class="division-header">
+      <span class="division-icon">⚙️</span>
+      <h2 class="division-title">Technology</h2>
+      <span class="division-count">6 documents</span>
     </div>
-
-    <!-- Document Grid: Investor Relations -->
-    <div class="division-group">
-      <div class="division-header">
-        <span class="division-icon">📈</span>
-        <h2 class="division-title">Investor Relations</h2>
-        <span class="division-count">2 documents</span>
-      </div>
-      <div class="doc-grid">
-        <a class="doc-card" href="investor-relations/pitch.html">
-          <div class="division-badge investor-relations">Investor Relations</div>
-          <div class="doc-card-title">📈 Pitch Deck</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">Problem, solution, market, traction, team, financials, ask.</p>
-          <div class="doc-card-meta"><span class="status-badge" data-status="draft">Draft</span><span class="doc-card-date">—</span></div>
-        </a>
-        <a class="doc-card" href="investor-relations/investor_memory.html">
-          <div class="division-badge investor-relations">Investor Relations</div>
-          <div class="doc-card-title">🤝 Investor Memory</div>
-          <p style="font-size:var(--text-sm);color:var(--text-muted);">CRM-style cards per investor/fund with interaction history.</p>
-          <div class="doc-card-meta"><span class="status-badge" data-status="draft">Draft</span><span class="doc-card-date">—</span></div>
-        </a>
-      </div>
+    <div class="doc-grid">
+      <a class="doc-card" href="technology/tech_plan.html">
+        <div class="division-badge technology">Technology</div>
+        <div class="doc-card-title">🔧 Tech Plan</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Architecture, stack decisions, sprint checklists, API surface.</p>
+      </a>
+      <a class="doc-card" href="technology/zero_hero.html">
+        <div class="division-badge technology">Technology</div>
+        <div class="doc-card-title">🦸 Zero to Hero</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Environment setup, bootstrap commands, gotchas.</p>
+      </a>
+      <a class="doc-card" href="technology/db_schema.html">
+        <div class="division-badge technology">Technology</div>
+        <div class="doc-card-title">🗄️ DB Schema</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Table definitions, relationships, indexes, migration history.</p>
+      </a>
+      <a class="doc-card" href="technology/code_review.html">
+        <div class="division-badge technology">Technology</div>
+        <div class="doc-card-title">🔍 Code Review</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Issue register with severity, status, file+line references.</p>
+      </a>
+      <a class="doc-card" href="technology/disaster_recovery.html">
+        <div class="division-badge technology">Technology</div>
+        <div class="doc-card-title">🛡️ Disaster Recovery</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Runbooks, RTO/RPO, escalation matrix, post-mortem template.</p>
+      </a>
+      <a class="doc-card" href="technology/roadmap.html">
+        <div class="division-badge technology">Technology</div>
+        <div class="doc-card-title">🗺️ Roadmap</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Timeline swimlanes across business, tech, brand, ops.</p>
+      </a>
     </div>
+  </div>
 
-    <!-- Investor Portal Link -->
-    <div class="card" style="margin-top:var(--space-8);background:linear-gradient(135deg,rgba(251,146,60,0.05),rgba(232,121,249,0.05));border-color:rgba(251,146,60,0.2);">
-      <div class="card-header">
-        <div>
-          <div class="division-badge investor">Investor Portal</div>
-          <div class="card-title" style="margin-top:var(--space-2);">External Investor View</div>
-          <div class="card-subtitle">NDA-gated landing page for investors and stakeholders.</div>
-        </div>
-        <a href="investor/index.html" class="btn btn-secondary" target="_blank">Open Portal ↗</a>
-      </div>
+  <!-- Brand -->
+  <div class="division-group">
+    <div class="division-header">
+      <span class="division-icon">🎨</span>
+      <h2 class="division-title">Brand</h2>
+      <span class="division-count">1 document</span>
     </div>
+    <div class="doc-grid">
+      <a class="doc-card" href="brand/brand_guidelines.html">
+        <div class="division-badge brand">Brand</div>
+        <div class="doc-card-title">🎨 Brand Guidelines</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Logo usage, color tokens, typography, tone of voice.</p>
+      </a>
+    </div>
+  </div>
 
-  </main>
+  <!-- Operations -->
+  <div class="division-group">
+    <div class="division-header">
+      <span class="division-icon">🔩</span>
+      <h2 class="division-title">Operations</h2>
+      <span class="division-count">9 documents</span>
+    </div>
+    <div class="doc-grid">
+      <a class="doc-card" href="operations/cost_tracking.html">
+        <div class="division-badge operations">Operations</div>
+        <div class="doc-card-title">💸 Cost Tracking</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Expense log, budget vs actuals, burn rate, runway.</p>
+      </a>
+      <a class="doc-card" href="operations/operational_costs.html">
+        <div class="division-badge operations">Operations</div>
+        <div class="doc-card-title">🧾 Operational Costs</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Monthly SaaS/infra costs, one-time setup, unit economics.</p>
+      </a>
+      <a class="doc-card" href="operations/okr_kpi.html">
+        <div class="division-badge operations">Operations</div>
+        <div class="doc-card-title">🎯 OKR / KPI</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Quarterly OKRs with key results and KPI dashboard.</p>
+      </a>
+      <a class="doc-card" href="operations/customer_support.html">
+        <div class="division-badge operations">Operations</div>
+        <div class="doc-card-title">🎧 Customer Support</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Support tiers, SLAs, FAQ template, escalation chain.</p>
+      </a>
+      <a class="doc-card" href="operations/customer_memory.html">
+        <div class="division-badge operations">Operations</div>
+        <div class="doc-card-title">🧠 Customer Memory</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">CRM-style contact cards with interaction history.</p>
+      </a>
+      <a class="doc-card" href="operations/terms_of_service.html">
+        <div class="division-badge operations">Operations</div>
+        <div class="doc-card-title">📄 Terms of Service</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Service description, obligations, IP, liability, LGPD/GDPR.</p>
+      </a>
+      <a class="doc-card" href="operations/privacy_policy.html">
+        <div class="division-badge operations">Operations</div>
+        <div class="doc-card-title">🔒 Privacy Policy</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Data collected, legal basis, GDPR/LGPD/CCPA rights.</p>
+      </a>
+      <a class="doc-card" href="operations/cookie_policy.html">
+        <div class="division-badge operations">Operations</div>
+        <div class="doc-card-title">🍪 Cookie Policy</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Cookie types, consent mechanism, opt-out instructions.</p>
+      </a>
+      <a class="doc-card" href="operations/dpa_sla.html">
+        <div class="division-badge operations">Operations</div>
+        <div class="doc-card-title">📑 DPA &amp; SLA</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Data processing agreement, service level commitments.</p>
+      </a>
+    </div>
+  </div>
 
-  <script>
-    // FILL: Replace with your actual Firebase project configuration
-    window.FIREBASE_CONFIG = {
-      apiKey:            "FILL_API_KEY",
-      authDomain:        "FILL_PROJECT_ID.firebaseapp.com",
-      projectId:         "FILL_PROJECT_ID",
-      storageBucket:     "FILL_PROJECT_ID.appspot.com",
-      messagingSenderId: "FILL_SENDER_ID",
-      appId:             "FILL_APP_ID"
-    };
-  </script>
-  <script src="assets/app.js"></script>
-  <script>
-    // Populate header from project_config.json
-    fetch('/project_config.json')
-      .then(r => r.json())
-      .then(data => {
-        const p = data?.project;
-        if (!p) return;
-        if (p.name) {
-          document.getElementById('dashboard-project-name').textContent = p.name;
-          document.title = 'Dashboard — ' + p.name + ' | AIz Intel';
-        }
-        if (p.tagline)     document.getElementById('dashboard-tagline').textContent   = p.tagline;
-        if (p.stage)       document.getElementById('stage-badge').textContent         = p.stage;
-        if (p.lastUpdated) document.getElementById('last-updated').textContent        = 'Last updated: ' + p.lastUpdated;
-      })
-      .catch(() => {});
-  </script>
+  <!-- Investor Relations -->
+  <div class="division-group">
+    <div class="division-header">
+      <span class="division-icon">📈</span>
+      <h2 class="division-title">Investor Relations</h2>
+      <span class="division-count">2 documents</span>
+    </div>
+    <div class="doc-grid">
+      <a class="doc-card" href="investor-relations/pitch.html">
+        <div class="division-badge investor-relations">Investor Relations</div>
+        <div class="doc-card-title">📈 Pitch Deck</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">Problem, solution, market, traction, team, financials, ask.</p>
+      </a>
+      <a class="doc-card" href="investor-relations/investor_memory.html">
+        <div class="division-badge investor-relations">Investor Relations</div>
+        <div class="doc-card-title">🤝 Investor Memory</div>
+        <p style="font-size:var(--text-sm);color:var(--text-muted);">CRM-style cards per investor/fund with interaction history.</p>
+      </a>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="landing-cta">
+    <div class="landing-cta-text">
+      <h2>Ready to access your workspace?</h2>
+      <p>Sign in with Google to load your dashboard with live metrics and full document access.</p>
+    </div>
+    <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;">
+      <a href="investor/index.html" class="btn btn-secondary" target="_blank">Investor Portal ↗</a>
+      <a href="auth.html" class="btn btn-primary">Sign In →</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <span class="landing-footer-copy">© 2026 AIz Intel · Proprietary Agentic Framework</span>
+    <nav class="landing-footer-links">
+      <a href="setup_checklist.html">Setup</a>
+      <a href="search.html">Search</a>
+      <a href="investor/index.html">Investors</a>
+      <a href="auth.html">Sign In</a>
+    </nav>
+  </footer>
+
+</div>
+
+<script>
+  // Minimal fade-in on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; io.unobserve(e.target); }});
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.division-group').forEach(el => {
+    el.style.cssText = 'opacity:0;transform:translateY(16px);transition:opacity 0.4s ease,transform 0.4s ease';
+    io.observe(el);
+  });
+</script>
+
 </body>
 </html>
